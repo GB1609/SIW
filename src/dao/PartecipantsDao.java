@@ -1,7 +1,11 @@
 package dao;
-public interface PartecipantsDao
-{
-	public void create(PartecipantsDao i);
-	public void delete(PartecipantsDao i);
-	public void update(PartecipantsDao i);
+
+import tables.Partecipants;
+
+public interface PartecipantsDao {
+	public void save(Partecipants i);
+
+	public void delete(Partecipants i);
+
+	public void update(Partecipants i);
 }

@@ -1,57 +1,67 @@
 package tables;
-public class Events
-{
-	int codiceEvento;
+
+public class Events {
+	int eventcode;
 	String feedback;
-	String organizzatore;
-	int categoria;
-	int informazioni;
-	public Events(int codiceEvento, String feedback, String organizzatore, int categoria, int informazioni)
-	{
-		this.codiceEvento=codiceEvento;
-		this.feedback=feedback;
-		this.organizzatore=organizzatore;
-		this.categoria=categoria;
-		this.informazioni=informazioni;
+	String organizator;
+	int category;
+	int information;
+	int partecipant;
+
+	public Events(int eventcode, String feedback, String organizator, int category, int information, int partecipant) {
+		this.eventcode = eventcode;
+		this.feedback = feedback;
+		this.organizator = organizator;
+		this.category = category;
+		this.information = information;
+		this.partecipant = partecipant;
 	}
-	public int getCategoria()
-	{
-		return this.categoria;
+
+	public int getCategory() {
+		return this.category;
 	}
-	public int getCodiceEvento()
-	{
-		return this.codiceEvento;
+
+	public int getEventcode() {
+		return this.eventcode;
 	}
-	public String getFeedback()
-	{
+
+	public String getFeedback() {
 		return this.feedback;
 	}
-	public int getInformazioni()
-	{
-		return this.informazioni;
+
+	public int getInformation() {
+		return this.information;
 	}
-	public String getOrganizzatore()
-	{
-		return this.organizzatore;
+
+	public String getOrganizator() {
+		return this.organizator;
 	}
-	public void setCategoria(int categoria)
-	{
-		this.categoria=categoria;
+
+	public int getPartecipant() {
+		return this.partecipant;
 	}
-	public void setCodiceEvento(int codiceEvento)
-	{
-		this.codiceEvento=codiceEvento;
+
+	public void setCategory(int category) {
+		this.category = category;
 	}
-	public void setFeedback(String feedback)
-	{
-		this.feedback=feedback;
+
+	public void setEventcode(int eventcode) {
+		this.eventcode = eventcode;
 	}
-	public void setInformazioni(int informazioni)
-	{
-		this.informazioni=informazioni;
+
+	public void setFeedback(String feedback) {
+		this.feedback = feedback;
 	}
-	public void setOrganizzatore(String organizzatore)
-	{
-		this.organizzatore=organizzatore;
+
+	public void setInformation(int information) {
+		this.information = information;
+	}
+
+	public void setOrganizator(String organizator) {
+		this.organizator = organizator;
+	}
+
+	public void setPartecipant(int partecipant) {
+		this.partecipant = partecipant;
 	}
 }

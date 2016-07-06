@@ -1,5 +1,20 @@
 package core;
-import dao.*;
+import dao.CategoryDao;
+import dao.ClientsDao;
+import dao.ClientsWishDao;
+import dao.EventsDao;
+import dao.InformationDao;
+import dao.OrdersDao;
+import dao.OrganizatorDao;
+import dao.OrganizatorEventsDao;
+import dao.PartecipantsDao;
+import dao.PartecipantsOfEventsDao;
+import dao.PlaceDao;
+import dao.ReviewDao;
+import dao.TicketDao;
+import dao.UserDao;
+import dao.WishListDao;
+import dao.WishTicketDao;
 public class PostgresDaoFactory extends DaoFactory
 {
 	public static final String DRIVER="org.postgresql.Driver";
@@ -28,12 +43,12 @@ public class PostgresDaoFactory extends DaoFactory
 	@Override
 	public TicketDao getBigliettoDao()
 	{
-		return new BigliettoDaoJDBC(dataSource);
+		return new TicketDaoJDBC(dataSource);
 	}
 	@Override
 	public CategoryDao getCategoriaDao()
 	{
-		return new CategoriaDaoJDBC(dataSource);
+		return new CategoryDaoJDBC(dataSource);
 	}
 	@Override
 	public ClientsDao getClienteDao()
@@ -43,17 +58,17 @@ public class PostgresDaoFactory extends DaoFactory
 	@Override
 	public ClientsWishDao getClienteDesideraDao()
 	{
-		return new ClienteDesideraDaoJDBC(dataSource);
+		return new ClientsWishDaoJDBC(dataSource);
 	}
 	@Override
 	public OrganizatorEventsDao getEventiOrganizzatiDao()
 	{
-		return new EventiOrganizzatiDaoJDBC(dataSource);
+		return new OrganizatorEventsDaoJDBC(dataSource);
 	}
 	@Override
 	public EventsDao getEventoDao()
 	{
-		return new EventoDaoJDBC(dataSource);
+		return new EventDaoJDBC(dataSource);
 	}
 	@Override
 	public InformationDao getInformationDao()
@@ -63,22 +78,17 @@ public class PostgresDaoFactory extends DaoFactory
 	@Override
 	public WishListDao getListaDesideriDao()
 	{
-		return new ListaDesideriDaoJDBC(dataSource);
-	}
-	@Override
-	public PlaceDao getPlaceDao()
-	{
-		return new PlaceDaoJDBC(dataSource);
+		return new WishListDaoJDBC(dataSource);
 	}
 	@Override
 	public OrdersDao getOrdineDao()
 	{
-		return new OrdineDaoJDBC(dataSource);
+		return new OrdersDaoJDBC(dataSource);
 	}
 	@Override
 	public OrganizatorDao getOrganizzatoreDao()
 	{
-		return new OrganizzatoreDaoJDBC(dataSource);
+		return new OrganizatorDaoJDBC(dataSource);
 	}
 	@Override
 	public PartecipantsDao getPartecipanteDao()
@@ -91,13 +101,18 @@ public class PostgresDaoFactory extends DaoFactory
 		return new PartecipantsOfEventsJDBC(dataSource);
 	}
 	@Override
+	public PlaceDao getPlaceDao()
+	{
+		return new PlaceDaoJDBC(dataSource);
+	}
+	@Override
 	public ReviewDao getRecensioneDao()
 	{
-		return new RecensioneDaoJDBC(dataSource);
+		return new ReviewDaoJDBC(dataSource);
 	}
 	@Override
 	public UserDao getUtenteDao()
 	{
-		return new UtenteDaoJDBC(dataSource);
+		return new UserDaoJDBC(dataSource);
 	}
 }
