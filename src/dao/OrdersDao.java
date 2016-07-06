@@ -6,9 +6,9 @@ import tables.Order;
 
 public interface OrdersDao
 {
-	public void add(Order o, Clients c);
-	public void delete(Order o);
-	public Set <Order> searchByClients(Clients c);
+	public void save(Order o);
+	public void delete(int key);
+	public Set <Order> searchByClients(String username);
 	public void update();
 	
 }
