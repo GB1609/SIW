@@ -1,22 +1,30 @@
 package dao;
+
 import java.time.LocalDate;
 import java.util.Set;
+
 import tables.Category;
 import tables.Events;
-import tables.Organizator;
-import tables.Partecipants;
-import tables.Place;
-public interface EventsDao
-{
-	public void delete(Events e);
+
+public interface EventsDao {
+
+	public void delete(int eventCode);
+
 	public void save(Events e);
+
 	public Set<Events> searchByCategory(Category c);
+
 	public Set<Events> searchByDate(LocalDate l);
-	public Set<Events> searchByLocality(Place l);
-	public Set<Events> searchByOrganizator(Organizator o);
-	public Set<Events> searchByPartecipants(Partecipants p);
-	public Set<Events> searchByPrice(double price,boolean max);
+
+	public Set<Events> searchByOrganizator(String organizator);
+
+	public Set<Events> searchByPartecipants(int idpartecipant);
+
+	public Set<Events> searchByPlace(String name, String city);
+
 	public void startSeller(Events e);
+
 	public void stopSeller(Events e);
+
 	public void update(Events e);
 }
