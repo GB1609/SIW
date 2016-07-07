@@ -22,6 +22,8 @@ public interface EventsDao {
 
 	public Set<Events> searchByPlace(String name, String city);
 
+	public Set<Events> searchByPrice(double price, boolean max);
+
 	public void startSeller(Events e);
 
 	public void stopSeller(Events e);

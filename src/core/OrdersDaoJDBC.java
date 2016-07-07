@@ -16,38 +16,8 @@ public class OrdersDaoJDBC implements OrdersDao {
 	}
 
 	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void save(Order o) {
-		Connection connection = dataSource.getConnection();
-		try {
-			String insert = "insert into orders (ordercode,ticket,users) values (?,?,?)";
-			PreparedStatement statement = connection.prepareStatement(insert);
-			statement.setInt(1,o.getCodiceOrdine());
-			statement.setInt(2, o.getBiglietto());
-			statement.setString(3, o.getUtente());
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement.executeUpdate();
-			connection.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
 	public void delete(int key) {
-		Connection connection = dataSource.getConnection();
+		Connection connection = this.dataSource.getConnection();
 		try {
 			String delete = "delete FROM orders WHERE ordercode=?";
 			PreparedStatement statement = connection.prepareStatement(delete);
@@ -68,9 +38,39 @@ public class OrdersDaoJDBC implements OrdersDao {
 	}
 
 	@Override
+	public void save(Order o) {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String insert = "insert into orders (ordercode,ticket,users) values (?,?,?)";
+			PreparedStatement statement = connection.prepareStatement(insert);
+			statement.setInt(1, o.getCodiceOrdine());
+			statement.setInt(2, o.getBiglietto());
+			statement.setString(3, o.getUtente());
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
 	public Set<Order> searchByClients(String username) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
