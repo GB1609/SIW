@@ -21,14 +21,12 @@ public class CategoryDaoJDBC implements CategoryDao {
 		Connection connection = this.dataSource.getConnection();
 		try {
 
-			int id = c.getCodiceCategoria();
 			int figlio = c.getFiglio();
 			String nome = c.getNome();
-			String insert = "insert into categoria (categorycode, name, son) values(?,?,?)";
+			String insert = "insert into category (name, son) values(?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
-			statement.setInt(1, id);
-			statement.setString(2, nome);
-			statement.setInt(3, figlio);
+			statement.setString(1, nome);
+			statement.setInt(2, figlio);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();

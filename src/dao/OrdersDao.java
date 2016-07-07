@@ -9,6 +9,6 @@ public interface OrdersDao
 	public void save(Order o);
 	public void delete(int key);
 	public Set <Order> searchByClients(String username);
-	public void update();
+	public void update(Order o);
 	
 }

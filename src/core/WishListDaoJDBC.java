@@ -20,11 +20,9 @@ public class WishListDaoJDBC implements WishListDao {
 		Connection connection = dataSource.getConnection();
 		try {
 			String codiceProprietario = l.getProprietario();
-			int codiceLista = l.getCodiceLista();
-			String insert = "insert into wishlist (listcode, owner) values (?,?) ";
+			String insert = "insert into wishlist (owner) values (?) ";
 			PreparedStatement statement = connection.prepareStatement(insert);
-			statement.setInt(1, codiceLista);
-			statement.setString(2, codiceProprietario);
+			statement.setString(1, codiceProprietario);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();

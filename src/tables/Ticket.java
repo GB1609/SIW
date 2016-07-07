@@ -5,14 +5,25 @@ public class Ticket
 	int codiceEvento;
 	double prezzo;
 	String tipo;
-	public Ticket(int codiceBiglietto, int codiceEvento, double prezzo, String tipo)
+	boolean venduto;
+	
+	public Ticket(int codiceBiglietto, int codiceEvento, double prezzo, String tipo,boolean venduto)
 	{
+		this.venduto=venduto;
 		this.codiceBiglietto=codiceBiglietto;
 		this.codiceEvento=codiceEvento;
 		this.prezzo=prezzo;
 		this.tipo=tipo;
 	}
 	public Ticket() {
+	}
+	
+	
+	public boolean isVenduto() {
+		return venduto;
+	}
+	public void setVenduto(boolean venduto) {
+		this.venduto = venduto;
 	}
 	public int getCodiceBiglietto() {
 		return codiceBiglietto;
