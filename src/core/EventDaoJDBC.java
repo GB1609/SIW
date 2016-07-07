@@ -46,14 +46,13 @@ public class EventDaoJDBC implements EventsDao {
 	public void save(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into event(eventcode, feedback, organizator, category, information, partecipant) values (?,?,?,?,?,?)";
+			String insert = "insert into event(feedback, organizator, category, information, partecipant) values (?,?,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
-			statement.setInt(1, ev.getEventcode());
-			statement.setString(2, ev.getFeedback());
-			statement.setString(3, ev.getOrganizator());
-			statement.setInt(4, ev.getCategory());
-			statement.setInt(5, ev.getInformation());
-			statement.setInt(6, ev.getPartecipant());
+			statement.setString(1, ev.getFeedback());
+			statement.setString(2, ev.getOrganizator());
+			statement.setInt(3, ev.getCategory());
+			statement.setInt(4, ev.getInformation());
+			statement.setInt(5, ev.getPartecipant());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -164,6 +163,37 @@ public class EventDaoJDBC implements EventsDao {
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, name);
 			statement.setString(2, city);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5), result.getInt(6)));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return set;
+	}
+
+	@Override
+	public Set<Events> searchByPrice(double price, boolean max) {
+		Set<Events> set = new HashSet<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search;
+			if (max)
+				search = "SELECT * FROM event, ticket WHERE ticket.event = event.eventcode AND price < ?";
+			else
+				search = "SELECT * FROM event, ticket WHERE ticket.event = event.eventcode AND price > ?";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setDouble(1, price);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
