@@ -48,14 +48,13 @@ public class InformationDaoJDBC implements InformationDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			String insert="insert into information (informationid,place,date,description,city) values (?,?,?,?,?)";
+			String insert="insert into information (place,date,description,city) values (?,?,?,?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
-			statement.setLong(1,i.getInformationId());
-			statement.setString(2,i.getLocality());
+			statement.setString(1,i.getLocality());
 			LocalDate dateOfExecution=i.getDate();
-			statement.setDate(3,java.sql.Date.valueOf(dateOfExecution));
-			statement.setString(4,i.getDescription());
-			statement.setString(5,i.getCity());
+			statement.setDate(2,java.sql.Date.valueOf(dateOfExecution));
+			statement.setString(3,i.getDescription());
+			statement.setString(4,i.getCity());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
