@@ -14,8 +14,8 @@ public class OrganizatorEventsDaoJDBC implements OrganizatorEventsDao
 	public void delete(OrganizatorEvents oe)
 	{
 		Connection connection=this.dataSource.getConnection();
-		int id=oe.getCodiceEvento();
-		String un=oe.getCodiceOrganizzatore();
+		int id=oe.getCodeEvent();
+		String un=oe.getOrganizatorCode();
 		try
 		{
 			String delete="delete FROM organizatorevent WHERE eventcode=? AND organizatorusername=?";
@@ -43,8 +43,8 @@ public class OrganizatorEventsDaoJDBC implements OrganizatorEventsDao
 	public void save(OrganizatorEvents oe)
 	{
 		Connection connection=this.dataSource.getConnection();
-		int eventCode=oe.getCodiceEvento();
-		String organizatorCode=oe.getCodiceOrganizzatore();
+		int eventCode=oe.getCodeEvent();
+		String organizatorCode=oe.getOrganizatorCode();
 		try
 		{
 			String insert="insert into organizatorevent(eventcode, organizatorusername) values (?,?)";

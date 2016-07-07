@@ -19,8 +19,8 @@ public class WishTicketDaoJDBC implements WishTicketDao
 	public void delete(WishTicket bd)
 	{
 		Connection connection=this.dataSource.getConnection();
-		int listCode=bd.getCodiceLista();
-		int ticketCode=bd.getCodiceBiglietto();
+		int listCode=bd.getListCode();
+		int ticketCode=bd.getTicketCode();
 		try
 		{
 			String delete="delete FROM desiredtickets WHERE listcode=? AND ticketcode=?";
@@ -52,8 +52,8 @@ public class WishTicketDaoJDBC implements WishTicketDao
 	public void save(WishTicket bd)
 	{
 		Connection connection=this.dataSource.getConnection();
-		int listCode=bd.getCodiceLista();
-		int ticketCode=bd.getCodiceBiglietto();
+		int listCode=bd.getListCode();
+		int ticketCode=bd.getTicketCode();
 		try
 		{
 			String insert="insert into desiredtickets(listcode,ticketcode) values (?,?)";
@@ -85,7 +85,7 @@ public class WishTicketDaoJDBC implements WishTicketDao
 	public Set<Clients> searchInterested(Ticket b)
 	{
 		Set<Clients> myResult=new HashSet<Clients>();
-		int cod=b.getCodiceBiglietto();
+		int cod=b.getTicketCode();
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
@@ -134,10 +134,10 @@ public class WishTicketDaoJDBC implements WishTicketDao
 			while (result.next())
 			{
 				Ticket t=new Ticket();
-				t.setCodiceBiglietto(result.getInt("ticketcode"));
-				t.setCodiceEvento(result.getInt("event"));
-				t.setPrezzo(result.getDouble("price"));
-				t.setTipo(result.getString("type"));
+				t.setCodeTicket(result.getInt("ticketcode"));
+				t.setCodeEvent(result.getInt("event"));
+				t.setPrice(result.getDouble("price"));
+				t.setType(result.getString("type"));
 				myResult.add(t);
 			}
 		}

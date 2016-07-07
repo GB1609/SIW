@@ -1,43 +1,47 @@
 package tables;
-
 import java.util.HashSet;
 import java.util.Set;
-
 public class WishTicket
 {
-	int codiceLista;
-	int codiceBiglietto;
-	Set <Clients> personeInteressate= new HashSet<Clients>();
-	Set <Ticket> bigliettiInteressati=new HashSet<>();
+	int listCode;
+	int ticketCode;
+	Set<Clients> interessedPerson=new HashSet<Clients>();
+	Set<Ticket> interessedTicket=new HashSet<>();
 	public WishTicket(int codiceLista, int codiceBiglietto)
 	{
-		this.codiceLista=codiceLista;
-		this.codiceBiglietto=codiceBiglietto;
+		this.listCode=codiceLista;
+		this.ticketCode=codiceBiglietto;
 	}
-	public int getCodiceLista() {
-		return codiceLista;
+	public int getListCode()
+	{
+		return listCode;
 	}
-	public void setCodiceLista(int codiceLista) {
-		this.codiceLista = codiceLista;
+	public void setListCode(int codiceLista)
+	{
+		this.listCode=codiceLista;
 	}
-	public int getCodiceBiglietto() {
-		return codiceBiglietto;
+	public int getTicketCode()
+	{
+		return ticketCode;
 	}
-	public void setCodiceBiglietto(int codiceBiglietto) {
-		this.codiceBiglietto = codiceBiglietto;
+	public void setTicketCode(int codiceBiglietto)
+	{
+		this.ticketCode=codiceBiglietto;
 	}
-	public Set<Clients> getPersoneInteressate() {
-		return personeInteressate;
+	public Set<Clients> getInteressedPerson()
+	{
+		return interessedPerson;
 	}
-	public void setPersoneInteressate(Set<Clients> personeInteressate) {
-		this.personeInteressate = personeInteressate;
+	public void setInteressedPerson(Set<Clients> personeInteressate)
+	{
+		this.interessedPerson=personeInteressate;
 	}
-	public Set<Ticket> getBigliettiInteressati() {
-		return bigliettiInteressati;
+	public Set<Ticket> getInteressedTicket()
+	{
+		return interessedTicket;
 	}
-	public void setBigliettiInteressati(Set<Ticket> bigliettiInteressati) {
-		this.bigliettiInteressati = bigliettiInteressati;
+	public void setInteressedTicket(Set<Ticket> bigliettiInteressati)
+	{
+		this.interessedTicket=bigliettiInteressati;
 	}
-	
-	
 }

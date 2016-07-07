@@ -19,8 +19,8 @@ public class ClientsWishDaoJDBC implements ClientsWishDao
 		{
 			String delete="delete FROM clientdesired WHERE clientusername= ? and listcode=?";
 			PreparedStatement statement=connection.prepareStatement(delete);
-			statement.setString(1,cd.getUsernameCliente());
-			statement.setLong(2,cd.getCodiceLista());
+			statement.setString(1,cd.getUsernameClient());
+			statement.setLong(2,cd.getlistCode());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
@@ -50,8 +50,8 @@ public class ClientsWishDaoJDBC implements ClientsWishDao
 		{
 			String insert="insert into clientdesired (clientusername,listcode) values (?,?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
-			statement.setString(1,cd.getUsernameCliente());
-			statement.setLong(2,cd.getCodiceLista());
+			statement.setString(1,cd.getUsernameClient());
+			statement.setLong(2,cd.getlistCode());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();

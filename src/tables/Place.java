@@ -1,47 +1,47 @@
 package tables;
 public class Place
 {
-	int capienza;
-	String nome;
-	String citta;
-	String tipo;
+	int capacity;
+	String name;
+	String city;
+	String type;
 	public Place(int capienza, String nome, String citta, String tipo)
 	{
-		this.capienza=capienza;
-		this.nome=nome;
-		this.citta=citta;
-		this.tipo=tipo;
+		this.capacity=capienza;
+		this.name=nome;
+		this.city=citta;
+		this.type=tipo;
 	}
-	public int getCapienza()
+	public int getCapacity()
 	{
-		return this.capienza;
+		return this.capacity;
 	}
-	public String getCitta()
+	public String getCity()
 	{
-		return this.citta;
+		return this.city;
 	}
-	public String getNome()
+	public String getName()
 	{
-		return this.nome;
+		return this.name;
 	}
-	public String getTipo()
+	public String getType()
 	{
-		return this.tipo;
+		return this.type;
 	}
-	public void setCapienza(int capienza)
+	public void setCapacity(int capienza)
 	{
-		this.capienza=capienza;
+		this.capacity=capienza;
 	}
-	public void setCitta(String citta)
+	public void setCity(String citta)
 	{
-		this.citta=citta;
+		this.city=citta;
 	}
-	public void setNome(String nome)
+	public void setName(String nome)
 	{
-		this.nome=nome;
+		this.name=nome;
 	}
-	public void setTipo(String tipo)
+	public void setType(String tipo)
 	{
-		this.tipo=tipo;
+		this.type=tipo;
 	}
 }

@@ -1,54 +1,59 @@
 package tables;
 public class Ticket
 {
-	int codiceBiglietto;
-	int codiceEvento;
-	double prezzo;
-	String tipo;
+	int ticketCode;
+	int eventCode;
+	double price;
+	String type;
 	boolean venduto;
-	
-	public Ticket(int codiceBiglietto, int codiceEvento, double prezzo, String tipo,boolean venduto)
+	public Ticket(int codiceBiglietto, int codiceEvento, double prezzo, String tipo, boolean venduto)
 	{
 		this.venduto=venduto;
-		this.codiceBiglietto=codiceBiglietto;
-		this.codiceEvento=codiceEvento;
-		this.prezzo=prezzo;
-		this.tipo=tipo;
+		this.ticketCode=codiceBiglietto;
+		this.eventCode=codiceEvento;
+		this.price=prezzo;
+		this.type=tipo;
 	}
-	public Ticket() {
-	}
-	
-	
-	public boolean isVenduto() {
+	public Ticket()
+	{}
+	public boolean isSeller()
+	{
 		return venduto;
 	}
-	public void setVenduto(boolean venduto) {
-		this.venduto = venduto;
+	public void setSeller(boolean venduto)
+	{
+		this.venduto=venduto;
 	}
-	public int getCodiceBiglietto() {
-		return codiceBiglietto;
+	public int getTicketCode()
+	{
+		return ticketCode;
 	}
-	public void setCodiceBiglietto(int codiceBiglietto) {
-		this.codiceBiglietto = codiceBiglietto;
+	public void setCodeTicket(int codiceBiglietto)
+	{
+		this.ticketCode=codiceBiglietto;
 	}
-	public int getCodiceEvento() {
-		return codiceEvento;
+	public int getCodeEvent()
+	{
+		return eventCode;
 	}
-	public void setCodiceEvento(int codiceEvento) {
-		this.codiceEvento = codiceEvento;
+	public void setCodeEvent(int codiceEvento)
+	{
+		this.eventCode=codiceEvento;
 	}
-	public double getPrezzo() {
-		return prezzo;
+	public double getPrice()
+	{
+		return price;
 	}
-	public void setPrezzo(double prezzo) {
-		this.prezzo = prezzo;
+	public void setPrice(double prezzo)
+	{
+		this.price=prezzo;
 	}
-	public String getTipo() {
-		return tipo;
+	public String getType()
+	{
+		return type;
 	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setType(String tipo)
+	{
+		this.type=tipo;
 	}
-	
-	
 }

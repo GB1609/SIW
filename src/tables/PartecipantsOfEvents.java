@@ -1,27 +1,27 @@
 package tables;
 public class PartecipantsOfEvents
 {
-	int partecipante;
-	int evento;
+	int partecipant;
+	int event;
 	public PartecipantsOfEvents(int partecipante, int evento)
 	{
-		this.partecipante=partecipante;
-		this.evento=evento;
+		this.partecipant=partecipante;
+		this.event=evento;
 	}
-	public int getEvento()
+	public int getEvent()
 	{
-		return this.evento;
+		return this.event;
 	}
-	public int getPartecipante()
+	public int getPartecipant()
 	{
-		return this.partecipante;
+		return this.partecipant;
 	}
-	public void setEvento(int evento)
+	public void setEvent(int evento)
 	{
-		this.evento=evento;
+		this.event=evento;
 	}
-	public void setPartecipante(int partecipante)
+	public void setPartecipant(int partecipante)
 	{
-		this.partecipante=partecipante;
+		this.partecipant=partecipante;
 	}
 }

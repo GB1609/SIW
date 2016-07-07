@@ -1,27 +1,27 @@
 package tables;
 public class ClientsWish
 {
-	String usernameCliente;
-	int codiceLista;
+	String usernameClient;
+	int listCode;
 	public ClientsWish(String usernameCliente, int codiceLista)
 	{
-		this.usernameCliente=usernameCliente;
-		this.codiceLista=codiceLista;
+		this.usernameClient=usernameCliente;
+		this.listCode=codiceLista;
 	}
-	public int getCodiceLista()
+	public int getlistCode()
 	{
-		return this.codiceLista;
+		return this.listCode;
 	}
-	public String getUsernameCliente()
+	public String getUsernameClient()
 	{
-		return this.usernameCliente;
+		return this.usernameClient;
 	}
-	public void setCodiceLista(int codiceLista)
+	public void setListCode(int codiceLista)
 	{
-		this.codiceLista=codiceLista;
+		this.listCode=codiceLista;
 	}
-	public void setUsernameCliente(String usernameCliente)
+	public void setUsernameClient(String usernameCliente)
 	{
-		this.usernameCliente=usernameCliente;
+		this.usernameClient=usernameCliente;
 	}
 }

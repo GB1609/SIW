@@ -19,8 +19,8 @@ public class PlaceDaoJDBC implements PlaceDao
 		{
 			String delete="delete FROM place WHERE city = ?,name=? ";
 			PreparedStatement statement=connection.prepareStatement(delete);
-			statement.setString(1,p.getCitta());
-			statement.setString(2,p.getNome());
+			statement.setString(1,p.getCity());
+			statement.setString(2,p.getName());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
@@ -50,10 +50,10 @@ public class PlaceDaoJDBC implements PlaceDao
 		{
 			String insert="insert into place (name, city, capacity, type) values (?,?,?,?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
-			statement.setString(1,p.getNome());
-			statement.setString(2,p.getCitta());
-			statement.setLong(3,p.getCapienza());
-			statement.setString(4,p.getTipo());
+			statement.setString(1,p.getName());
+			statement.setString(2,p.getCity());
+			statement.setLong(3,p.getCapacity());
+			statement.setString(4,p.getType());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -85,12 +85,12 @@ public class PlaceDaoJDBC implements PlaceDao
 		{
 			String update="update place SET name=?,city=?,capacity=?,type=? where name=? and city=?";
 			PreparedStatement statement=connection.prepareStatement(update);
-			statement.setString(1,p.getNome());
-			statement.setString(2,p.getCitta());
-			statement.setLong(3,p.getCapienza());
-			statement.setString(4,p.getTipo());
-			statement.setString(5,p.getNome());
-			statement.setString(6,p.getCitta());
+			statement.setString(1,p.getName());
+			statement.setString(2,p.getCity());
+			statement.setLong(3,p.getCapacity());
+			statement.setString(4,p.getType());
+			statement.setString(5,p.getName());
+			statement.setString(6,p.getCity());
 			statement.executeUpdate();
 		}
 		catch (Exception e)

@@ -1,7 +1,5 @@
 package dao;
-
 import tables.Category;
-
 public interface CategoryDao
 {
 	public void save(Category c);

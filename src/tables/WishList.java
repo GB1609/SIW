@@ -1,28 +1,27 @@
 package tables;
 public class WishList
 {
-	String proprietario;
-	int codiceLista;
+	String owner;
+	int listCode;
 	public WishList(String proprietario, int codiceLista)
 	{
-		this.proprietario=proprietario;
-		this.codiceLista=codiceLista;
+		this.owner=proprietario;
+		this.listCode=codiceLista;
 	}
-
-	public String getProprietario() {
-		return proprietario;
+	public String getOwner()
+	{
+		return owner;
 	}
-
-	public void setProprietario(String proprietario) {
-		this.proprietario = proprietario;
+	public void setOwner(String proprietario)
+	{
+		this.owner=proprietario;
 	}
-
-	public int getCodiceLista() {
-		return codiceLista;
+	public int getListCode()
+	{
+		return listCode;
 	}
-	public void setCodiceLista(int codiceLista) {
-		this.codiceLista = codiceLista;
+	public void setListCode(int codiceLista)
+	{
+		this.listCode=codiceLista;
 	}
-	
-	
 }

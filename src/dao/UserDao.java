@@ -1,4 +1,3 @@
 package dao;
-
-public interface UserDao {
-}
+public interface UserDao
+{}

@@ -1,41 +1,37 @@
 package tables;
-
-public class Category {
-	
-	int codiceCategoria;
-	String nome;
-	int figlio;
-	
-	public Category(int codiceCategoria, String nome, int figlio) {
-		this.codiceCategoria = codiceCategoria;
-		this.nome = nome;
-		this.figlio = figlio;
+public class Category
+{
+	int categoryCode;
+	String name;
+	int son;
+	public Category(int codiceCategoria, String nome, int figlio)
+	{
+		this.categoryCode=codiceCategoria;
+		this.name=nome;
+		this.son=figlio;
 	}
-
-	public void setCodiceCategoria(int codiceCategoria) {
-		this.codiceCategoria = codiceCategoria;
+	public void setCategoryCode(int codiceCategoria)
+	{
+		this.categoryCode=codiceCategoria;
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String nome)
+	{
+		this.name=nome;
 	}
-
-	public void setFiglio(int figlio) {
-		this.figlio = figlio;
+	public void setSon(int figlio)
+	{
+		this.son=figlio;
 	}
-
-	public int getCodiceCategoria() {
-		return codiceCategoria;
+	public int getCategoryCode()
+	{
+		return categoryCode;
 	}
-
-	public String getNome() {
-		return nome;
+	public String getName()
+	{
+		return name;
 	}
-
-	public int getFiglio() {
-		return figlio;
+	public int getSon()
+	{
+		return son;
 	}
-	
-	
-
 }

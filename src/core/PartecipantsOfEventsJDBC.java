@@ -19,8 +19,8 @@ public class PartecipantsOfEventsJDBC implements PartecipantsOfEventsDao
 		{
 			String delete="delete FROM eventpartecipant WHERE partecipant = ? and event=? ";
 			PreparedStatement statement=connection.prepareStatement(delete);
-			statement.setLong(1,i.getPartecipante());
-			statement.setLong(2,i.getEvento());
+			statement.setLong(1,i.getPartecipant());
+			statement.setLong(2,i.getEvent());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
@@ -50,8 +50,8 @@ public class PartecipantsOfEventsJDBC implements PartecipantsOfEventsDao
 		{
 			String insert="insert into eventpartecipant (partecipant,event) values (?,?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
-			statement.setLong(1,p.getPartecipante());
-			statement.setLong(2,p.getEvento());
+			statement.setLong(1,p.getPartecipant());
+			statement.setLong(2,p.getEvent());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();

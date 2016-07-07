@@ -1,32 +1,27 @@
 package tables;
-
-public class OrganizatorEvents {
-	
-	int codiceEvento;
-	String codiceOrganizzatore;
-	
-	public OrganizatorEvents(int codiceEvento, String codiceOrganizzatore) {
-		this.codiceEvento = codiceEvento;
-		this.codiceOrganizzatore = codiceOrganizzatore;
+public class OrganizatorEvents
+{
+	int eventCode;
+	String organizatorCode;
+	public OrganizatorEvents(int codiceEvento, String codiceOrganizzatore)
+	{
+		this.eventCode=codiceEvento;
+		this.organizatorCode=codiceOrganizzatore;
 	}
-
-	public int getCodiceEvento() {
-		return codiceEvento;
+	public int getCodeEvent()
+	{
+		return eventCode;
 	}
-
-	public void setCodiceEvento(int codiceEvento) {
-		this.codiceEvento = codiceEvento;
+	public void setCodeEvent(int codiceEvento)
+	{
+		this.eventCode=codiceEvento;
 	}
-
-	public String getCodiceOrganizzatore() {
-		return codiceOrganizzatore;
+	public String getOrganizatorCode()
+	{
+		return organizatorCode;
 	}
-
-	public void setCodiceOrganizzatore(String codiceOrganizzatore) {
-		this.codiceOrganizzatore = codiceOrganizzatore;
+	public void setOrganizatorCode(String codiceOrganizzatore)
+	{
+		this.organizatorCode=codiceOrganizzatore;
 	}
-	
-	
-	
-	
 }
