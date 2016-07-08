@@ -5,8 +5,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import core.DaoFactory;
+import dao.ClientsDao;
 @WebServlet("/prova")
-public class FirstServlet extends HttpServlet
+public class LoginServlet extends HttpServlet
 {
 	private static final long serialVersionUID=1L;
 	@Override
@@ -16,7 +18,9 @@ public class FirstServlet extends HttpServlet
 		response.getWriter();
 		String n=request.getParameter("username");
 		String p=request.getParameter("userpass");
-		if (LoginDao.validate(n,p))
+		DaoFactory dao=DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
+		ClientsDao i=dao.getClienteDao();
+		if (i.verifyClients(n,p))
 		{
 			System.out.println("esiste");
 		}
