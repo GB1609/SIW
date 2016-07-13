@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import tables.Events;
+import tables.Information;
 
 public interface EventsDao {
 	public void delete(int eventCode);
+
+	public Information getInformation(int eventCode);
 
 	public void save(Events e);
 

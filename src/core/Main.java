@@ -1,11 +1,14 @@
 package core;
-public class Main
-{
-	public static void main(String[] args)
-	{
+
+import dao.TicketDao;
+import tables.Ticket;
+
+public class Main {
+	public static void main(String[] args) {
 		System.out.println("main start");
-		// DaoFactory dao=DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		// ClientsDao i=dao.getClienteDao();
-		// i.save(new Clients("gio","bru","c","a",LocalDate.now(),"Cos",10000));
+		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
+		TicketDao td = dao.getBigliettoDao();
+		for (int i = 0; i < 30; i++)
+			td.save(new Ticket(32, 15.00, "Platea", true));
 	}
 }

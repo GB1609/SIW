@@ -11,6 +11,7 @@ import java.util.Set;
 
 import dao.EventsDao;
 import tables.Events;
+import tables.Information;
 
 public class EventDaoJDBC implements EventsDao {
 	private DataSource dataSource;
@@ -39,6 +40,33 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public Information getInformation(int eventCode) {
+		Information information = null;
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select information.informationid, information.date , information.place, information.description, information.city from event, information WHERE event.eventcode = ? AND information.informationid = information";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				information = new Information(result.getInt(1), result.getDate(2).toLocalDate(), result.getString(3),
+						result.getString(4), result.getString(5));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return information;
 	}
 
 	@Override
