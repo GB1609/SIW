@@ -1,8 +1,7 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page language="java" contentType="text/html"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +18,7 @@
 </head>
 
 <body>
-	<jsp:include page="content/navbar.html"/>
+	<jsp:include page="content/navbar.html"></jsp:include>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8">
@@ -60,11 +59,11 @@
 				<a class="btn btn-primary" href="#">Guarda Ora</a>
 			</div>
 		</div>
-		<script
-			src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script
-			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</div>
-	<jsp:include page="content/footer.html"/>
-	</body>
+	<jsp:include page="content/footer.html"></jsp:include>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
 </html>

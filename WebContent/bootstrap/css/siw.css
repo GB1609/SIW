@@ -17,14 +17,22 @@ footer {
 .navbar-brand>img {
     display: block;
 }
-.well {
-    background-color: "#0000FF"; 
-}
 .navbar-nav>li>.dropdown-menu {
     background-color: #FFFFFF;
 }
 .navbar-default .navbar-nav .open .dropdown-menu>li>a {
     color: #000000;
+}
+.well {
+    min-height: 20px;
+    padding: 19px;
+    margin-bottom: 20px;
+    background-color: #0000FF;
+    border: 1px solid #333;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    color: #FFFFFF;
 }
 @media(min-width:768px) {
     .navbar-fixed-top .navbar-brand {
