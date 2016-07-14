@@ -1,67 +1,59 @@
 package tables;
-
-public class Ticket {
+public class Ticket
+{
 	int ticketCode;
 	int eventCode;
 	double price;
 	String type;
 	boolean venduto;
-
-	public Ticket() {
+	public Ticket(int codiceBiglietto, int codiceEvento, double prezzo, String tipo, boolean venduto)
+	{
+		this.venduto=venduto;
+		this.ticketCode=codiceBiglietto;
+		this.eventCode=codiceEvento;
+		this.price=prezzo;
+		this.type=tipo;
 	}
-
-	public Ticket(int eventCode, double price, String type, boolean sell) {
-		this.venduto = sell;
-		this.eventCode = eventCode;
-		this.price = price;
-		this.type = type;
+	public Ticket()
+	{}
+	public boolean isSeller()
+	{
+		return venduto;
 	}
-
-	public Ticket(int ticketCode, int eventCode, double price, String type, boolean sell) {
-		this.venduto = sell;
-		this.ticketCode = ticketCode;
-		this.eventCode = eventCode;
-		this.price = price;
-		this.type = type;
+	public void setSeller(boolean venduto)
+	{
+		this.venduto=venduto;
 	}
-
-	public int getCodeEvent() {
-		return this.eventCode;
+	public int getTicketCode()
+	{
+		return ticketCode;
 	}
-
-	public double getPrice() {
-		return this.price;
+	public void setCodeTicket(int codiceBiglietto)
+	{
+		this.ticketCode=codiceBiglietto;
 	}
-
-	public int getTicketCode() {
-		return this.ticketCode;
+	public int getCodeEvent()
+	{
+		return eventCode;
 	}
-
-	public String getType() {
-		return this.type;
+	public void setCodeEvent(int codiceEvento)
+	{
+		this.eventCode=codiceEvento;
 	}
-
-	public boolean isSeller() {
-		return this.venduto;
+	public double getPrice()
+	{
+		return price;
 	}
-
-	public void setCodeEvent(int codiceEvento) {
-		this.eventCode = codiceEvento;
+	public void setPrice(double prezzo)
+	{
+		this.price=prezzo;
 	}
-
-	public void setCodeTicket(int codiceBiglietto) {
-		this.ticketCode = codiceBiglietto;
+	public String getType()
+	{
+		return type;
 	}
-
-	public void setPrice(double prezzo) {
-		this.price = prezzo;
-	}
-
-	public void setSeller(boolean venduto) {
-		this.venduto = venduto;
-	}
-
-	public void setType(String tipo) {
-		this.type = tipo;
+	public void setType(String tipo)
+	{
+		this.type=tipo;
 	}
 }
