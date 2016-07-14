@@ -13,6 +13,7 @@ import core.DaoFactory;
 import dao.InformationDao;
 import tables.Information;
 
+@SuppressWarnings("serial")
 @WebServlet("/AddInformationServlet")
 public class AddInformationServlet extends HttpServlet {
 	@Override
@@ -30,7 +31,9 @@ public class AddInformationServlet extends HttpServlet {
 		String place = request.getParameter("place");
 		String description = request.getParameter("description");
 		String city = request.getParameter("city");
-		Information info = new Information(LocalDate.of(year, month, dayOfMonth), place, description, city);
+		String name = request.getParameter("name");
+		String img = request.getParameter("img");
+		Information info = new Information(LocalDate.of(year, month, dayOfMonth), place, description, city, name, img);
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		InformationDao id = dao.getInformationDao();
 		id.save(info);
