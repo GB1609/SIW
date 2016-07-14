@@ -31,7 +31,7 @@
 				<p>Se vuoi essere sempre comprare biglietti per gli eventi
 					riguardanti le tue passioni registrati sul nostro sito, non te ne
 					pentirai!</p>
-				<a class="btn btn-default" href="#">Registrati!</a>
+				<a class="btn btn-primary" href="#">Registrati!</a>
 			</div>
 		</div>
 		<hr>
@@ -46,18 +46,18 @@
 				<h2>Sport</h2>
 				<p>Sei appassionato di calcio, formula uno o di Tennis? Guarda i
 					prezzi dei biglietti degli eventi sportivi</p>
-				<a class="btn btn-default" href="#">Guarda ora</a>
+				<a class="btn btn-primary" href="#">Guarda ora</a>
 			</div>
 			<div class="col-md-4">
 				<h2>Musica</h2>
 				<p>Scopri gli eventi musicali vicino a te!!!</p>
-				<a class="btn btn-default" href="#">Guarda ora</a>
+				<a class="btn btn-primary" href="#">Guarda ora</a>
 			</div>
 			<div class="col-md-4">
 				<h2>Cinema</h2>
 				<p>Voglia di rilassarti, di vedere un bel film? Guarda i prezzi
 					dei cinema intorno a te!</p>
-				<a class="btn btn-default" href="#">Guarda Ora</a>
+				<a class="btn btn-primary" href="#">Guarda Ora</a>
 			</div>
 		</div>
 		<script

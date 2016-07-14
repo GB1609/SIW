@@ -16,18 +16,18 @@ footer {
 }
 .navbar-brand>img {
     display: block;
-
+}
+.well {
+    background-color: "#0000FF"; 
 }
 .navbar-nav>li>.dropdown-menu {
     background-color: #FFFFFF;
 }
 .navbar-default .navbar-nav .open .dropdown-menu>li>a {
     color: #000000;
-
 }
 @media(min-width:768px) {
     .navbar-fixed-top .navbar-brand {
         padding: 0px 0;
-
     }
 }
