@@ -14,13 +14,20 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <title>SIW</title>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="bootstrap/css/siw.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<link href="bootstrap/css/general.css" rel="stylesheet">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<link href="WEB-INF/lib/jquery.js">
+<script>
+	$(document).on('click', '#buttonRegister', function(event) {
+			$('#firstRow').replaceWith('<jsp:include page="content/registration.html"></jsp:include>');
+	});
+	</script>
 </head>
-
 <body>
 	<jsp:include page="content/navbar.html"></jsp:include>
 	<div class="container">
-		<div class="row">
+		<div class="row" id="firstRow">
 			<div class="col-md-8">
 				<img class="img-responsive img-rounded" src="assets/locandina.png"
 					alt="No possible load Image sorry!">
@@ -30,7 +37,7 @@
 				<p>Se vuoi essere sempre comprare biglietti per gli eventi
 					riguardanti le tue passioni registrati sul nostro sito, non te ne
 					pentirai!</p>
-				<a class="btn btn-primary" href="#">Registrati!</a>
+				<a class="btn btn-primary" id="buttonRegister">Registrati!</a>
 			</div>
 		</div>
 		<hr>

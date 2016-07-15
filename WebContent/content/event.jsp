@@ -15,7 +15,7 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <title>SIW</title>
 <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="../bootstrap/css/siw.css" rel="stylesheet">
+<link href="../bootstrap/css/general.css" rel="stylesheet">
 </head>
 <body>
 	<jsp:include page="/content/navbar.html" />
