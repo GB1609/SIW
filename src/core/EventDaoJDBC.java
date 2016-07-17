@@ -324,4 +324,33 @@ public class EventDaoJDBC implements EventsDao {
 			}
 		}
 	}
+
+	@Override
+	public Set<Events> returnAllEvents() {
+		Set<Events> set = new HashSet<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			
+			String returnAll = "SELECT * FROM event";
+			PreparedStatement statement = connection.prepareStatement(returnAll);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5), result.getInt(6)));
+			connection.commit();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return set;
+	}
 }

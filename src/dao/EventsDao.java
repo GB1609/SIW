@@ -14,6 +14,8 @@ public interface EventsDao {
 	public Information getInformation(int eventCode);
 
 	public void save(Events e);
+	
+	public Set<Events> returnAllEvents ();
 
 	public Set<Events> searchByCategory(int categoryCode);
 

@@ -22,11 +22,18 @@
 	$(document).on('click', '#buttonRegister', function(event) {
 			$('#firstRow').replaceWith('<jsp:include page="content/registration.html"></jsp:include>');
 	});
+
+
 	</script>
+<script>
+
+
+
+</script>
 </head>
 <body>
-	<jsp:include page="content/navbar.html"></jsp:include>
-	<div class="container">
+	<jsp:include page="navbar.html"></jsp:include>
+	<div class="container" id="cont">
 		<div class="row" id="firstRow">
 			<div class="col-md-8">
 				<img class="img-responsive img-rounded" src="assets/locandina.png"

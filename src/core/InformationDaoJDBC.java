@@ -2,8 +2,11 @@ package core;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import dao.InformationDao;
 import tables.Information;
@@ -92,5 +95,32 @@ public class InformationDaoJDBC implements InformationDao {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public Set<Information> getAllInfo(int code) {
+		Set<Information> info = new HashSet<Information>();
+		Connection connection = dataSource.getConnection();
+		try {
+			String req = "SELECT * FROM information WHERE informationid=?";
+			PreparedStatement statement = connection.prepareStatement(req);
+			statement.setInt(1,code );
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+			{
+				info.add(new Information(result.getInt(1),(result.getDate(3)).toLocalDate(), result.getString(2), result.getString(4),result.getString(5), result.getString(6), result.getString(7)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 }
