@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import dao.ReviewDao;
 import tables.Review;
@@ -65,19 +65,20 @@ public class ReviewDaoJDBC implements ReviewDao {
 	}
 
 	@Override
-	public Set<Review> searchByEvents(int eventCode) {
-		Set<Review> reviews = new HashSet<>();
+	public List<String> searchByEvents(int eventCode) {
+		List<String> reviews = new ArrayList<>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select * from review WHERE review.event = ?";
+			String search = "select users, description from review WHERE review.event = ?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setInt(1, eventCode);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
-			while (result.next())
-				reviews.add(new Review(result.getInt(1), result.getInt(2), result.getString(3), result.getInt(4),
-						result.getString(5)));
+			while (result.next()){
+				reviews.add(result.getString("users"));
+				reviews.add(result.getString("description"));
+			}
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();

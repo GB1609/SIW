@@ -1,6 +1,6 @@
 package dao;
 
-import java.util.Set;
+import java.util.List;
 
 import tables.Review;
 
@@ -9,7 +9,7 @@ public interface ReviewDao {
 
 	public void save(Review r);
 
-	public Set<Review> searchByEvents(int eventCode);
+	public List<String> searchByEvents(int eventCode);
 
 	public void update(Review r);
 }

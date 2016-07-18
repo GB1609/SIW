@@ -1,8 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +14,10 @@ import com.google.gson.Gson;
 
 import core.DaoFactory;
 import dao.TicketDao;
+import tables.Ticket;
 
-@WebServlet("/ShowTicketServlet")
-public class ShowTicketServlet extends HttpServlet {
+@WebServlet("/BuyTicketServlet")
+public class BuyTicketServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -29,10 +30,17 @@ public class ShowTicketServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.getWriter();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
+		String type = request.getParameter("type");
+		double price = Double.parseDouble(request.getParameter("price"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		TicketDao td = dao.getBigliettoDao();
-		List<String> list = new CopyOnWriteArrayList<>();
-		list = td.searchByEvents(eventCode);
+		List<String> list = new ArrayList<>();
+		Ticket ticket = td.searchTicket(type, eventCode, price);
+		list.add("CODE" + String.valueOf(ticket.getTicketCode()));
+		list.add("EVENT" + String.valueOf(ticket.getCodeEvent()));
+		list.add("Price" + String.valueOf(ticket.getPrice()));
+		for (String str : list)
+			System.out.println(str + " ");
 		String gson = new Gson().toJson(list);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);

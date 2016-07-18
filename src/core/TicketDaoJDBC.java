@@ -3,7 +3,9 @@ package core;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dao.TicketDao;
@@ -65,18 +67,17 @@ public class TicketDaoJDBC implements TicketDao {
 	}
 
 	@Override
-	public Set<Ticket> searchByEvents(int e) {
-		Set<Ticket> myResult = new HashSet<Ticket>();
+	public List<String> searchByEvents(int e) {
+		List<String> myResult = new ArrayList<>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String query = "SELECT * FROM ticket WHERE event=?";
+			String query = "SELECT price, type FROM ticket WHERE event=? AND sell = true GROUP BY price, type";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, e);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
-				Ticket t = new Ticket(result.getInt("ticketcode"), result.getInt("event"), result.getDouble("price"),
-						result.getString("type"), result.getBoolean("sell"));
-				myResult.add(t);
+				myResult.add(result.getString("type"));
+				myResult.add(result.getString("price"));
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -87,8 +88,6 @@ public class TicketDaoJDBC implements TicketDao {
 				e2.printStackTrace();
 			}
 		}
-		for (Ticket t : myResult)
-			System.out.println(t.getType() + " " + t.getCodeEvent() + " " + t.getPrice() + " " + t.getTicketCode());
 		return myResult;
 	}
 
@@ -174,6 +173,35 @@ public class TicketDaoJDBC implements TicketDao {
 			}
 		}
 		return myResult;
+	}
+
+	@Override
+	public Ticket searchTicket(String type, int event, double price) {
+		Ticket ticket = new Ticket();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String query = "SELECT * FROM ticket WHERE type = ? AND event = ? AND price = ? AND sell = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, type);
+			statement.setInt(2, event);
+			statement.setDouble(3, price);
+			statement.setBoolean(4, true);
+			ResultSet result = statement.executeQuery();
+			if (result.next()) {
+				ticket = new Ticket(result.getInt("ticketcode"), result.getInt("event"), result.getDouble("price"),
+						result.getString("type"), result.getBoolean("sell"));
+				this.setState(false, ticket.getTicketCode());
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return ticket;
 	}
 
 	@Override

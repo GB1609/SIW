@@ -13,10 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
-import dao.TicketDao;
+import dao.ReviewDao;
 
-@WebServlet("/ShowTicketServlet")
-public class ShowTicketServlet extends HttpServlet {
+@WebServlet("/ShowReviewsServlet")
+public class ShowReviewsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -30,9 +30,9 @@ public class ShowTicketServlet extends HttpServlet {
 		response.getWriter();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		TicketDao td = dao.getBigliettoDao();
+		ReviewDao rd = dao.getRecensioneDao();
 		List<String> list = new CopyOnWriteArrayList<>();
-		list = td.searchByEvents(eventCode);
+		list = rd.searchByEvents(eventCode);
 		String gson = new Gson().toJson(list);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
