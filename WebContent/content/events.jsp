@@ -19,13 +19,14 @@
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 
 <title>SIW</title>
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="bootstrap/css/siw.css" rel="stylesheet">
-<link href="bootstrap/css/bo.css" rel="stylesheet">
-	<link href="bootstrap/css/jumbo.css" rel="stylesheet">
+<link href="../bootstrap/css/general.css" rel="stylesheet">
+<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="../bootstrap/css/siw.css" rel="stylesheet">
+<link href="../bootstrap/css/bo.css" rel="stylesheet">
+	<link href="../bootstrap/css/jumbo.css" rel="stylesheet">
 	<style>
 		body {
-			background-color:  	#F0FFFF;
+			background-color: #F0FFFF;
 		}
 	</style>
 
@@ -62,25 +63,25 @@ $.ajax({
     <div class="container">
 			<div class="row">
 				<div class=col-md-3>
-						<img src="content/lp.jpg" width="260" height="350">
+						<img src="../assets/lp.jpg" width="260" height="350">
 						<br><br><br>
 				<div class=jumbotron>Concerto Linkin Park
 				</div>
 				</div>
 				<div class=col-md-3>
-				<img src="content/stadium.jpg" width="260" height="350">
+				<img src="../assets/stadium.jpg" width="260" height="350">
 				<br><br><br>
 			<div class=jumbotron>Juventus - Inter
 				</div>
 				</div>
 				<div class="col-md-3">
-				<img src="content/civlWar.jpeg" width="260" height="350">
+				<img src="../assets/civlWar.jpeg" width="260" height="350">
 				<br><br><br>
 			<div class=jumbotron>Captain America : Civil War
 			</div>
 				</div>
 				<div class="col-md-3">
-				<img src="content/gpMessico.jpg" width="260" height="350">
+				<img src="../assets/gpMessico.jpg" width="260" height="350">
 				<br><br><br>
 				<div class=jumbotron>Formula 1 : Gp del Messico
 		</div>

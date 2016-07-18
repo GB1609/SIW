@@ -1,3 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html"%>
+
 <!DOCTYPE <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,26 +16,8 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-
-<script>
-     $.ajax({
-       url: "SearchEvents" ,
-       data : {
-         typeOfResearch : "All" 
-       } ,
-
-       type: "GET" ,
-
-       dataType :"json"
-     }).done(function( responseJson ) {
-       $("#result_div").empty();
-        var $ul = $("<ul>").appendTo($("#result_div")); // Create HTML <ul> element and append it to HTML DOM element with ID "result_div".
-          $.each(responseJson, function(index, item) { // Iterate over the JSON array.
-              $("<li>").text(item).appendTo($ul);      // Create HTML <li> element, set its text content with currently iterated item and append it to the <ul>.
-          });
-     });
-</script>
-
+	<link href="../bootstrap/css/general.css" rel="stylesheet">
+	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -43,11 +28,25 @@
   <body>
 
 	<jsp:include page="navbar.html"/><br><br>
+
+
+  <div class="container">
+
+    <div class="row" id="eTMGH">
+      <c:forEach items="${eventList}" var="bu">
+        <div class="col-md-3">
+          ${bu}
+        </div>
+        </c:forEach>
+
+    </div>
+  </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+ 
   </body>
 
-  <div id = "result_div"></div>
+
 </html>

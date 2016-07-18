@@ -43,7 +43,7 @@ public class OrganizatorDaoJDBC implements OrganizatorDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			String insert="insert into organizator (username, password, lastname, firstname, birthdate, address) values (?,?,?,?,?,?)";
+			String insert="insert into client (username, password, lastname, firstname, birthdate, address) values (?,?,?,?,?,?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
 			statement.setString(1,c.getUsername());
 			statement.setString(2,c.getPassword());
