@@ -39,6 +39,42 @@ public class ClientDaoJDBC implements ClientsDao
 		}
 	}
 	@Override
+	public boolean existUser(String userToVerify)
+	{
+		boolean exsist=false;
+		Connection connection=this.dataSource.getConnection();
+		try
+		{
+			String query="select * FROM client	where username=?";
+			PreparedStatement statement=connection.prepareStatement(query);
+			statement.setString(1,userToVerify);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			connection.commit();
+			ResultSet result=statement.executeQuery();
+			if (result.next())
+			{
+				exsist=true;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				connection.close();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return exsist;
+	}
+	@Override
 	public void save(Clients c)
 	{
 		Connection connection=this.dataSource.getConnection();

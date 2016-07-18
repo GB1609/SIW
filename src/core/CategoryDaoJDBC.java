@@ -12,39 +12,6 @@ public class CategoryDaoJDBC implements CategoryDao
 		this.dataSource=dataSource;
 	}
 	@Override
-	public void save(Category c)
-	{
-		Connection connection=this.dataSource.getConnection();
-		try
-		{
-			int figlio=c.getSon();
-			String nome=c.getName();
-			String insert="insert into category (name, son) values(?,?)";
-			PreparedStatement statement=connection.prepareStatement(insert);
-			statement.setString(1,nome);
-			statement.setInt(2,figlio);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement.executeUpdate();
-			connection.commit();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-	@Override
 	public void delete(Category c)
 	{
 		Connection connection=this.dataSource.getConnection();
@@ -74,13 +41,45 @@ public class CategoryDaoJDBC implements CategoryDao
 		}
 	}
 	@Override
+	public void save(Category c)
+	{
+		Connection connection=this.dataSource.getConnection();
+		try
+		{
+			String insert="insert into category (categorycode, name, father) values(?,?,?)";
+			PreparedStatement statement=connection.prepareStatement(insert);
+			statement.setLong(1,c.getCategoryCode());
+			statement.setString(2,c.getName());
+			statement.setInt(3,c.getFather());
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				connection.close();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	@Override
 	public void update(Category c)
 	{
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
 			int id=c.getCategoryCode();
-			int figlio=c.getSon();
+			int figlio=c.getFather();
 			String nome=c.getName();
 			String update="update category SET categorycode=? , name = ?, son = ? WHERE categorycode=?";
 			PreparedStatement statement=connection.prepareStatement(update);
