@@ -42,6 +42,53 @@ public class TicketDaoJDBC implements TicketDao {
 	}
 
 	@Override
+	public boolean getState(int code) {
+		boolean state = false;
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String query = "SELECT sell FROM ticket WHERE ticketcode = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, code);
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				state = result.getBoolean("sell");
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return state;
+	}
+
+	@Override
+	public Ticket getTicket(int ticketcode) {
+		Ticket ticket = new Ticket();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String query = "SELECT * FROM ticket WHERE ticketcode = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, ticketcode);
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				ticket = new Ticket(result.getInt("ticketcode"), result.getInt("event"), result.getDouble("price"),
+						result.getString("type"), result.getBoolean("sell"));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return ticket;
+	}
+
+	@Override
 	public void save(Ticket bd) {
 		Connection connection = this.dataSource.getConnection();
 		try {
@@ -187,11 +234,9 @@ public class TicketDaoJDBC implements TicketDao {
 			statement.setDouble(3, price);
 			statement.setBoolean(4, true);
 			ResultSet result = statement.executeQuery();
-			if (result.next()) {
+			if (result.next())
 				ticket = new Ticket(result.getInt("ticketcode"), result.getInt("event"), result.getDouble("price"),
 						result.getString("type"), result.getBoolean("sell"));
-				this.setState(false, ticket.getTicketCode());
-			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} finally {

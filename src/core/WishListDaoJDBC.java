@@ -71,9 +71,10 @@ public class WishListDaoJDBC implements WishListDao {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, owner);
 			ResultSet result = statement.executeQuery();
-			while (result.next()){
-				myResult.add(result.getString("listcode"));
-				myResult.add(result.getString("name"));
+			while (result.next()) {
+				StringBuilder sb = new StringBuilder();
+				sb.append(result.getString("listcode") + " " + result.getString("name"));
+				myResult.add(sb.toString());
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();

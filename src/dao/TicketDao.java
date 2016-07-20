@@ -7,6 +7,8 @@ import tables.Ticket;
 public interface TicketDao
 {
 	public void delete(int code);
+	public boolean getState(int code);
+	public Ticket getTicket(int ticketcode);
 	public void save(Ticket bd);
 	public List<String> searchByEvents(int e);
 	public Set<Ticket> searchByLocality(Place l);

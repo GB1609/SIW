@@ -41,6 +41,7 @@ public class BuyTicketServlet extends HttpServlet {
 		list.add("Price" + String.valueOf(ticket.getPrice()));
 		for (String str : list)
 			System.out.println(str + " ");
+		td.setState(false, ticket.getTicketCode());
 		String gson = new Gson().toJson(list);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);

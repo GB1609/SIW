@@ -19,6 +19,30 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 	}
 
 	@Override
+	public boolean alreadyExist(WishTicket wt) {
+		boolean exist = false;
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String query = "select * from desiredtickets where listcode=? AND ticketcode=?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, wt.getListCode());
+			statement.setInt(2, wt.getTicketCode());
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				exist=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return exist;
+	}
+
+	@Override
 	public void delete(WishTicket bd) {
 		Connection connection = this.dataSource.getConnection();
 		int listCode = bd.getListCode();
@@ -67,31 +91,35 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 	}
 
 	@Override
-	public void save(WishTicket bd, String owner) {
+	public int save(WishTicket bd, String owner) {
 		Connection connection = this.dataSource.getConnection();
 		int listCode = bd.getListCode();
 		int ticketCode = bd.getTicketCode();
 		if (getListOwner(bd).equals(owner))
-			try {
-				String insert = "insert into desiredtickets(listcode,ticketcode) values (?,?)";
-				PreparedStatement statement = connection.prepareStatement(insert);
-				statement.setInt(1, listCode);
-				statement.setInt(2, ticketCode);
-				connection.setAutoCommit(false);
-				connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-				statement.executeUpdate();
-				connection.commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
+			if(!this.alreadyExist(bd))
 				try {
-					connection.close();
+					String insert = "insert into desiredtickets(listcode,ticketcode) values (?,?)";
+					PreparedStatement statement = connection.prepareStatement(insert);
+					statement.setInt(1, listCode);
+					statement.setInt(2, ticketCode);
+					connection.setAutoCommit(false);
+					connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+					statement.executeUpdate();
+					connection.commit();
 				} catch (Exception e) {
 					e.printStackTrace();
+				} finally {
+					try {
+						connection.close();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
+			else
+				return 1;
 		else
-			System.out.println("NON é IL PROPRIETARIO");
+			return -1;
+		return 0;
 	}
 
 	@Override

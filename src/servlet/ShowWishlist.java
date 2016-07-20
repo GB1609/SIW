@@ -33,7 +33,11 @@ public class ShowWishlist extends HttpServlet {
 		WishListDao wld = dao.getListaDesideriDao();
 		List<String> list = new ArrayList<>();
 		list = wld.searchByOwner(owner);
-		String gson = new Gson().toJson(list);
+		String gson;
+		if (!list.isEmpty())
+			gson = new Gson().toJson(list);
+		else
+			gson = new Gson().toJson("EMPTY");
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}

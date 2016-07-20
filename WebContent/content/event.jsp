@@ -86,6 +86,18 @@
 										</div>
 									</div>
 
+									<div class="modal fade" id="wishlists" tabindex="-1" role="dialog" aria - labelledby="" aria - hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal" aria-hi dden="true">&times;</button>
+													<h4 class="modal-title" id="">Select Wishlist</h4>
+												</div>
+												<div class="modal-body" id="wish_list"></div>
+											</div>
+										</div>
+									</div>
+
 									<script>
 										$(document).on("click", "#reviewButton", function () {
 
@@ -132,7 +144,7 @@
 
 												//JSON
 												data: {
-													eventcode: 31
+													eventcode: 34
 												},
 												type: "GET",
 
@@ -144,7 +156,7 @@
 													$('<li id ="result' + index + '">').text(item).appendTo($ul);
 												});
 
-												$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result9").text() + '</div></div>');
+												$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() + '</div></div>');
 												$("#result").replaceWith('<div id="result"></div>');
 											});
 										});
@@ -155,7 +167,7 @@
 
 												//JSON
 												data: {
-													eventcode: 35
+													eventcode: 34
 												},
 												type: "GET",
 
@@ -200,7 +212,8 @@
 														} else {
 															$('<td id = "d' + index + '">').text($(item).text() + '.00 ').appendTo('#r' + (index - 1));
 															$(' <span class="glyphicon glyphicon-euro"></span>').appendTo('#d' + index);
-															$('<td> <button class="btn btn-default">BUY <span class="glyphicon glyphicon-shopping-cart"></span></button>').appendTo('#r' + (index - 1));
+															$('<td> <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishlists" id ="wishlist">ADD TO WISHLIST <span class="glyphicon glyphicon-star"></span></button> <button class="btn btn-default" id = "buy">BUY <span class="glyphic' +
+																	'on glyphicon-shopping-cart"></span></button>').appendTo('#r' + (index - 1));
 														}
 													}
 												});
@@ -210,10 +223,8 @@
 											});
 										});
 
-										$(document).on("click", "#ticketTable tbody .btn", function (event) {
-											console.log($($(this).closest('tr').find('td:eq(0)')).text());
-											console.log($($(this).closest('tr').find('td:eq(1)')).text());
-											var t= $($(this).closest('tr').find('td:eq(0)')).text();
+										$(document).on("click", "#ticketTable tbody #buy", function (event) {
+											var t = $($(this).closest('tr').find('td:eq(0)')).text();
 											var p = $($(this).closest('tr').find('td:eq(1)')).text();
 											$.ajax({
 												url: "../BuyTicketServlet",
@@ -222,19 +233,74 @@
 												data: {
 													eventcode: 29,
 													type: t,
-													price: p,
+													price: p
 												},
 												type: "GET",
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												//$("#result").empty();
-												//var $ul = $('<ul id = "resultList">').appendTo($("#result"));
-												//$.each(responseJson, function (index, item) {
-													//$('<li id ="result' + index + '">').text(item).appendTo($ul);
-												//});
+												// $("#result").empty(); var $ul = $('<ul id = "resultList">').appendTo($("#result")); $.each(responseJson, function (index, item) { $('<li id ="result' + index + '">').text(item).appendTo($ul); }); $("#result").replaceWith('<div
+												// id="result"></div>');
+											});
+										});
 
-												//$("#result").replaceWith('<div id="result"></div>');
+										$(document).on("click", "#ticketTable tbody #wishlist", function (event) {
+											//var t = $($(this).closest('tr').find('td:eq(0)')).text(); var p = $($(this).closest('tr').find('td:eq(1)')).text(); alert("WISHLIST");
+											$("#wish_list").replaceWith('<div class="modal-body" id="wish_list"></div>');
+											var t = $($(this).closest('tr').find('td:eq(0)')).text();
+											var p = $($(this).closest('tr').find('td:eq(1)')).text();
+											$.ajax({
+												url: "../ShowWishlistServlet",
+
+												//JSON
+												data: {
+													//DOBBIAMO PRENDERE L'USER E VEDERE SE E' CONNESSO QUALCUNO.
+													owner: "gio",
+													//eventcode: 29, type: t, price: p
+												},
+												type: "POST",
+
+												dataType: "json"
+											}).done(function (responseJson) {
+												if (responseJson === "EMPTY") {
+													alert("EMPTY");
+													//PANNELLO DI SCELTA SE CREARE NUOVA WISHLIST.
+												} else {
+													var $ul = $('	<ul class="list-group">').appendTo($("#wish_list"));
+													$.each(responseJson, function (index, item) {
+														//$('<li id ="result' + index + '">').text(item).appendTo($ul); alert(responseJson); var itemtmp = $(item).text();
+														var mysplit = item.split(" ");
+														$('<button type ="button" data-dismiss="modal" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id ="sw">').text(mysplit[1]).appendTo($ul);
+													});
+
+												}
+											});
+
+											$(document).on("click", "#wishlists #wish_list #sw", function (event) {
+												var lcode = $("#sw").val();
+												$.ajax({
+													url: "../AddWishTicketServlet",
+
+													//JSON
+													data: {
+														listcode: lcode,
+														owner: "gio",
+														eventcode: 29,
+														type: t,
+														price: p
+													},
+													type: "GET",
+
+													dataType: "json"
+												}).done(function (responseJson) {
+													if (responseJson === 1) {
+														alert("Cannot add selected Ticket at your Wishlist! it's already In.");
+													} else if (responseJson === -1) {
+														alert("Cannot add selected Ticket at your Wishlist! You aren't the Owner!!");
+													}else if(responseJson === 0) {
+															alert("Added!!");
+													}
+												});
 											});
 										});
 									</script>
@@ -243,10 +309,9 @@
 									<script src="https://ajax.googleapis.com/ajax / libs / jquery / 1.11 .3 / jquery.min.js "></script>
 									<!-- Include all compiled plugins (below), or include individual files as needed -->
 									<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-									<script stc="index_ajax.js"></script>
-									<script stc="login.js"></script>
+									<script src="index_ajax.js"></script>
+									<script src="login.js"></script>
 									<div id="result"></div>
 									<div id="resultTicket"></div>
 								</body>
-
 							</html>
