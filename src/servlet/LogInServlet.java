@@ -13,27 +13,15 @@ import dao.OrganizatorDao;
 public class LogInServlet extends HttpServlet
 {
 	private static final long serialVersionUID=1L;
-	private String logged="Utente";
-	private String tipe="not";
 	@Override
 	protected void doGet(HttpServletRequest req,HttpServletResponse resp) throws ServletException,IOException
 	{
-		if (req.getParameter("tipe").equals("logIn"))
-		{
-			this.doPost(req,resp);
-		}
-		else if (req.getParameter("tipe").equals("name"))
-		{
-			this.getLogged();
-		}
-		else if (req.getParameter("tipe").equals("type"))
-		{
-			this.getTipe();
-		}
+		this.doPost(req,resp);
 	}
 	@Override
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException
 	{
+	
 		Boolean trouve=false;
 		String n=request.getParameter("username");
 		String p=request.getParameter("password");
@@ -43,38 +31,22 @@ public class LogInServlet extends HttpServlet
 		trouve=client.verifyClients(n,p);
 		if (trouve)
 		{
-			this.setLogged(n);
-			this.setTipe("client");
+			request.getSession().setAttribute("name",n);
+			request.getSession().setAttribute("tipe","client");
 		}
 		else
 		{
 			trouve=organizator.verifyOrganizator(n,p);
 			if (trouve)
 			{
-				this.setLogged(n);
-				this.setTipe("organizator");
+				request.getSession().setAttribute("name",n);
+				request.getSession().setAttribute("tipe","organizator");
 			}
 		}
-		String toReturn=trouve.toString() + "/" + this.tipe + "/" + this.logged;
+		String toReturn=trouve.toString() + "/" + request.getSession().getAttribute("tipe") + "/" + request.getSession().getAttribute("name");
 		String gson=new Gson().toJson(toReturn);
 		response.setContentType("text/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(gson);
-	}
-	public String getLogged()
-	{
-		return this.logged;
-	}
-	public String getTipe()
-	{
-		return this.tipe;
-	}
-	public void setLogged(String logged)
-	{
-		this.logged=logged;
-	}
-	public void setTipe(String tipe)
-	{
-		this.tipe=tipe;
 	}
 }
