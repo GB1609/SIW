@@ -1,41 +1,37 @@
 <head>
 	<script>
-		$(document).on("click","#typeOfResearch",function(){
-			if( $("#typeOfResearch").val() == "Date" )
-			{
+		$(document).on("click", "#typeOfResearch", function () {
+			if ($("#typeOfResearch").val() == "Date") {
 				$("#inpid").replaceWith('<input type="date" id=inpid name="value" id="birth" class="form-control input-sm">');
-			}
-			else
-			{
+			} else {
 				$("#inpid").replaceWith('<input type="text" id=inpid name="value" class="form-control" placeholder="Search"></input>');
 			}
 		});
-
-
 	</script>
-		<script>
-												
-	$(document).on("click", "#loginButton", function(event) {
-					
-$.ajax({
-				url : '<%=request.getContextPath()%>/LogInServlet',
-				data : {
-					tipe : "logIn",
-									username : $("#username").val(),
-										password : $("#password").val()
-														},
-														type : "POST",
-														dataType : "json"
-													})
-													.done(function(responseJson){
-														alert("Richiesta effettuata correttamente");
-													}).fail(function(){
-														
-														});
-												});
-												
-												
-												</script>
+	<script>
+
+		$(document).on("click", "#loginButton", function (event) {
+
+			$.ajax({
+				url: '<%=request.getContextPath()%>/LogInServlet',
+				data: {
+					tipe: "logIn",
+					username: $("#username").val(),
+					password: $("#password").val()
+				},
+				type: "GET",
+				dataType: "json"
+			}).done(function (responseJson) {
+				var split = responseJson.split("/");
+				if (split[0] === "true")
+					$('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
+				else
+					$('#firstRow').replaceWith('<div align="center"> <h1> Attenzione!</h1> <br><br> Username o password errati </div><meta http-equiv="refresh" content="3;URL=home.jsp">');
+
+				}
+			)
+		});
+	</script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -51,11 +47,11 @@ $.ajax({
 			<div class="collapse navbar-collapse" id="mainNavBar">
 				<div class="nav navbar-nav navbar-left">
 					<li>
-						<a href="<%= request.getContextPath() %>/content/home.jsp">Home</a>
+						<a href="<%=request.getContextPath()%>/content/home.jsp">Home</a>
 					</li>
 
 					<li>
-						<a href="<%= request.getContextPath() %>/SearchEvents?typeOfResearch=All" id="eventi">Eventi</a>
+						<a href="<%=request.getContextPath()%>/SearchEvents?typeOfResearch=All" id="eventi">Eventi</a>
 					</li>
 				</div>
 				<ul class="nav navbar-nav  navbar-right">
@@ -64,7 +60,9 @@ $.ajax({
 							<span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
-								<li> <a href="<%= request.getContextPath() %>/DataForOrganizatorServlet" id="organizza">Profilo</a> </li>
+							<li>
+								<a href="<%=request.getContextPath()%>/DataForOrganizatorServlet" id="organizza">Profilo</a>
+							</li>
 							<li>
 								<a href="#">Wishlist</a>
 							</li>
@@ -84,7 +82,7 @@ $.ajax({
 						</div>
 					</li>
 					<li>
-						<form class="navbar-form" role="search" action="<%= request.getContextPath() %>/ParameterSearchEvents">
+						<form class="navbar-form" role="search" action="<%=request.getContextPath()%>/ParameterSearchEvents">
 							<div class="form-group">
 								<input type="text" id=inpid name="value" class="form-control" placeholder="Search"></input>
 							</div>
@@ -115,16 +113,15 @@ $.ajax({
 									<h3 class="panel-title">Effettua l'accesso</h3>
 								</div>
 								<div class="panel-body">
-									
-											<div class="form-group">
-												<input class="form-control" placeholder="Username" type="text" name="username" id="username"></div>
-												<div class="form-group">
-													<input class="form-control" placeholder="Password" name="password" type="password" id="password"></div>
-													<div align="center">
-														<button class="btn btn-primary" id="loginButton">Login</button>
-													</div>
 
-												
+									<div class="form-group">
+										<input class="form-control" placeholder="Username" type="text" name="username" id="username"></div>
+										<div class="form-group">
+											<input class="form-control" placeholder="Password" name="password" type="password" id="password"></div>
+											<div align="center">
+												<button class="btn btn-primary" id="loginButton">Login</button>
+											</div>
+
 										</div>
 									</div>
 								</div>
