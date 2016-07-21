@@ -48,9 +48,7 @@
                                                 </script>
                                             </head>
                                             <body>
-                                                <div id="navBar">
-                                                    <jsp:include page="navbar.jsp"></jsp:include>
-                                                </div>
+                                                <jsp:include page="navbar.jsp"></jsp:include>
                                                 <div class="container">
                                                     <div class="row" id="firstRow">
                                                         <div class="col-md-8">

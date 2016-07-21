@@ -21,23 +21,37 @@
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <link href="../WEB-INF/lib/jquery.js">
+ <!--script>
+ 	$document.on("click",'button[name^="nomeEvento"]',function(event){
+ 		var ciao =$(this).attr(name).substring(10,$(this).attr(name).length);
+  		window.location.href = "<%=request.getContextPath()%>/showInformationServlet?nominativo="+ciao ;
+ 	});
+
+</script-->
+
   </head>
   <body>
 
 	<jsp:include page="navbar.jsp"/>
-	
+
 	<br><br>
 
 <br>
  <br>
- <form method="get" action="ShowInformationServlet">
+
   <div class="container" >
 
     <div class="row" id="eTMGH">
+
       <c:forEach items="${eventList}" var="bu">
-        <div id="prova" class="col-md-3">
-        <div id="cc">
-          <input  name="nomeEvento" value="${bu.name}" type="image" src="${bu.img}" width="260" height="350" alt="submit"></input><br><br><br>
+        <div class="col-md-3">
+        <div id="forCss">
+        <a href="<%=request.getContextPath()%>/ShowInformationServlet?nominativo=${bu.name}">  
+        <img src="${bu.img}" width="260" height="350">
+        </img>
+        </a>
+        <br><br><br> 
+          <br><br><br>
            </div>
            <div class="jumbotron">
           <dl>
@@ -45,18 +59,20 @@
           <dd>${bu.date}</dd>
           <dd>${bu.locality}</dd>
           <dd>${bu.city}</dd>
-          </dl> 
-           </div> 
+          </dl>
+           </div>
         </div>
         </c:forEach>
-        
+
+
+
           <c:forEach items="${emptyList}" var="bu2">
          	<h1>${bu2}</h1>
           </c:forEach>
 
     </div>
   </div>
-  </form>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

@@ -55,6 +55,8 @@ public class EventDaoJDBC implements EventsDao {
 			ResultSet result = statement.executeQuery();
 			while (result.next())
 				code = result.getInt(1);
+			
+			
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
