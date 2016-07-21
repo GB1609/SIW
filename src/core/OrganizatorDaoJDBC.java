@@ -1,6 +1,7 @@
 package core;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import dao.OrganizatorDao;
 import tables.Organizator;
@@ -11,6 +12,47 @@ public class OrganizatorDaoJDBC implements OrganizatorDao
 	{
 		this.dataSource=dataSource;
 	}
+
+
+@Override
+	public boolean verifyOrganizator(String userName, String password)
+	{
+		boolean exsist=false;
+		Connection connection=this.dataSource.getConnection();
+		try
+		{
+			String query="select * FROM organizator where username=? and password=?";
+			PreparedStatement statement=connection.prepareStatement(query);
+			statement.setString(1,userName);
+			statement.setString(2,password);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			connection.commit();
+			ResultSet result=statement.executeQuery();
+			if (result.next())
+			{
+				exsist=true;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				connection.close();
+			}
+			catch (SQLException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return exsist;
+	}
+
+
 	@Override
 	public void delete(int c)
 	{

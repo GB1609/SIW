@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import dao.EventsDao;
 import tables.Events;
@@ -43,11 +43,37 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
+	public int getCode(String name) {
+		Connection connection = this.dataSource.getConnection();
+		int code = -1;
+		try {
+			String query = "SELECT event.eventcode FROM event,information WHERE information.informationid = event.information AND information.name=?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				code = result.getInt(1);
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return code;
+	}
+
+	@Override
 	public String getFeedback(int eventCode) {
 		String feedback = " ";
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select feedback from eventWHERE event.eventcode = ?";
+			String search = "select feedback from event WHERE event.eventcode = ?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setInt(1, eventCode);
 			connection.setAutoCommit(false);
@@ -66,6 +92,33 @@ public class EventDaoJDBC implements EventsDao {
 			}
 		}
 		return feedback;
+	}
+
+	@Override
+	public Information getInfoByName(String value) {
+		Information information = null;
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select information.informationid, information.date , information.place, information.description, information.city, information.name, information.img from information WHERE information.name= ?";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setString(1, value);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				information = new Information(result.getInt(1), result.getDate(2).toLocalDate(), result.getString(3),
+						result.getString(4), result.getString(5), result.getString(6), result.getString(7));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return information;
 	}
 
 	@Override
@@ -96,6 +149,62 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
+	public String getName(int eventCode) {
+		String name = "";
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select information.name from event, information WHERE event.eventcode = ? AND information.informationid = information";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				name = result.getString("name");
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return name;
+	}
+
+	@Override
+	public List<Events> returnAllEvents() {
+		List<Events> set = new ArrayList<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+
+			String returnAll = "SELECT event.eventcode,event.feedback, event.organizator, event.category,"
+					+ "event.information, event.partecipant" + " FROM event, information "
+					+ "WHERE event.information = information.informationid " + "ORDER BY information.date DESC";
+			PreparedStatement statement = connection.prepareStatement(returnAll);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5), result.getInt(6)));
+			connection.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return set;
+	}
+
+	@Override
 	public void save(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
@@ -122,13 +231,14 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public Set<Events> searchByCategory(int categoryCode) {
-		Set<Events> set = new HashSet<Events>();
+	public List<Events> searchByCategory(String category) {
+		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select * from event WHERE event.category = ?";
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event,category WHERE event.category = category.categorycode AND category.name=? OR category.categorycode IN (SELECT category.father FROM category WHERE category.name=?) ";
 			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setInt(1, categoryCode);
+			statement.setString(1, category);
+			statement.setString(2, category);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
@@ -149,11 +259,11 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public Set<Events> searchByDate(LocalDate l) {
-		Set<Events> set = new HashSet<Events>();
+	public List<Events> searchByDate(LocalDate l) {
+		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select * from event, information WHERE event.information = information.informationid AND information.date = ?";
+			String search = "select * from event, information WHERE event.information = information.informationid AND information.date = ? ORDER BY information.date DESC";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setDate(1, Date.valueOf(l));
 			connection.setAutoCommit(false);
@@ -176,11 +286,43 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public Set<Events> searchByOrganizator(String organizator) {
-		Set<Events> set = new HashSet<Events>();
+	public List<Events> searchByName(String value) {
+		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select * from event WHERE event.organizator = ?";
+
+			String returnAll = "SELECT event.eventcode,event.feedback, event.organizator, event.category,"
+					+ "event.information, event.partecipant" + " FROM event, information "
+					+ "WHERE event.information = information.informationid AND information.name=? "
+					+ "ORDER BY information.date DESC";
+			PreparedStatement statement = connection.prepareStatement(returnAll);
+			statement.setString(1, value);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5), result.getInt(6)));
+			connection.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return set;
+	}
+
+	@Override
+	public List<Events> searchByOrganizator(String organizator) {
+		List<Events> set = new ArrayList<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "SELECT * FROM event WHERE event.organizator = ?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, organizator);
 			connection.setAutoCommit(false);
@@ -203,13 +345,15 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public Set<Events> searchByPartecipants(int idpartecipant) {
-		Set<Events> set = new HashSet<Events>();
+	public List<Events> searchByPartecipants(String partecipant) {
+		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select * from event WHERE event.partecipant = ?";
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant "
+					+ " FROM event, information, partecipant"
+					+ " WHERE partecipant.name = ? AND event.partecipant = partecipant.partecipantid AND event.information=information.informationid ORDER BY information.date DESC ";
 			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setInt(1, idpartecipant);
+			statement.setString(1, partecipant);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
@@ -230,14 +374,13 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public Set<Events> searchByPlace(String name, String city) {
-		Set<Events> set = new HashSet<Events>();
+	public List<Events> searchByPlace(String city) {
+		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select * from event, information WHERE event.information = information.informationid AND information.place = ? AND information.city = ?";
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event, information WHERE event.information = information.informationid AND information.city = ? ORDER BY information.date DESC";
 			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setString(1, name);
-			statement.setString(2, city);
+			statement.setString(1, city);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
@@ -258,15 +401,19 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public Set<Events> searchByPrice(double price, boolean max) {
-		Set<Events> set = new HashSet<Events>();
+	public List<Events> searchByPrice(double price, boolean max) {
+		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String search;
 			if (max)
-				search = "SELECT * FROM event, ticket WHERE ticket.event = event.eventcode AND price < ?";
+				search = "SELECT * FROM event WHERE event.eventcode IN (SELECT event.eventcode"
+						+ " FROM event, ticket, information"
+						+ " WHERE ticket.event = event.eventcode AND price < ? AND event.information=information.informationid ORDER BY information.date DESC)";
 			else
-				search = "SELECT * FROM event, ticket WHERE ticket.event = event.eventcode AND price > ?";
+				search = "SELECT * FROM event WHERE event.eventcode IN (SELECT event.eventcode"
+						+ " FROM event, ticket, information "
+						+ " WHERE ticket.event = event.eventcode AND price > ? AND event.information=information.informationid ORDER BY information.date DESC)";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setDouble(1, price);
 			connection.setAutoCommit(false);
@@ -323,34 +470,5 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public Set<Events> returnAllEvents() {
-		Set<Events> set = new HashSet<Events>();
-		Connection connection = this.dataSource.getConnection();
-		try {
-			
-			String returnAll = "SELECT * FROM event";
-			PreparedStatement statement = connection.prepareStatement(returnAll);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			ResultSet result = statement.executeQuery();
-			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
-			connection.commit();
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return set;
 	}
 }

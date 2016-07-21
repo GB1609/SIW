@@ -42,7 +42,6 @@ public class RegistrationServlet extends HttpServlet
 		String json=new Gson().toJson(result);
 		response.setContentType("application/json");
 		response.getWriter().write(json);
-		System.out.println("ciao");
 	}
 	@Override
 	protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException

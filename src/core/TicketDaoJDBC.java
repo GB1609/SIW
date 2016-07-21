@@ -297,4 +297,33 @@ public class TicketDaoJDBC implements TicketDao {
 			}
 		}
 	}
+
+	@Override
+	public List<String> getTipology() {
+		Connection connection = dataSource.getConnection();
+		List<String> typ = new ArrayList<String>();
+		try {
+			String query = "SELECT ticket.type FROM ticket ORDER BY ticket.type";
+			PreparedStatement statement = connection.prepareStatement(query);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+			{
+				if (!typ.contains(result.getString(1)))
+				typ.add(result.getString(1));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return typ;
+
+	}
 }

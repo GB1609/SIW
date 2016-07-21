@@ -1,8 +1,13 @@
 package core;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import dao.PlaceDao;
+import tables.Partecipants;
 import tables.Place;
 public class PlaceDaoJDBC implements PlaceDao
 {
@@ -108,5 +113,31 @@ public class PlaceDaoJDBC implements PlaceDao
 				e.printStackTrace();
 			}
 		}
+	}
+	@Override
+	public List<Place> returnAllPlace() {
+		Connection connection = this.dataSource.getConnection();
+		List<Place> places = new ArrayList<Place>();
+		try {
+			String returnAll = "SELECT * FROM place ORDER BY place.name" ;
+			PreparedStatement statement = connection.prepareStatement(returnAll);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+			{
+				places.add(new Place(result.getInt(3),result.getString(1), result.getString(2), result.getString(4)));
+			}
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return places;
 	}
 }

@@ -1,7 +1,7 @@
 package dao;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 import tables.Events;
 import tables.Information;
@@ -9,25 +9,32 @@ import tables.Information;
 public interface EventsDao {
 	public void delete(int eventCode);
 
+	public int getCode(String name);
+
 	public String getFeedback(int eventCode);
 
+	public Information getInfoByName (String value);
+
 	public Information getInformation(int eventCode);
+	public String getName(int eventCode);
+
+	public List<Events> returnAllEvents ();
 
 	public void save(Events e);
-	
-	public Set<Events> returnAllEvents ();
 
-	public Set<Events> searchByCategory(int categoryCode);
+	public List<Events> searchByCategory(String categoryCode);
 
-	public Set<Events> searchByDate(LocalDate l);
+	public List<Events> searchByDate(LocalDate l);
 
-	public Set<Events> searchByOrganizator(String organizator);
+	public List<Events> searchByName(String value);
 
-	public Set<Events> searchByPartecipants(int idpartecipant);
+	public List<Events> searchByOrganizator(String organizator);
 
-	public Set<Events> searchByPlace(String name, String city);
+	public List<Events> searchByPartecipants(String partecipant);
 
-	public Set<Events> searchByPrice(double price, boolean max);
+	public List<Events> searchByPlace(String city);
+
+	public List<Events> searchByPrice(double price, boolean max);
 
 	public void startSeller(Events e);
 

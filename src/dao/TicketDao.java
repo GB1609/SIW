@@ -17,4 +17,5 @@ public interface TicketDao
 	public Ticket searchTicket(String type, int event, double price);
 	public void setState(boolean sell,int code);
 	public void update(Ticket bd);
+	public List<String> getTipology();
 }

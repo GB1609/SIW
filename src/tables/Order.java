@@ -1,37 +1,41 @@
 package tables;
-public class Order
-{
+
+public class Order {
 	int orderCode;
 	int ticket;
 	String user;
-	public Order(int codiceOrdine, int biglietto, String utente)
-	{
-		this.orderCode=codiceOrdine;
-		this.ticket=biglietto;
-		this.user=utente;
+
+	public Order(int codiceOrdine, int biglietto, String utente) {
+		this.orderCode = codiceOrdine;
+		this.ticket = biglietto;
+		this.user = utente;
 	}
-	public int getOrderCode()
-	{
-		return orderCode;
+	public Order(int biglietto, String utente) {
+		this.ticket = biglietto;
+		this.user = utente;
 	}
-	public void setOrderCode(int codiceOrdine)
-	{
-		this.orderCode=codiceOrdine;
+
+	public int getOrderCode() {
+		return this.orderCode;
 	}
-	public int getTicket()
-	{
-		return ticket;
+
+	public int getTicket() {
+		return this.ticket;
 	}
-	public void setTicket(int biglietto)
-	{
-		this.ticket=biglietto;
+
+	public String getUser() {
+		return this.user;
 	}
-	public String getUser()
-	{
-		return user;
+
+	public void setOrderCode(int codiceOrdine) {
+		this.orderCode = codiceOrdine;
 	}
-	public void setUser(String utente)
-	{
-		this.user=utente;
+
+	public void setTicket(int biglietto) {
+		this.ticket = biglietto;
+	}
+
+	public void setUser(String utente) {
+		this.user = utente;
 	}
 }
