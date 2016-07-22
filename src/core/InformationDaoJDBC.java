@@ -58,7 +58,7 @@ public class InformationDaoJDBC implements InformationDao {
 			statement.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			try {
 				connection.close();

@@ -9,13 +9,6 @@
 		});
 	</script>
 	<script>
-	$(document).on("click", "#logoutButtonUser", function (event)
-			{
-			 	<%session.setAttribute("name",null);%>
-			 	<%session.setAttribute("tipe",null);%>
-			});
-	</script>
-	<script>
 
 		$(document).on("click", "#loginButton", function (event) {
 
@@ -30,7 +23,10 @@
 				dataType: "json"
 			}).done(function (responseJson) {
 				var split = responseJson.split("/");
-				if (split[0] === "true")
+
+				if (split[0]==="true" &&  split[1]==="organizator")
+					$('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=<%=request.getContextPath()%>/EventsManagementServlet">');
+				else if (split[0] === "true")
 					$('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
 				else
 					$('#firstRow').replaceWith('<div align="center"> <h1> Attenzione!</h1> <br><br> Username o password errati </div><meta http-equiv="refresh" content="3;URL=home.jsp">');
@@ -49,7 +45,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a href="home.jsp" class="navbar-brand">
-				<img class="img-responsive img-rounded" src="../assets/logoSIW.png" alt="SIW" width="60"></a>
+				<img class="img-responsive img-rounded" src="<%=request.getContextPath()%>/assets/logoSIW.png" alt="SIW" width="60"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="mainNavBar">
 				<div class="nav navbar-nav navbar-left">
@@ -68,7 +64,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="<%=request.getContextPath()%>/DataForOrganizatorServlet" id="organizza">Profilo</a>
+								<a href="#">Profilo</a>
 							</li>
 							<li>
 								<a href="#">Wishlist</a>
@@ -110,35 +106,36 @@
 							</div>
 						</form>
 					</li>
-					<%  if(!(session.getAttribute("tipe")=="client")){%>
-					<li class="dropdown">
-						<a class="dropdown-toggle" data-toggle="dropdown">Login
-							<span class="caret"></span>
-						</a>
-						<div class="dropdown-menu">
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h3 class="panel-title">Effettua l'accesso</h3>
-								</div>
-								<div class="panel-body">
-									<div class="form-group">
-										<input class="form-control" placeholder="Username" type="text" name="username" id="username"></div>
-										<div class="form-group">
-											<input class="form-control" placeholder="Password" name="password" type="password" id="password"></div>
-											<div align="center">
-												<button class="btn btn-primary" id="loginButton">Login</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</li>
-							<% }else{ %>
-						<li><a href="home.jsp" id="logoutButtonUser">Logout </a></li>
-							<%} %>
+					<%  if(!(session.getAttribute("name")!=null)){%>
+					        <li class="dropdown">
+					          <a class="dropdown-toggle" data-toggle="dropdown">Login
+					            <span class="caret"></span>
+					          </a>
+					          <div class="dropdown-menu">
+					            <div class="panel panel-default">
+					              <div class="panel-heading">
+					                <h3 class="panel-title">Effettua l'accesso</h3>
+					              </div>
+					              <div class="panel-body">
+					                <div class="form-group">
+					                  <input class="form-control" placeholder="Username" type="text" name="username" id="username"></div>
+					                  <div class="form-group">
+					                    <input class="form-control" placeholder="Password" name="password" type="password" id="password"></div>
+					                    <div align="center">
+					                      <button class="btn btn-primary" id="loginButton">Login</button>
+					                    </div>
+					                  </div>
+					                </div>
+					              </div>
+					            </li>
+					            <% }else{ %>
+					          <li><a href="<%=request.getContextPath() %>/LogOutServlet" id="logoutButtonUser">Logout </a></li>
+					            <%} %>
+
 						</ul>
 					</div>
 				</nav>
+
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-				
 			</html>
 		</body>

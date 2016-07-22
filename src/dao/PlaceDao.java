@@ -8,4 +8,5 @@ public interface PlaceDao
 	public void delete(Place i);
 	public void update(Place i);
 	public List<Place> returnAllPlace();
+
 }

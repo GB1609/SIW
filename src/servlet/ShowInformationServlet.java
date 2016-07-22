@@ -30,7 +30,6 @@ public class ShowInformationServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		String value = request.getParameter("nominativo");
 		EventsDao ed = this.daoFactory.getEventoDao();
@@ -41,6 +40,7 @@ public class ShowInformationServlet extends HttpServlet {
 		informations.add(information.getDescription());
 		informations.add(information.getImg());
 		informations.add(ed.getFeedback(eventCode));
+		informations.add(String.valueOf(eventCode));
 		response.setCharacterEncoding("UTF-8");
 		request.setAttribute("eventcode", eventCode);
 		request.setAttribute("list", informations);

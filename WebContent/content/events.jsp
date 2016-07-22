@@ -33,7 +33,11 @@
 </head>
   <body>
 
-		<jsp:include page="navbar.jsp"/><br><br>
+	 	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
+                                             	<%@include file="navbar.jsp"%>
+                                             	<% }else{ %>
+                                             	<%@include file="organizatorNavbar.jsp"%>
+                                             	<%} %>
 
 	<div id="ris">
   <h1> Risultati della ricerca</h1>

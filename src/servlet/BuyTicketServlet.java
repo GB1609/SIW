@@ -32,36 +32,35 @@ public class BuyTicketServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
-		System.out.println("PERCHé");
 		response.getWriter();
 		String gson;
 		boolean success = true;
 		String owner = request.getParameter("owner");
-		int ticketCode = Integer.parseInt(request.getParameter("ticket"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		TicketDao td = dao.getBigliettoDao();
 		OrdersDao od = dao.getOrdineDao();
-		// Ticket t = td.getTicket(ticketCode);
 		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
-		for (Ticket t : cart)
-			if (!td.getState(ticketCode)) {
-				Ticket tmp = td.searchTicket(t.getType(), t.getCodeEvent(), t.getPrice());
+		for (int i = 0; i < cart.size(); i++)
+			if (!td.getState(cart.get(i).getTicketCode())) {
+				Ticket tmp = td.searchTicket(cart.get(i).getType(), cart.get(i).getCodeEvent(), cart.get(i).getPrice());
 				if (tmp != null) {
 					td.setState(false, tmp.getTicketCode());
-					od.save(new Order(t.getTicketCode(), owner));
-					cart.remove(t);
+					od.save(new Order(cart.get(i).getTicketCode(), owner));
+					cart.remove(cart.get(i));
 				} else
 					success = false;
 			} else {
-				td.setState(false, t.getTicketCode());
-				od.save(new Order(t.getTicketCode(), owner));
-				cart.remove(t);
+				td.setState(false, cart.get(i).getTicketCode());
+				od.save(new Order(cart.get(i).getTicketCode(), owner));
+				cart.remove(cart.get(i));
 			}
-		if (success)
-			gson = new Gson().toJson("success");
+		if (success && request.getSession().getAttribute("tipe")=="client")
+			gson = new Gson().toJson("DONE");
+		else if (request.getSession().getAttribute("tipe")!="client")
+			gson = new Gson().toJson("DEVI LOGGARTI PER POTER COMPLETARE L'ACQUISTO");
 		else
-			gson = new Gson().toJson("error");
+			gson = new Gson().toJson("FAIL");
 		request.getSession().setAttribute("carrello", cart);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);

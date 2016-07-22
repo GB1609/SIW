@@ -50,9 +50,11 @@
 
                                         </head>
                                         <body>
-
-                                            <jsp:include page="navbar.jsp"/>
-
+   	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
+                                             	<%@include file="navbar.jsp"%>
+                                             	<% }else{ %>
+                                             	<%@include file="organizatorNavbar.jsp"%>
+                                             	<%} %>
                                             <br>
                                                 <br>
                                                     <br>
@@ -106,7 +108,12 @@
                                                                                     <div class="row">
                                                                                         <div class="col-md-3">
                                                                                             <label for="luogo">Luogo:</label>
-                                                                                            <input type="text" class="form-control" id="luogo"></div>
+                                                                                            <select class="form-control" id="luogo">
+                                                                                               <c:forEach items="${ allPlace}" var="bo2">
+                                                                                                <option>${bo2}</option>
+                                                                                            </c:forEach>
+                                                                                            </select>
+                                                                                            </div>
                                                                                             <div class="col-md-3">
                                                                                                 <div class="form-group">
                                                                                                     <label for="tickets">Tipologia Biglietti:</label>

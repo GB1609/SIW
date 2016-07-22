@@ -31,6 +31,7 @@ public class LogInServlet extends HttpServlet
 		trouve=client.verifyClients(n,p);
 		if (trouve)
 		{
+			
 			request.getSession().setAttribute("name",n);
 			request.getSession().setAttribute("tipe","client");
 		}

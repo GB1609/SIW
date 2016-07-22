@@ -2,6 +2,7 @@ package servlet;
 
 import java.awt.Event;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,21 +25,21 @@ import tables.Events;
 import tables.Information;
 import tables.Ticket;
 
-
 @WebServlet("/CreateAnEventServlet")
 public class CreateAnEventServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	protected DataSource datSource;
 	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String nome = request.getParameter("nome");
 		String categoria = request.getParameter("categoria");
 		String partecipante = request.getParameter("partecipanti");
@@ -51,37 +52,37 @@ public class CreateAnEventServlet extends HttpServlet {
 		String date = request.getParameter("dataEvento");
 		String url = request.getParameter("immagine");
 		String messaggio = "";
-		try{
-		Integer.parseInt(numeroB);
-		Integer.parseInt(costoB);
-		EventsDao ed = daoFactory.getEventoDao();
-		TicketDao td = daoFactory.getBigliettoDao();
-		CategoryDao cd = daoFactory.getCategoriaDao();
-		PartecipantsDao pd = daoFactory.getPartecipanteDao();
-		InformationDao id = daoFactory.getInformationDao();
-		int categoryCode = cd.returnCode(categoria);
-		int partecipantCode = pd.getPartecipantCode(partecipante);
-		Information i = new Information (LocalDate.parse(date),luogo,descrizione,citta,nome,url);
-		id.save(i);
-		Information i2 = ed.getInfoByName(nome);
-		int infId = i2.getInformationId();
-		Events e = new Events(-1, "", "vic", categoryCode, infId, partecipantCode);
-		ed.save(e);
-		List<Events> uffa =ed.searchByName(nome);
-		for (int index =0; index< Integer.parseInt(numeroB);index++)
-		{
-			td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoB), bigl, false));
-		}
-		}catch(NumberFormatException e){
-			messaggio = "Errore nei parametri inseriti";
+		try {
+			Integer.parseInt(numeroB);
+			Integer.parseInt(costoB);
+			EventsDao ed = daoFactory.getEventoDao();
+			TicketDao td = daoFactory.getBigliettoDao();
+			CategoryDao cd = daoFactory.getCategoriaDao();
+			PartecipantsDao pd = daoFactory.getPartecipanteDao();
+			InformationDao id = daoFactory.getInformationDao();
+			int categoryCode = cd.returnCode(categoria);
+			int partecipantCode = pd.getPartecipantCode(partecipante);
+			Information i = new Information(LocalDate.parse(date), luogo, descrizione, citta, nome, url);
+			id.save(i);
+			Information i2 = ed.getInfoByName(nome);
+			int infId = i2.getInformationId();
+			Events e = new Events(-1, "", request.getParameter("nome"), categoryCode, infId, partecipantCode);
+			ed.save(e);
+			List<Events> uffa = ed.searchByName(nome);
+			for (int index = 0; index < Integer.parseInt(numeroB); index++) {
+				td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoB), bigl, false));
+			}
+		} catch (Exception e) {
+			
+				messaggio = "Errore nei parametri inseriti";
 		}
 		if (messaggio.equals(""))
-			messaggio="Creazione evento completata";
-		
+			messaggio = "Creazione evento completata";
+
 		String s = new Gson().toJson(messaggio);
 		response.setContentType("application/json");
-		response.getWriter().write(s);		
-		
+		response.getWriter().write(s);
+
 	}
 
 }

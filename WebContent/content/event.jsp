@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html"%>
 <html lang="en">
 
 	<head>
@@ -14,12 +16,6 @@
 							<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css"/>
 							<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js"></script>
 							<link href="<%=request.getContextPath()%>/bootstrap/css/general.css" rel="stylesheet">
-								<style>
-									body {
-										background-color: lightblue;
-									}
-
-								</style>
 
 								<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 								<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -43,33 +39,31 @@
 											<button class="btn btn-default" id="reviewButton">Review</button>
 										</div>
 									</div>
-									<c:forEach items="${list}" var="it">
-										<div class="row">
-											<div class="col-md-3"></div>
-											<div class="col-md-6" id="name">
-												<h2>${it}</h2>
-											</div>
-											<div class="col-md-2">
-												<h2>Feedback</h2>
-											</div>
+									<div class="row">
+										<div class="col-md-3"></div>
+										<div class="col-md-6" id="name">
+											<h2></h2>
 										</div>
-										<div class="row">
-											<!-- Image -->
-											<div class="col-md-3" id="img">
-												<img src="${it}"></div>
+										<div class="col-md-2">
+											<h2>Feedback</h2>
+										</div>
+									</div>
+									<div class="row">
+										<!-- Image -->
+										<div class="col-md-3" id="img">
+											<img src=""></div>
 
-												<div class="col-md-9" id="description">
-													<div class="panel panel-default">
-														<!-- Head -->
-														<div class="panel-heading">
-															<h3 class="panel-title">Description</h3>
-														</div>
-														<!-- Body -->
-														<div class="panel-body" id="descriptionBody">${it}</div>
+											<div class="col-md-9" id="description">
+												<div class="panel panel-default">
+													<!-- Head -->
+													<div class="panel-heading">
+														<h3 class="panel-title">Description</h3>
 													</div>
+													<!-- Body -->
+													<div class="panel-body" id="descriptionBody">${it}</div>
 												</div>
 											</div>
-										</c:forEach>
+										</div>
 
 										<!-- Ticket -->
 										<br></br>
@@ -99,7 +93,56 @@
 										</div>
 									</div>
 
+									<div id="informationDiv">
+										<ul id="infoul">
+											<c:forEach items="${list}" var="it">
+												<li id='li'>${it}</li>
+											</c:forEach>
+										</ul>
+									</div>
+
 									<script>
+										var value = $($('#li').closest('ul').find('li:eq(4)')).text();
+										$(document).ready(function () {
+											$("#name").replaceWith('<div class="col-md-6" id="name"> <h2>' + $($('#li').closest('ul').find('li:eq(0)')).text() + '</h2> </div>');
+											$("#descriptionBody").replaceWith('<div class="panel-body" id "descriptionBody">' + $($('#li').closest('ul').find('li:eq(1)')).text() + '</div>');
+											$("#img").replaceWith('<div class="col-md-3" id="img" >	<img src=" ' + $($('#li').closest('ul').find('li:eq(2)')).text() + ' " width="237" height="400"> </div>');
+
+											$.ajax({
+												url: "<%=request.getContextPath()%>/ShowTicketServlet",
+												//JSON
+												data: {
+													eventcode: value
+												},
+												type: "GET",
+
+												dataType: "json"
+											}).done(function (responseJson) {
+												$("#resultTicket").empty();
+												var $ul = $('<ul>').appendTo($("#resultTicket"));
+												$.each(responseJson, function (index, item) {
+													$('<li id ="resultTickets">').text(item).appendTo($ul);
+												});
+
+												$("li").each(function (index, item) {
+													if ($(item).is("#resultTickets")) {
+														if (index % 2 != 0) {
+															$('<tr id = "r' + index + '">').appendTo("#ticketBody");
+															$('<td id = "d' + index + '">').text($(item).text()).appendTo('#r' + index);
+														} else {
+															$('<td id = "d' + index + '">').text($(item).text() + '.00 ').appendTo('#r' + (index - 1));
+															$(' <span class="glyphicon glyphicon-euro"></span>').appendTo('#d' + index);
+															$('<td> <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishlists" id ="wishlist">ADD TO WISHLIST <span class="glyphicon glyphicon-star"></span></button> <button class="btn btn-default" id = "buy">BUY <span class="glyphic' +
+																	'on glyphicon-shopping-cart"></span></button>').appendTo('#r' + (index - 1));
+														}
+													}
+												});
+
+												$("#resultTicket").replaceWith('<div id="resultTicket"></div>');
+												$("#informationDiv").replaceWith('<div id="informationDiv" value =' + $($('#li').closest('ul').find('li:eq(4)')).text() + '></div>');
+											});
+										});
+
 										$(document).on("click", "#reviewButton", function () {
 
 											$.ajax({
@@ -107,7 +150,7 @@
 
 												//JSON
 												data: {
-													eventcode: 29
+													eventcode: value
 												},
 												type: "GET",
 
@@ -138,19 +181,6 @@
 												$("#result").replaceWith('<div id="result"></div>');
 											});
 										});
-
-										//addrevButton da sistemare. (fare la form.) $(document).on("click", "#addrevButton", function (event) {
-										//
-										// 	$.ajax({ 		url: "../AddReview",
-										//
-										// 		//JSON 		data: { 			eventcode: 34 		}, 		type: "GET",
-										//
-										// 		dataType: "json" 	}).done(function (responseJson) { 		$("#result").empty(); 		var $ul = $('<ul id = "resultList">').appendTo($("#result")); 		$.each(responseJson, function (index, item) { 			$('<li id ="result' + index +
-										// '">').text(item).appendTo($ul); 		});
-										//
-										// 		$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() +
-										// '</div></div>'); 		$("#result").replaceWith('<div id="result"></div>'); 	}); });
-
 										$(document).on("click", "#descriptionButton", function (event) {
 
 											$.ajax({
@@ -158,7 +188,7 @@
 
 												//JSON
 												data: {
-													eventcode: 34
+													eventcode: value
 												},
 												type: "GET",
 
@@ -175,7 +205,6 @@
 											});
 										});
 
-									
 										$(document).on("click", "#ticketTable tbody #buy", function (event) {
 											var t = $($(this).closest('tr').find('td:eq(0)')).text();
 											var p = $($(this).closest('tr').find('td:eq(1)')).text();
@@ -184,7 +213,7 @@
 
 												//JSON
 												data: {
-													eventcode: 29,
+													eventcode: value,
 													type: t,
 													price: p
 												},
@@ -201,6 +230,44 @@
 												});
 												$('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
 											});
+										});
+
+										$(document).ready(function() {
+											$.ajax({
+												url: "<%=request.getContextPath()%>/ShowCartServlet",
+											}).done(function (responseJson) {
+												$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
+												$.each(responseJson, function (index, item) {
+													var myspl = item.split(" ");
+													var $tr = $('<tr id = "cartRow">').appendTo('#cartTable');
+													$('<td id = "cartData" value="' + myspl[0] + '">').text('Event: ' + myspl[3] + ' Type: ' + myspl[1] + ' Price: ' + myspl[2]).appendTo($tr);
+													$('<button class ="btn btn-danger" id = "removeBuy">').text("-").appendTo($tr);
+												});
+												$('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
+											});
+										});
+
+
+										$(document).on("click", "#cartBuy", function (event) {
+											$.ajax({
+												url: "<%=request.getContextPath()%>/BuyTicketServlet",
+
+												//JSON
+												data: {
+													owner: "gio"
+												},
+												type: "POST",
+
+												dataType: "json"
+											}).done(function (responseJson) {
+												if (responseJson === "DONE"){
+													alert("ACQUISTO EFFETTUATO CORRETTAMENTE");
+													$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
+												}
+												else
+													alert(responseJson);
+												}
+											);
 										});
 
 										$(document).on("click", "#ticketTable tbody #wishlist", function (event) {
@@ -230,14 +297,16 @@
 
 											$(document).on("click", "#wishlists #wish_list #sw", function (event) {
 												var lcode = $("#sw").val();
+												var t = $($(this).closest('tr').find('td:eq(0)')).text();
+												var p = $($(this).closest('tr').find('td:eq(1)')).text();
 												$.ajax({
-													url: "<%=request.getContextPath()%>//AddWishTicketServlet",
+													url: "<%=request.getContextPath()%>/AddWishTicketServlet",
 
 													//JSON
 													data: {
 														listcode: lcode,
 														owner: "gio",
-														eventcode: 29,
+														eventcode: value,
 														type: t,
 														price: p
 													},
@@ -255,45 +324,26 @@
 												});
 											});
 										});
-										$(document).on("click", "#wishlists #wish_list #sw", function (event) {
-											var lcode = $("#sw").val();
-											$.ajax({
-												url: "<%=request.getContextPath()%>//BuyTicket",
 
-												//JSON
+										//LOOK IT
+										$(document).on("click", "#removeBuy", function (event) {
+											var t = $($(this).closest('tr').find('td')).text();
+											var mysplit = t.split(" ");
+											$.ajax({
+												url: "<%=request.getContextPath()%>/removeFromCart",
 												data: {
-													listcode: lcode,
-													owner: "gio",
-													eventcode: 29,
-													type: t,
-													price: p
+													eventcode: value,
+													type: mysplit[3],
+													price: mysplit[5]
 												},
 												type: "GET",
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												if (responseJson === 1) {
-													alert("Cannot add selected Ticket at your Wishlist! it's already In.");
-												} else if (responseJson === -1) {
-													alert("Cannot add selected Ticket at your Wishlist! You aren't the Owner!!");
-												} else if (responseJson === 0) {
-													alert("Added!!");
+												if (responseJson === "DONE")
+													$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
 												}
-											});
-										});
-
-										$(document).on("click", "#removeBuy", function (event) {
-											var t = $(this).closest('tr').find('td:eq(0)');
-											alert($(t).val());
-											$.ajax({
-												url: "<%=request.getContextPath()%>//removeFromCart",
-												data: {
-													ticket: $(t).val()
-												},
-												type: "GET",
-
-												dataType: "json"
-											});
+											);
 										});
 									</script>
 									<div id="result"></div>

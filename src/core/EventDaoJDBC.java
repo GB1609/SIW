@@ -237,10 +237,9 @@ public class EventDaoJDBC implements EventsDao {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event,category WHERE event.category = category.categorycode AND category.name=? OR category.categorycode IN (SELECT category.father FROM category WHERE category.name=?) ";
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event,category WHERE event.category = category.categorycode AND category.name=?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, category);
-			statement.setString(2, category);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
@@ -257,6 +256,7 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
+		System.out.println(set.size());
 		return set;
 	}
 
@@ -473,4 +473,33 @@ public class EventDaoJDBC implements EventsDao {
 			}
 		}
 	}
+
+	@Override
+	public List<Events> organizedEvents(String user) {
+		List<Events> result = new ArrayList<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event WHERE event.organizator=?";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setString(1, user);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet results = statement.executeQuery();
+			while (results.next())
+				result.add(new Events(results.getInt(1), results.getString(2), results.getString(3), results.getInt(4),
+						results.getInt(5), results.getInt(6)));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	
+}
+	
 }

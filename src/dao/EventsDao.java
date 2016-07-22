@@ -13,6 +13,8 @@ public interface EventsDao {
 
 	public String getFeedback(int eventCode);
 
+	public List<Events> organizedEvents (String user);
+	
 	public Information getInfoByName (String value);
 
 	public Information getInformation(int eventCode);

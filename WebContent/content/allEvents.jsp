@@ -32,7 +32,11 @@
   </head>
   <body>
 
-	<jsp:include page="navbar.jsp"/>
+	    	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
+                                             	<%@include file="navbar.jsp"%>
+                                             	<% }else{ %>
+                                             	<%@include file="organizatorNavbar.jsp"%>
+                                             	<%} %>
 
 	<br><br>
 

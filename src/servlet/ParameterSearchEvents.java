@@ -187,9 +187,9 @@ public class ParameterSearchEvents extends HttpServlet {
 
 		String value = request.getParameter("value");
 		String typeOfRequest = request.getParameter("selezione");
+		System.out.println(value);
 		List<String> hy = new ArrayList<String>();
 		List<Information> hy2 = new ArrayList<Information>();
-		System.out.println(typeOfRequest);
 		switch (typeOfRequest) {
 		case "Category":
 			hy2=searchByCategory(value);

@@ -11,11 +11,11 @@
                             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
                                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
                                     <title>SIW</title>
-                                    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+                                    <link href="<%=request.getContextPath() %>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
                                         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-                                        <link href="../bootstrap/css/general.css" rel="stylesheet">
+                                        <link href="<%=request.getContextPath() %>/bootstrap/css/general.css" rel="stylesheet">
                                             <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-                                            <link href="../WEB-INF/lib/jquery.js">
+                                            <link href="<%=request.getContextPath() %>/WEB-INF/lib/jquery.js">
                                                 <script>
                                                     $(document).on('click', '#buttonRegister', function (event) {
                                                         $('#firstRow').replaceWith('<jsp:include page="registration.html"></jsp:include>');
@@ -26,7 +26,7 @@
                                                     $(document).on("click", "#registerNow", function (event) {
                                                         $.ajax({
 
-                                                            url: "../RegistrationServlet",
+                                                            url: "<%=request.getContextPath() %>/RegistrationServlet",
                                                             data: {
                                                                 username: $("#user").val(),
                                                                 password: $("#password").val(),
@@ -43,12 +43,16 @@
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Ora sei registrato sarai portato alla pagina principale entro pochi secondi</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                                                             } else {
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> UserName gia utilizzato!</h1> <br><br> Cambia username e riprovare</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
-                                                            }})
+                                                            }
+                                                         
+                                                 
+                                                        
+                                                        })
                                                     });
                                                 </script>
                                             </head>
                                             <body>
-                                           	<%  if(!(session.getAttribute("tipe")=="organizator")){%>
+                                           	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
                                              	<%@include file="navbar.jsp"%>
                                              	<% }else{ %>
                                              	<%@include file="organizatorNavbar.jsp"%>
@@ -73,17 +77,17 @@
                                                                 <div class="col-md-4">
                                                                     <h2>Sport</h2>
                                                                     <p>Sei appassionato di calcio, formula uno o di Tennis? Guarda i prezzi dei biglietti degli eventi sportivi</p>
-                                                                    <a class="btn btn-primary" href="#">Guarda ora</a>
+                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Cinema">Guarda ora</a>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <h2>Musica</h2>
                                                                     <p>Scopri gli eventi musicali vicino a te!!!</p>
-                                                                    <a class="btn btn-primary" href="#">Guarda ora</a>
+                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Musica">Guarda ora</a>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <h2>Cinema</h2>
                                                                     <p>Voglia di rilassarti, di vedere un bel film? Guarda i prezzi dei cinema intorno a te!</p>
-                                                                    <a class="btn btn-primary" href="#">Guarda Ora</a>
+                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Sport">Guarda Ora</a>
                                                                 </div>
                                                             </div>
                                                         </div>

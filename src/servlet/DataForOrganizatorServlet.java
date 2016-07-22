@@ -37,6 +37,7 @@ public class DataForOrganizatorServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		List<String>myList = returnPartecipants();
+		List<String> placesList = returnPlaces();
 		List<String>cityList = returnCity();
 		List<String> tipologyList = tipologyForTickets();
 		List<String> category = getAllCategories();
@@ -44,6 +45,7 @@ public class DataForOrganizatorServlet extends HttpServlet {
 		request.setAttribute("allCat", category);
 		request.setAttribute("allCities", cityList);
 		request.setAttribute("allTickets", tipologyList );
+		request.setAttribute("allPlace", placesList );
 		RequestDispatcher id = request.getServletContext().getRequestDispatcher("/content/createEvents.jsp");
 		id.forward(request,response);
 
@@ -71,6 +73,20 @@ public class DataForOrganizatorServlet extends HttpServlet {
 		{
 			if (!result.contains(places.get(i).getCity()))
 			result.add(places.get(i).getCity());
+		}
+		return result;
+	}
+	
+	
+	private List<String> returnPlaces()
+	{
+		PlaceDao pd = daoFactory.getPlaceDao();
+		List<Place> places = pd.returnAllPlace();
+		List<String>result = new ArrayList<String>();
+		for (int i =0; i<places.size();i++)
+		{
+			if (!result.contains(places.get(i).getCity()))
+			result.add(places.get(i).getName());
 		}
 		return result;
 	}

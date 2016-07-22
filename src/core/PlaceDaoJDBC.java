@@ -140,4 +140,5 @@ public class PlaceDaoJDBC implements PlaceDao
 		}
 		return places;
 	}
+
 }
