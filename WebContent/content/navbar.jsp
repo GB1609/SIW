@@ -9,6 +9,13 @@
 		});
 	</script>
 	<script>
+	$(document).on("click", "#logoutButtonUser", function (event)
+			{
+			 	<%session.setAttribute("name",null);%>
+			 	<%session.setAttribute("tipe",null);%>
+			});
+	</script>
+	<script>
 
 		$(document).on("click", "#loginButton", function (event) {
 
@@ -103,6 +110,7 @@
 							</div>
 						</form>
 					</li>
+					<%  if(!(session.getAttribute("tipe")=="client")){%>
 					<li class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown">Login
 							<span class="caret"></span>
@@ -113,7 +121,6 @@
 									<h3 class="panel-title">Effettua l'accesso</h3>
 								</div>
 								<div class="panel-body">
-
 									<div class="form-group">
 										<input class="form-control" placeholder="Username" type="text" name="username" id="username"></div>
 										<div class="form-group">
@@ -121,14 +128,17 @@
 											<div align="center">
 												<button class="btn btn-primary" id="loginButton">Login</button>
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</li>
+							<% }else{ %>
+						<li><a href="home.jsp" id="logoutButtonUser">Logout </a></li>
+							<%} %>
 						</ul>
 					</div>
 				</nav>
 				<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+				
 			</html>
 		</body>
