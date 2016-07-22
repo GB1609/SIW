@@ -22,6 +22,7 @@ public class ShowInformationServlet extends HttpServlet {
 
 	protected DataSource dataSource;
 	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
@@ -30,35 +31,20 @@ public class ShowInformationServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String value=request.getParameter("nomeEvento");
+		DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
+		String value = request.getParameter("nominativo");
 		EventsDao ed = this.daoFactory.getEventoDao();
 		int eventCode = ed.getCode(value);
-		DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-
 		Information information = ed.getInformation(eventCode);
 		List<String> informations = new ArrayList<>();
 		informations.add(information.getName());
 		informations.add(information.getDescription());
 		informations.add(information.getImg());
 		informations.add(ed.getFeedback(eventCode));
+		response.setCharacterEncoding("UTF-8");
+		request.setAttribute("eventcode", eventCode);
 		request.setAttribute("list", informations);
 		RequestDispatcher id = request.getServletContext().getRequestDispatcher("/content/event.jsp");
-		id.forward(request,response);
-
-
-		//		response.setContentType("text/html");
-		//		response.getWriter();
-		//		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
-		//		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		//		EventsDao ed = dao.getEventoDao();
-		//		Information information = ed.getInformation(eventCode);
-		//		List<String> informations = new ArrayList<>();
-		//		informations.add(information.getName());
-		//		informations.add(information.getDescription());
-		//		informations.add(information.getImg());
-		//		informations.add(ed.getFeedback(eventCode));
-		//		String gson = new Gson().toJson(informations);
-		//		response.setContentType("application/json");
-		//		response.getWriter().write(gson);
+		id.forward(request, response);
 	}
 }
