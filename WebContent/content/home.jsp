@@ -43,16 +43,12 @@
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Ora sei registrato sarai portato alla pagina principale entro pochi secondi</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                                                             } else {
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> UserName gia utilizzato!</h1> <br><br> Cambia username e riprovare</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
-                                                            }
-                                                         
-                                                 
-                                                        
-                                                        })
+                                                            }})
                                                     });
                                                 </script>
                                             </head>
                                             <body>
-                                           	<%  if(session.getAttribute("name")==null){%>
+                                           	<%  if(!(session.getAttribute("tipe")=="organizator")){%>
                                              	<%@include file="navbar.jsp"%>
                                              	<% }else{ %>
                                              	<%@include file="organizatorNavbar.jsp"%>
