@@ -6,15 +6,14 @@ public class Events
 	String organizator;
 	int category;
 	int information;
-	int partecipant;
-	public Events(int eventcode, String feedback, String organizator, int category, int information, int partecipant)
+
+	public Events(int eventcode, String feedback, String organizator, int category, int information)
 	{
 		this.eventcode=eventcode;
 		this.feedback=feedback;
 		this.organizator=organizator;
 		this.category=category;
 		this.information=information;
-		this.partecipant=partecipant;
 	}
 	public int getCategory()
 	{
@@ -36,10 +35,7 @@ public class Events
 	{
 		return this.organizator;
 	}
-	public int getPartecipant()
-	{
-		return this.partecipant;
-	}
+
 	public void setCategory(int category)
 	{
 		this.category=category;
@@ -60,8 +56,5 @@ public class Events
 	{
 		this.organizator=organizator;
 	}
-	public void setPartecipant(int partecipant)
-	{
-		this.partecipant=partecipant;
-	}
+
 }

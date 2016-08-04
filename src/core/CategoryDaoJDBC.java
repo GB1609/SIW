@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.StandardEmitterMBean;
+
 import dao.CategoryDao;
 import tables.Category;
 import tables.Partecipants;
@@ -22,12 +24,10 @@ public class CategoryDaoJDBC implements CategoryDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			int figlio=c.getSon();
 			String nome=c.getName();
-			String insert="insert into category (name, son) values(?,?)";
+			String insert="insert into category (name) values(?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
 			statement.setString(1,nome);
-			statement.setInt(2,figlio);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -78,48 +78,13 @@ public class CategoryDaoJDBC implements CategoryDao
 			}
 		}
 	}
-	@Override
-	public void update(Category c)
-	{
-		Connection connection=this.dataSource.getConnection();
-		try
-		{
-			int id=c.getCategoryCode();
-			int figlio=c.getSon();
-			String nome=c.getName();
-			String update="update category SET categorycode=? , name = ?, son = ? WHERE categorycode=?";
-			PreparedStatement statement=connection.prepareStatement(update);
-			statement.setInt(1,id);
-			statement.setString(2,nome);
-			statement.setInt(3,figlio);
-			statement.setInt(4,id);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-			statement.executeUpdate();
-			connection.commit();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				connection.close();
-			}
-			catch (SQLException e)
-			{
-				e.printStackTrace();
-			}
-		}
-	}
+	
 	@Override
 	public List<String> getCategories() {
 		Connection connection = this.dataSource.getConnection();
 		List<String> cat = new ArrayList<String>();
 		try {
-			String returnAll = "SELECT category.name FROM category WHERE category.categorycode NOT IN (SELECT category.categorycode FROM category WHERE category.categorycode=category.father) ";
+			String returnAll = "SELECT category.name FROM category ";
 			PreparedStatement statement = connection.prepareStatement(returnAll);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);

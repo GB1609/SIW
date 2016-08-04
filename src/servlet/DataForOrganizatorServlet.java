@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import core.DaoFactory;
 import core.DataSource;
 import dao.CategoryDao;
+import dao.CityDao;
 import dao.PartecipantsDao;
 import dao.PlaceDao;
 import dao.TicketDao;
+import tables.City;
 import tables.Partecipants;
 import tables.Place;
 
@@ -66,13 +68,13 @@ public class DataForOrganizatorServlet extends HttpServlet {
 	
 	private List<String> returnCity()
 	{
-		PlaceDao pd = daoFactory.getPlaceDao();
-		List<Place> places = pd.returnAllPlace();
+		CityDao cd = daoFactory.getCityDao();
+		List<City> cities = cd.getAllCities();
 		List<String>result = new ArrayList<String>();
-		for (int i =0; i<places.size();i++)
+		for (int i =0; i<cities.size();i++)
 		{
-			if (!result.contains(places.get(i).getCity()))
-			result.add(places.get(i).getCity());
+			if (!result.contains(cities.get(i).getName()))
+			result.add(cities.get(i).getName());
 		}
 		return result;
 	}

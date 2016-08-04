@@ -32,4 +32,6 @@ public abstract class DaoFactory
 	public abstract PartecipantsOfEventsDao getPartecipantiAdEventi();
 	public abstract ReviewDao getRecensioneDao();
 	public abstract UserDao getUtenteDao();
+	public abstract CityDao getCityDao();
+	public abstract SubCategoryDao getSubCategoryDao();
 }

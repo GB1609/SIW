@@ -6,7 +6,6 @@ public interface CategoryDao
 {
 	public void save(Category c);
 	public void delete(Category c);
-	public void update(Category c);
 	public List<String> getCategories();
 	public int returnCode(String name);
 }

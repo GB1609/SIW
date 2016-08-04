@@ -176,6 +176,7 @@ public class EventDaoJDBC implements EventsDao {
 		return name;
 	}
 
+	//TODO DA RIFARE
 	@Override
 	public List<Events> returnAllEvents() {
 		List<Events> set = new ArrayList<Events>();
@@ -183,15 +184,14 @@ public class EventDaoJDBC implements EventsDao {
 		try {
 
 			String returnAll = "SELECT event.eventcode,event.feedback, event.organizator, event.category,"
-					+ "event.information, event.partecipant" + " FROM event, information "
+					+ "event.information," + " FROM event, information "
 					+ "WHERE event.information = information.informationid " + "ORDER BY information.date DESC";
 			PreparedStatement statement = connection.prepareStatement(returnAll);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+			set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 
 		} catch (Exception e) {
@@ -210,13 +210,12 @@ public class EventDaoJDBC implements EventsDao {
 	public void save(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into event(feedback, organizator, category, information, partecipant) values (?,?,?,?,?)";
+			String insert = "insert into event(feedback, organizator, category, information) values (?,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
 			statement.setString(1, ev.getFeedback());
 			statement.setString(2, ev.getOrganizator());
 			statement.setInt(3, ev.getCategory());
 			statement.setInt(4, ev.getInformation());
-			statement.setInt(5, ev.getPartecipant());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -237,15 +236,14 @@ public class EventDaoJDBC implements EventsDao {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event,category WHERE event.category = category.categorycode AND category.name=?";
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,category WHERE event.category = category.categorycode AND category.name=?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, category);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -272,8 +270,7 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -294,7 +291,7 @@ public class EventDaoJDBC implements EventsDao {
 		try {
 
 			String returnAll = "SELECT event.eventcode,event.feedback, event.organizator, event.category,"
-					+ "event.information, event.partecipant" + " FROM event, information "
+					+ "event.information" + " FROM event, information "
 					+ "WHERE event.information = information.informationid AND information.name=? "
 					+ "ORDER BY information.date DESC";
 			PreparedStatement statement = connection.prepareStatement(returnAll);
@@ -303,8 +300,7 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 
 		} catch (Exception e) {
@@ -331,8 +327,7 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -346,6 +341,8 @@ public class EventDaoJDBC implements EventsDao {
 		return set;
 	}
 
+	
+	//TODO DA RIFARE
 	@Override
 	public List<Events> searchByPartecipants(String partecipant) {
 		List<Events> set = new ArrayList<Events>();
@@ -360,8 +357,7 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -380,15 +376,14 @@ public class EventDaoJDBC implements EventsDao {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event, information WHERE event.information = information.informationid AND information.city = ? ORDER BY information.date DESC";
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event, information WHERE event.information = information.informationid AND information.city = ? ORDER BY information.date DESC";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, city);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -422,8 +417,7 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5), result.getInt(6)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -451,13 +445,12 @@ public class EventDaoJDBC implements EventsDao {
 	public void update(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String update = "update event SET feedback = ?, organizator = ?, category = ?, information = ?, partecipant = ? WHERE eventcode =?";
+			String update = "update event SET feedback = ?, organizator = ?, category = ?, information = ? WHERE eventcode =?";
 			PreparedStatement statement = connection.prepareStatement(update);
 			statement.setString(1, ev.getFeedback());
 			statement.setString(2, ev.getOrganizator());
 			statement.setInt(3, ev.getCategory());
 			statement.setInt(4, ev.getInformation());
-			statement.setInt(5, ev.getPartecipant());
 			statement.setInt(6, ev.getEventcode());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
@@ -479,15 +472,14 @@ public class EventDaoJDBC implements EventsDao {
 		List<Events> result = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant FROM event WHERE event.organizator=?";
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event WHERE event.organizator=?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, user);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet results = statement.executeQuery();
 			while (results.next())
-				result.add(new Events(results.getInt(1), results.getString(2), results.getString(3), results.getInt(4),
-						results.getInt(5), results.getInt(6)));
+				result.add(new Events(results.getInt(1), results.getString(2), results.getString(3), results.getInt(4), results.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();

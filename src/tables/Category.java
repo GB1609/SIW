@@ -3,12 +3,12 @@ public class Category
 {
 	int categoryCode;
 	String name;
-	int son;
-	public Category(int codiceCategoria, String nome, int figlio)
+
+	public Category(int codiceCategoria, String nome)
 	{
 		this.categoryCode=codiceCategoria;
 		this.name=nome;
-		this.son=figlio;
+
 	}
 	public void setCategoryCode(int codiceCategoria)
 	{
@@ -18,10 +18,7 @@ public class Category
 	{
 		this.name=nome;
 	}
-	public void setSon(int figlio)
-	{
-		this.son=figlio;
-	}
+	
 	public int getCategoryCode()
 	{
 		return categoryCode;
@@ -30,8 +27,5 @@ public class Category
 	{
 		return name;
 	}
-	public int getSon()
-	{
-		return son;
-	}
+	
 }

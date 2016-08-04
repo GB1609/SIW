@@ -1,5 +1,6 @@
 package core;
 import dao.CategoryDao;
+import dao.CityDao;
 import dao.ClientsDao;
 import dao.ClientsWishDao;
 import dao.EventsDao;
@@ -11,6 +12,7 @@ import dao.PartecipantsDao;
 import dao.PartecipantsOfEventsDao;
 import dao.PlaceDao;
 import dao.ReviewDao;
+import dao.SubCategoryDao;
 import dao.TicketDao;
 import dao.UserDao;
 import dao.WishListDao;
@@ -114,5 +116,13 @@ public class PostgresDaoFactory extends DaoFactory
 	public UserDao getUtenteDao()
 	{
 		return new UserDaoJDBC(dataSource);
+	}
+	@Override
+	public CityDao getCityDao() {
+		return new CityDaoJDBC(dataSource);
+	}
+	@Override
+	public SubCategoryDao getSubCategoryDao() {
+		return new SubCategoryDaoJDBC(dataSource);
 	}
 }

@@ -22,10 +22,9 @@ public class PlaceDaoJDBC implements PlaceDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			String delete="delete FROM place WHERE city = ?,name=? ";
+			String delete="delete FROM place WHERE name=? ";
 			PreparedStatement statement=connection.prepareStatement(delete);
-			statement.setString(1,p.getCity());
-			statement.setString(2,p.getName());
+			statement.setString(1,p.getName());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
@@ -63,7 +62,6 @@ public class PlaceDaoJDBC implements PlaceDao
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
 			connection.commit();
-			System.out.println("information insert");
 		}
 		catch (SQLException e)
 		{

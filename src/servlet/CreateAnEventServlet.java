@@ -58,15 +58,13 @@ public class CreateAnEventServlet extends HttpServlet {
 			EventsDao ed = daoFactory.getEventoDao();
 			TicketDao td = daoFactory.getBigliettoDao();
 			CategoryDao cd = daoFactory.getCategoriaDao();
-			PartecipantsDao pd = daoFactory.getPartecipanteDao();
 			InformationDao id = daoFactory.getInformationDao();
 			int categoryCode = cd.returnCode(categoria);
-			int partecipantCode = pd.getPartecipantCode(partecipante);
 			Information i = new Information(LocalDate.parse(date), luogo, descrizione, citta, nome, url);
 			id.save(i);
 			Information i2 = ed.getInfoByName(nome);
 			int infId = i2.getInformationId();
-			Events e = new Events(-1, "", request.getParameter("nome"), categoryCode, infId, partecipantCode);
+			Events e = new Events(-1, "", request.getParameter("nome"), categoryCode, infId);
 			ed.save(e);
 			List<Events> uffa = ed.searchByName(nome);
 			for (int index = 0; index < Integer.parseInt(numeroB); index++) {

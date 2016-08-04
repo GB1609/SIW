@@ -38,7 +38,6 @@
                                                             type: "GET",
                                                             dataType: "json"
                                                         }).done(function (responseJson) {
-                                                        	alert("ciao");
                                                             if (responseJson == "notExist") {
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Ora sei registrato sarai portato alla pagina principale entro pochi secondi</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                                                             } else {
