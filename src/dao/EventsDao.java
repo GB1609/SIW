@@ -9,6 +9,8 @@ import tables.Information;
 public interface EventsDao {
 	public void delete(int eventCode);
 
+	public List<Events> searchBySubCategory(String category);
+	
 	public int getCode(String name);
 
 	public String getFeedback(int eventCode);

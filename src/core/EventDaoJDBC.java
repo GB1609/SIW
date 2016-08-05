@@ -176,7 +176,6 @@ public class EventDaoJDBC implements EventsDao {
 		return name;
 	}
 
-	//TODO DA RIFARE
 	@Override
 	public List<Events> returnAllEvents() {
 		List<Events> set = new ArrayList<Events>();
@@ -232,11 +231,45 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
+	public List<Events> searchBySubCategory(String category) {
+		List<Events> set = new ArrayList<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,subcategory WHERE event.category = subcategory.subcategorycode AND subcategory.name=?";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setString(1, category);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(set.size());
+		return set;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	@Override
 	public List<Events> searchByCategory(String category) {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,category WHERE event.category = category.categorycode AND category.name=?";
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,subcategory,category WHERE event.category = subcategory.father AND category.name=? AND subcategory.father=catergory.categorycode";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, category);
 			connection.setAutoCommit(false);
@@ -342,15 +375,14 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	
-	//TODO DA RIFARE
 	@Override
 	public List<Events> searchByPartecipants(String partecipant) {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant "
-					+ " FROM event, information, partecipant"
-					+ " WHERE partecipant.name = ? AND event.partecipant = partecipant.partecipantid AND event.information=information.informationid ORDER BY information.date DESC ";
+					+ " FROM event, information, partecipant, eventpartecipant"
+					+ " WHERE partecipant.name = ? AND event.eventcode = eventpartecipant.event AND partecipant.partecipaintid=eventpartecipant.partecipant AND event.information=information.informationid ORDER BY information.date DESC ";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, partecipant);
 			connection.setAutoCommit(false);
