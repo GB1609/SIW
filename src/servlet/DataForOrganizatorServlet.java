@@ -17,6 +17,7 @@ import dao.CategoryDao;
 import dao.CityDao;
 import dao.PartecipantsDao;
 import dao.PlaceDao;
+import dao.SubCategoryDao;
 import dao.TicketDao;
 import tables.City;
 import tables.Partecipants;
@@ -102,8 +103,8 @@ public class DataForOrganizatorServlet extends HttpServlet {
 	
 	private List<String> getAllCategories()
 	{
-		CategoryDao cd = daoFactory.getCategoriaDao();
-		List<String> result = cd.getCategories();
+		SubCategoryDao cd = daoFactory.getSubCategoryDao();
+		List<String> result = cd.getSubCategories();
 		return result;
 	}
 

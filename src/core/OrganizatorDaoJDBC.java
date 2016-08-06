@@ -59,7 +59,7 @@ public class OrganizatorDaoJDBC implements OrganizatorDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			String delete="delete FROM client WHERE username = ? ";
+			String delete="delete FROM organizator WHERE username = ? ";
 			PreparedStatement statement=connection.prepareStatement(delete);
 			statement.setLong(1,c);
 			connection.setAutoCommit(false);
@@ -85,7 +85,7 @@ public class OrganizatorDaoJDBC implements OrganizatorDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			String insert="insert into client (username, password, lastname, firstname, birthdate, address) values (?,?,?,?,?,?)";
+			String insert="insert into organizator (username, password, lastname, firstname, birthdate, address) values (?,?,?,?,?,?)";
 			PreparedStatement statement=connection.prepareStatement(insert);
 			statement.setString(1,c.getUsername());
 			statement.setString(2,c.getPassword());
@@ -120,7 +120,7 @@ public class OrganizatorDaoJDBC implements OrganizatorDao
 		Connection connection=this.dataSource.getConnection();
 		try
 		{
-			String update="update client SET password = ?, lastname = ?, firstname = ?, birthdate = ?, address = ?,credit=?   WHERE username=?";
+			String update="update organizator SET password = ?, lastname = ?, firstname = ?, birthdate = ?, address = ?   WHERE username=?";
 			PreparedStatement statement=connection.prepareStatement(update);
 			statement.setString(1,c.getPassword());
 			statement.setString(2,c.getLastName());

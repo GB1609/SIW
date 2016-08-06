@@ -1,8 +1,6 @@
 package servlet;
 
-import java.awt.Event;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,6 +18,7 @@ import dao.CategoryDao;
 import dao.EventsDao;
 import dao.InformationDao;
 import dao.PartecipantsDao;
+import dao.SubCategoryDao;
 import dao.TicketDao;
 import tables.Events;
 import tables.Information;
@@ -40,37 +39,53 @@ public class CreateAnEventServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		
+		String [] partecipanti = request.getParameterValues("partecipanti[]");
+		String [] tipoBiglietti = request.getParameterValues("tipoBiglietti[]");
+		String [] numeroBiglietti = request.getParameterValues("numeroBiglietti[]");
+		String [] costoBiglietti = request.getParameterValues("costoBiglietti[]");
+		
+		
 		String nome = request.getParameter("nome");
 		String categoria = request.getParameter("categoria");
-		String partecipante = request.getParameter("partecipanti");
 		String citta = request.getParameter("citta");
 		String luogo = request.getParameter("luogo");
-		String bigl = request.getParameter("tipoBiglietti");
-		String numeroB = request.getParameter("numeroBiglietti");
-		String costoB = request.getParameter("costoBiglietti");
 		String descrizione = request.getParameter("description");
 		String date = request.getParameter("dataEvento");
 		String url = request.getParameter("immagine");
 		String messaggio = "";
 		try {
-			Integer.parseInt(numeroB);
-			Integer.parseInt(costoB);
+			PartecipantsDao pd = daoFactory.getPartecipanteDao();
 			EventsDao ed = daoFactory.getEventoDao();
 			TicketDao td = daoFactory.getBigliettoDao();
 			CategoryDao cd = daoFactory.getCategoriaDao();
 			InformationDao id = daoFactory.getInformationDao();
-			int categoryCode = cd.returnCode(categoria);
+			SubCategoryDao scd = daoFactory.getSubCategoryDao();
+			int categoryCode = scd.returnCode(categoria);
 			Information i = new Information(LocalDate.parse(date), luogo, descrizione, citta, nome, url);
 			id.save(i);
 			Information i2 = ed.getInfoByName(nome);
 			int infId = i2.getInformationId();
-			Events e = new Events(-1, "", request.getParameter("nome"), categoryCode, infId);
+			Events e = new Events(-1, "", "vic", categoryCode, infId);
 			ed.save(e);
 			List<Events> uffa = ed.searchByName(nome);
-			for (int index = 0; index < Integer.parseInt(numeroB); index++) {
-				td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoB), bigl, false));
+			for (int j=0; j<tipoBiglietti.length;j++)
+			{
+			for (int index = 0; index < Integer.parseInt(numeroBiglietti[j]); index++) {
+				
+				td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoBiglietti[j]), tipoBiglietti[j], false));
 			}
+			}
+			
+			
+			for (int indice=0; indice<partecipanti.length;indice++)
+			{	
+				ed.insertPartecipant(pd.getPartecipantCode(partecipanti[indice]),uffa.get(0).getEventcode());
+			}
+			
+			
 		} catch (Exception e) {
+			e.printStackTrace();
 			
 				messaggio = "Errore nei parametri inseriti";
 		}

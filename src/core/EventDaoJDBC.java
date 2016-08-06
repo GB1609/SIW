@@ -258,18 +258,12 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	
-	
-	
-	
-	
-	
-	
 	@Override
 	public List<Events> searchByCategory(String category) {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,subcategory,category WHERE event.category = subcategory.father AND category.name=? AND subcategory.father=catergory.categorycode";
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,subcategory,category WHERE event.category = subcategory.subcategorycode AND category.name=? AND subcategory.father=category.categorycode";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, category);
 			connection.setAutoCommit(false);
@@ -525,5 +519,31 @@ public class EventDaoJDBC implements EventsDao {
 		return result;
 	
 }
+
+	@Override
+	public void insertPartecipant(int partecipant, int eventCode) {
+		
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String insert = "insert into eventpartecipant(event, partecipant) values (?,?)";
+			PreparedStatement statement = connection.prepareStatement(insert);
+			statement.setInt(1, eventCode);
+			statement.setInt(2, partecipant);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+	}
 	
 }

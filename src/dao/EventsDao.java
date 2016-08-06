@@ -10,7 +10,7 @@ public interface EventsDao {
 	public void delete(int eventCode);
 
 	public List<Events> searchBySubCategory(String category);
-	
+	public void insertPartecipant (int partecipant, int eventCode);
 	public int getCode(String name);
 
 	public String getFeedback(int eventCode);

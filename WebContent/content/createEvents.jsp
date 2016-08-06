@@ -20,20 +20,67 @@
                                         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
                                         <link href="<%= request.getContextPath() %>/WEB-INF/lib/jquery.js">
 
+                                        <script>
+                                        var index=0;
+
+                                          $(document).on("click","#addPart", function(event){
+                                            index++;
+
+                                          $("#buttonAddPart").remove();
+                                          $("#part0").append('<div class="col-md-1"></div>  <div class="col-md-3">  <div class="form-group"> <label for="select'+index+'">Partecipanti:</label> <select id="select'+index+'" class="form-control"> <c:forEach items="${ allPartecipants}" var="bo"> <option>${bo}</option> </c:forEach></select></div></div> <div class="col-md-1" id="buttonAddPart"> <label for="addPart"> Add: </label> <button class="btn btn-success" id="addPart"> + </button> </div> ');
+                                          });
+
+                                      </script>
+
+
+
+                                        <script>
+                                        var index2=0;
+
+                                          $(document).on("click","#addTickets", function(event){
+                                            index2++;
+                                            $("#buttonAddTicket").remove();
+                                            $("#farlocco").append('<div class="row" id="ticketsRow'+index2+'"> <div class="col-md-3"><div class="form-group"><label for="tickets'+index2+'">Tipologia Biglietti:</label>  <input type="text" class="form-control" id="tickets'+index2+'"> </div> </div> <div class="col-md-2"> <label for="costo'+index2+'">Costo Biglietti:</label> <input type="text" class="form-control" id="costo'+index2+'"></div> <div class="col-md-2"> <label for="num'+index2+'">Numero Biglietti:</label>  <input type="text" class="form-control" id="num'+index2+'" ></div> <div class="col-md-1" id="buttonAddTicket"> <label for="addTickets"> Add: </label>  <button class="btn btn-success" id="addTickets"> + </button> </div></div><br>');
+                                            });
+                                        </script>
+
                                             <script>
 
+
                                                 $(document).on("click","#sub",function(event){
+
+                                                	var ticketsNumber = [];
+
+                                                	var ticketsCost = [];
+
+                                                	var ticketsType = [] ;
+
+                                                	for (var i=0; i<index2+1;i++)
+                                                	{
+                                                		ticketsNumber.push($("#num"+i).val());
+                                                  	  	ticketsCost.push($("#costo"+i).val());
+                                                    	ticketsType.push($("#tickets"+i).val());
+                                                	}
+
+                                                	var partecipants = [];
+
+                                                	for (var i=0; i<index+1; i++)
+                                                		{
+
+                                                		partecipants.push($("#select"+i).val());
+                                                	}
+
                                                   $.ajax({
                                                       url :"<%= request.getContextPath()%>/CreateAnEventServlet" ,
                                                       data : {
                                                         nome: $("#usr").val(),
                                                         categoria: $("#sel1").val(),
-                                                        partecipanti: $("#select").val(),
+                                                        partecipanti: partecipants,
                                                         citta: $("#cities").val() ,
                                                         luogo: $("#luogo").val(),
-                                                        tipoBiglietti:$("#tickets").val() ,
-                                                        costoBiglietti : $("#costo").val() ,
-                                                        numeroBiglietti: $("#num").val() ,
+                                                        tipoBiglietti:ticketsType ,
+                                                        costoBiglietti : ticketsCost ,
+                                                        numeroBiglietti: ticketsNumber ,
                                                         description : $("#description").val(),
                                                         dataEvento : $("#dataEvento").val(),
                                                         immagine : $("#immagine").val()
@@ -50,11 +97,9 @@
 
                                         </head>
                                         <body>
-   	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
-                                             	<%@include file="navbar.jsp"%>
-                                             	<% }else{ %>
+
                                              	<%@include file="organizatorNavbar.jsp"%>
-                                             	<%} %>
+
                                             <br>
                                                 <br>
                                                     <br>
@@ -70,6 +115,9 @@
                                                                             <div class="col-md-3">
                                                                                 <label for="usr">Nome evento:</label>
                                                                                 <input type="text" class="form-control" id="usr"></div>
+                                                                          </div><br>
+
+                                                                            <div class="row">
                                                                                 <div class="col-md-3">
                                                                                     <label for="sel1">Categoria:</label>
                                                                                     <select class="form-control" id="sel1" >
@@ -78,10 +126,15 @@
                                                                                         </c:forEach>
                                                                                     </select>
                                                                                 </div>
+                                                                              </div><br>
+
+                                                                              <div class="row" id="part0">
+
+
                                                                                 <div class="col-md-3">
                                                                                     <div class="form-group">
-                                                                                        <label for="select">Partecipanti:</label>
-                                                                                        <select id="select" class="form-control">
+                                                                                        <label for="select0">Partecipanti:</label>
+                                                                                        <select id="select0" class="form-control">
                                                                                             <c:forEach items="${ allPartecipants}" var="bo">
                                                                                                 <option>${bo}</option>
                                                                                             </c:forEach>
@@ -89,6 +142,14 @@
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
+
+                                                                                <div class="col-md-1" id="buttonAddPart">
+                                                                                      <label for="addPart"> Add: </label>
+                                                                                <button class="btn btn-success" id="addPart"> + </button>
+                                                                                </div>
+
+                                                                              </div> <br>
+                                                                              <div class="row">
                                                                                 <div class="col-md-3">
                                                                                     <div class="form-group">
                                                                                         <label for="sel1">City:</label>
@@ -101,7 +162,8 @@
                                                                                     </div>
 
                                                                                 </div>
-                                                                            </div>
+                                                                              </div>
+
                                                                             <br>
                                                                                 <br>
 
@@ -114,35 +176,47 @@
                                                                                             </c:forEach>
                                                                                             </select>
                                                                                             </div>
+                                                                                          </div> <br>
+                                                                                          <div id="farlocco">
+                                                                                          <div class="row" id="ticketsRow0">
                                                                                             <div class="col-md-3">
                                                                                                 <div class="form-group">
-                                                                                                    <label for="tickets">Tipologia Biglietti:</label>
-                                                                                                    <select id="tickets" class="form-control">
-                                                                                                        <c:forEach items="${ allTickets}" var="ticket">
-                                                                                                            <option>${ticket}</option>
-                                                                                                        </c:forEach>
-                                                                                                    </select>
+                                                                                                    <label for="tickets0">Tipologia Biglietti:</label>
+
+                                                                                                    <input type="text" class="form-control" id="tickets0">
+
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="col-md-2">
-                                                                                                <label for="costo">Costo Biglietti:</label>
-                                                                                                <input type="text" class="form-control" id="costo"></div>
+                                                                                                <label for="costo0">Costo Biglietti:</label>
+                                                                                                <input type="text" class="form-control" id="costo0"></div>
                                                                                                 <div class="col-md-2">
-                                                                                                    <label for="num">Numero Biglietti:</label>
-                                                                                                    <input type="text" class="form-control" id="num" ></div>
+                                                                                                    <label for="num0">Numero Biglietti:</label>
+                                                                                                    <input type="text" class="form-control" id="num0" ></div>
 
-                                                                                                </div>
-                                                                                                <div class="row">
+                                                                                                    <div class="col-md-1" id="buttonAddTicket">
+                                                                                                          <label for="addTickets"> Add: </label>
+                                                                                                    <button class="btn btn-success" id="addTickets"> + </button>
+                                                                                                    </div>
+
+
+                                                                                                  </div><br>
+                                                                                                  </div>
+                                                                                              <div class="row">
                                                                                                   <div class="col-md-3">
                                                                                                   <div class="form-group">
                                                                                                    <label for="description">Descrizione:</label>
                                                                                                    <textarea class="form-control" rows="5" id="description"></textarea>
                                                                                                  </div>
                                                                                                </div>
+                                                                                             </div> <br>
+                                                                                             <div class="row">
                                                                                                <div class="col-md-3">
                                                                                                    <label for="dataEvento">Data:</label>
                                                                                                  <input type="date"  id="dataEvento" class="form-control input-sm">
                                                                                                </div>
+                                                                                             </div><br>
+                                                                                             <div class="row">
                                                                                                <div class="col-md-4">
                                                                                                    <label for="immagine">URL IMMAGINE:</label>
                                                                                                    <input type="text" class="form-control" id="immagine" ></div>
@@ -153,7 +227,7 @@
                                                                                                     <br>
                                                                                                         <br>
 
-                                                                                                              <input type="submit" class="btn-primary" id="sub"></input>
+                                                                                                    <button class="btn btn-primary" id="sub">Save</button>
 
 
                                                                                                         </div>
@@ -162,6 +236,6 @@
                                                                                                         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
                                                                                                         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                                                                                                         <!-- Include all compiled plugins (below), or include individual files as needed -->
-                                                                                                
+
                                                                                                     </body>
                                                                                                 </html>
