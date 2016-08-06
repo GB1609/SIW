@@ -29,7 +29,7 @@
                                                             url: "<%=request.getContextPath() %>/RegistrationServlet",
                                                             data: {
                                                                 username: $("#user").val(),
-                                                                password: $("#password").val(),
+                                                                passwords: $("#passwords").val(),
                                                                 first_name: $("#first_name").val(),
                                                                 last_name: $("#last_name").val(),
                                                                 address: $("#address").val(),
@@ -76,7 +76,7 @@
                                                                 <div class="col-md-4">
                                                                     <h2>Sport</h2>
                                                                     <p>Sei appassionato di calcio, formula uno o di Tennis? Guarda i prezzi dei biglietti degli eventi sportivi</p>
-                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Cinema">Guarda ora</a>
+                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Sport">Guarda ora</a>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <h2>Musica</h2>
@@ -86,7 +86,7 @@
                                                                 <div class="col-md-4">
                                                                     <h2>Cinema</h2>
                                                                     <p>Voglia di rilassarti, di vedere un bel film? Guarda i prezzi dei cinema intorno a te!</p>
-                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Sport">Guarda Ora</a>
+                                                                    <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Cinema">Guarda Ora</a>
                                                                 </div>
                                                             </div>
                                                         </div>

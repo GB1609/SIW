@@ -27,7 +27,7 @@
 				</a>
 					<ul class="dropdown-menu">
 						<li> <a href="<%= request.getContextPath() %>/DataForOrganizatorServlet" id="organizza">Crea un evento</a> </li>
-						<li><a href="<%= request.getContextPath() %>/EventsManagementServlet">Gestisci eventi</a></li>
+						<li><a href="<%= request.getContextPath() %>/content/myPage.jsp">Gestisci eventi</a></li>
 					</ul>
 				</li>
 			
