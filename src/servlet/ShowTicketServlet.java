@@ -30,7 +30,7 @@ public class ShowTicketServlet extends HttpServlet {
 		response.getWriter();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		TicketDao td = dao.getBigliettoDao();
+		TicketDao td = dao.getTicketDao();
 		List<String> list = new CopyOnWriteArrayList<>();
 		list = td.searchByEvents(eventCode);
 		String gson = new Gson().toJson(list);

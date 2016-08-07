@@ -18,12 +18,33 @@ public class ReviewDaoJDBC implements ReviewDao {
 	}
 
 	@Override
-	public void delete(Review r) {
+	public void delete(int reviewCode) {
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String delete = "delete FROM review WHERE reviewcode = ? ";
 			PreparedStatement statement = connection.prepareStatement(delete);
-			statement.setInt(1, r.getReviewCode());
+			statement.setInt(1, reviewCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM review";
+			PreparedStatement statement = connection.prepareStatement(delete);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -75,7 +96,7 @@ public class ReviewDaoJDBC implements ReviewDao {
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
-			while (result.next()){
+			while (result.next()) {
 				reviews.add(result.getString("users"));
 				reviews.add(result.getString("description"));
 			}

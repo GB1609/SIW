@@ -23,13 +23,13 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		boolean exist = false;
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String query = "select * from desiredtickets where listcode=? AND ticketcode=?";
+			String query = "select * from wishticket where listcode=? AND ticketcode=?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, wt.getListCode());
 			statement.setInt(2, wt.getTicketCode());
 			ResultSet result = statement.executeQuery();
 			if (result.next())
-				exist=true;
+				exist = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -48,10 +48,31 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		int listCode = bd.getListCode();
 		int ticketCode = bd.getTicketCode();
 		try {
-			String delete = "delete FROM desiredtickets WHERE listcode=? AND ticketcode=?";
+			String delete = "delete FROM wishticket WHERE listcode=? AND ticketcode=?";
 			PreparedStatement statement = connection.prepareStatement(delete);
 			statement.setInt(1, listCode);
 			statement.setInt(2, ticketCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM wishticket";
+			PreparedStatement statement = connection.prepareStatement(delete);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
@@ -96,9 +117,9 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		int listCode = bd.getListCode();
 		int ticketCode = bd.getTicketCode();
 		if (getListOwner(bd).equals(owner))
-			if(!this.alreadyExist(bd))
+			if (!this.alreadyExist(bd))
 				try {
-					String insert = "insert into desiredtickets(listcode,ticketcode) values (?,?)";
+					String insert = "insert into wishticket(listcode,ticketcode) values (?,?)";
 					PreparedStatement statement = connection.prepareStatement(insert);
 					statement.setInt(1, listCode);
 					statement.setInt(2, ticketCode);
@@ -130,8 +151,8 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		try {
 			String query = "SELECT client.username, client.password, client.lastname, "
 					+ "client.firstname, client.birthdate, client.address, client.credit "
-					+ "FROM client,desiredtickets,wishlist " + "WHERE desiredtickets.ticketcode=? AND "
-					+ "wishlist.owner=client.username AND " + "desiredtickets.listcode=wishlist.listcode ";
+					+ "FROM client,wishticket,wishlist " + "WHERE wishticket.ticketcode=? AND "
+					+ "wishlist.owner=client.username AND " + "wishticket.listcode=wishlist.listcode ";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, cod);
 			ResultSet result = statement.executeQuery();
@@ -161,8 +182,8 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String query = "SELECT ticket.price, ticket.type, ticket.event, ticket.ticketcode "
-					+ "FROM ticket,desiredtickets,wishlist " + "WHERE ticket.ticketcode=desiredtickets.ticketcode AND "
-					+ "wishlist.owner=? AND " + "desiredtickets.listcode=wishlist.listcode ";
+					+ "FROM ticket,wishticket,wishlist " + "WHERE ticket.ticketcode=wishticket.ticketcode AND "
+					+ "wishlist.owner=? AND " + "wishticket.listcode=wishlist.listcode ";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, cod);
 			ResultSet result = statement.executeQuery();

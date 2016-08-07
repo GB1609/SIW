@@ -6,7 +6,11 @@ import tables.City;
 
 public interface CityDao {
 
-	public void save (City c);
 	public void delete(String name);
-	public List<City> getAllCities ();
+
+	public void deleteAll();
+
+	public List<City> getAllCities();
+
+	public void save(City c);
 }

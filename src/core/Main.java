@@ -13,10 +13,9 @@ public class Main {
 	public static void main(String[] args) {
 		System.out.println("main start");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		
-		/////////////////////
-	
-	}
 
+		/////////////////////
+
+	}
 
 }

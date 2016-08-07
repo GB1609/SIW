@@ -30,7 +30,7 @@ public class ShowReviewsServlet extends HttpServlet {
 		response.getWriter();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		ReviewDao rd = dao.getRecensioneDao();
+		ReviewDao rd = dao.getReviewDao();
 		List<String> list = new CopyOnWriteArrayList<>();
 		list = rd.searchByEvents(eventCode);
 		String gson = new Gson().toJson(list);

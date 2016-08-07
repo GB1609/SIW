@@ -40,24 +40,21 @@ public class SearchEvents extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		List<Information>hy2=returnAllEvents();
+		List<Information> hy2 = returnAllEvents();
 		request.setAttribute("eventList", hy2);
 		RequestDispatcher id = request.getServletContext().getRequestDispatcher("/content/allEvents.jsp");
-		id.forward(request,response);
+		id.forward(request, response);
 	}
 
-	private List<Information> returnAllEvents()
-	{
+	private List<Information> returnAllEvents() {
 		Information myInfo = null;
 		InformationDao id = this.daoFactory.getInformationDao();
-		EventsDao ed = this.daoFactory.getEventoDao();
+		EventsDao ed = this.daoFactory.getEventsDao();
 		List<Events> events = ed.returnAllEvents();
-		List<Information>result = new ArrayList<Information>();
-		for (int i =0; i<events.size(); i++)
-		{
+		List<Information> result = new ArrayList<Information>();
+		for (int i = 0; i < events.size(); i++) {
 			Set<Information> informations = id.getAllInfo(events.get(i).getInformation());
-			for (Information info : informations)
-			{
+			for (Information info : informations) {
 				myInfo = info;
 				result.add(myInfo);
 				break;
@@ -66,6 +63,5 @@ public class SearchEvents extends HttpServlet {
 		}
 		return result;
 	}
-
 
 }

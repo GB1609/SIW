@@ -56,8 +56,8 @@ public class ShoppingCartServlet extends HttpServlet {
 		String type = request.getParameter("type");
 		double price = Double.parseDouble(request.getParameter("price"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		TicketDao td = dao.getBigliettoDao();
-		EventsDao ed = dao.getEventoDao();
+		TicketDao td = dao.getTicketDao();
+		EventsDao ed = dao.getEventsDao();
 		this.cart.add(td.searchTicket(type, eventCode, price));
 		request.getSession().setAttribute("carrello", this.cart);
 		List<String> list = new ArrayList<>();

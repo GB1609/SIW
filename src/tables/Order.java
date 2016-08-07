@@ -10,6 +10,7 @@ public class Order {
 		this.ticket = biglietto;
 		this.user = utente;
 	}
+
 	public Order(int biglietto, String utente) {
 		this.ticket = biglietto;
 		this.user = utente;

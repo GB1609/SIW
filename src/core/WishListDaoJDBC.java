@@ -40,6 +40,27 @@ public class WishListDaoJDBC implements WishListDao {
 	}
 
 	@Override
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM wishlist";
+			PreparedStatement statement = connection.prepareStatement(delete);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
 	public void save(WishList l) {
 		Connection connection = this.dataSource.getConnection();
 		try {

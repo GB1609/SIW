@@ -28,29 +28,33 @@ public class AddReview extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 		response.setContentType("text/html");
 		response.getWriter();
-		int vote= Integer.parseInt(request.getParameter("vote"));
+		int vote = Integer.parseInt(request.getParameter("vote"));
 		String user = request.getParameter("user");
-		int event= Integer.parseInt(request.getParameter("event"));
+		int event = Integer.parseInt(request.getParameter("event"));
 		String description = request.getParameter("description");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		ReviewDao rd = dao.getRecensioneDao();
+		ReviewDao rd = dao.getReviewDao();
 		rd.save(new Review(vote, user, event, description));
 	}
 

@@ -5,7 +5,9 @@ import java.util.List;
 import tables.Review;
 
 public interface ReviewDao {
-	public void delete(Review r);
+	public void delete(int reviewCode);
+
+	public void deleteAll();
 
 	public void save(Review r);
 

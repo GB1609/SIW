@@ -39,13 +39,11 @@ public class CreateAnEventServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
-		String [] partecipanti = request.getParameterValues("partecipanti[]");
-		String [] tipoBiglietti = request.getParameterValues("tipoBiglietti[]");
-		String [] numeroBiglietti = request.getParameterValues("numeroBiglietti[]");
-		String [] costoBiglietti = request.getParameterValues("costoBiglietti[]");
-		
-		
+		String[] partecipanti = request.getParameterValues("partecipanti[]");
+		String[] tipoBiglietti = request.getParameterValues("tipoBiglietti[]");
+		String[] numeroBiglietti = request.getParameterValues("numeroBiglietti[]");
+		String[] costoBiglietti = request.getParameterValues("costoBiglietti[]");
+
 		String nome = request.getParameter("nome");
 		String categoria = request.getParameter("categoria");
 		String citta = request.getParameter("citta");
@@ -55,10 +53,10 @@ public class CreateAnEventServlet extends HttpServlet {
 		String url = request.getParameter("immagine");
 		String messaggio = "";
 		try {
-			PartecipantsDao pd = daoFactory.getPartecipanteDao();
-			EventsDao ed = daoFactory.getEventoDao();
-			TicketDao td = daoFactory.getBigliettoDao();
-			CategoryDao cd = daoFactory.getCategoriaDao();
+			PartecipantsDao pd = daoFactory.getPartecipantsDao();
+			EventsDao ed = daoFactory.getEventsDao();
+			TicketDao td = daoFactory.getTicketDao();
+			CategoryDao cd = daoFactory.getCategoryDao();
 			InformationDao id = daoFactory.getInformationDao();
 			SubCategoryDao scd = daoFactory.getSubCategoryDao();
 			int categoryCode = scd.returnCode(categoria);
@@ -69,25 +67,22 @@ public class CreateAnEventServlet extends HttpServlet {
 			Events e = new Events(-1, "", "vic", categoryCode, infId);
 			ed.save(e);
 			List<Events> uffa = ed.searchByName(nome);
-			for (int j=0; j<tipoBiglietti.length;j++)
-			{
-			for (int index = 0; index < Integer.parseInt(numeroBiglietti[j]); index++) {
-				
-				td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoBiglietti[j]), tipoBiglietti[j], false));
+			for (int j = 0; j < tipoBiglietti.length; j++) {
+				for (int index = 0; index < Integer.parseInt(numeroBiglietti[j]); index++) {
+
+					td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoBiglietti[j]),
+							tipoBiglietti[j], false));
+				}
 			}
+
+			for (int indice = 0; indice < partecipanti.length; indice++) {
+				ed.insertPartecipant(pd.getPartecipantCode(partecipanti[indice]), uffa.get(0).getEventcode());
 			}
-			
-			
-			for (int indice=0; indice<partecipanti.length;indice++)
-			{	
-				ed.insertPartecipant(pd.getPartecipantCode(partecipanti[indice]),uffa.get(0).getEventcode());
-			}
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			
-				messaggio = "Errore nei parametri inseriti";
+
+			messaggio = "Errore nei parametri inseriti";
 		}
 		if (messaggio.equals(""))
 			messaggio = "Creazione evento completata";

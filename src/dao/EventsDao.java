@@ -9,20 +9,23 @@ import tables.Information;
 public interface EventsDao {
 	public void delete(int eventCode);
 
-	public List<Events> searchBySubCategory(String category);
-	public void insertPartecipant (int partecipant, int eventCode);
+	public void deleteAll();
+
 	public int getCode(String name);
 
 	public String getFeedback(int eventCode);
 
-	public List<Events> organizedEvents (String user);
-	
-	public Information getInfoByName (String value);
+	public Information getInfoByName(String value);
 
 	public Information getInformation(int eventCode);
+
 	public String getName(int eventCode);
 
-	public List<Events> returnAllEvents ();
+	public void insertPartecipant(int partecipant, int eventCode);
+
+	public List<Events> organizedEvents(String user);
+
+	public List<Events> returnAllEvents();
 
 	public void save(Events e);
 
@@ -39,6 +42,8 @@ public interface EventsDao {
 	public List<Events> searchByPlace(String city);
 
 	public List<Events> searchByPrice(double price, boolean max);
+
+	public List<Events> searchBySubCategory(String category);
 
 	public void startSeller(Events e);
 

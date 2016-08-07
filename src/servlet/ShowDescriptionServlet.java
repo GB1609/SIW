@@ -26,7 +26,7 @@ public class ShowDescriptionServlet extends HttpServlet {
 		response.getWriter();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		EventsDao ed = dao.getEventoDao();
+		EventsDao ed = dao.getEventsDao();
 		ed.getInformation(eventCode);
 	}
 }

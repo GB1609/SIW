@@ -21,24 +21,27 @@ public class EventsManagementServlet extends HttpServlet {
 
 	protected DataSource datSource;
 	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-	
-    public EventsManagementServlet() {
-        super();
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public EventsManagementServlet() {
+		super();
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String nm =request.getSession().getAttribute("name").toString();
-		EventsDao ed = daoFactory.getEventoDao();
+		String nm = request.getSession().getAttribute("name").toString();
+		EventsDao ed = this.daoFactory.getEventsDao();
 		List<Events> lista = ed.organizedEvents(nm);
 		request.setAttribute("eventi", lista);
 		RequestDispatcher id = request.getServletContext().getRequestDispatcher("/content/eventsManagement.jsp");
-		id.forward(request,response);
+		id.forward(request, response);
 	}
 
 }

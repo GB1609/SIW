@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,20 +14,20 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
-import dao.EventsDao;
+import dao.TicketDao;
 import tables.Ticket;
 
 /**
- * Servlet implementation class ShowCartServlet
+ * Servlet implementation class removeFromCart
  */
-@WebServlet("/ShowCartServlet")
-public class ShowCartServlet extends HttpServlet {
+@WebServlet("/removeFromCart")
+public class RemoveFromCart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public ShowCartServlet() {
+	public RemoveFromCart() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -53,18 +52,22 @@ public class ShowCartServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		response.getWriter();
+		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
+		String type = request.getParameter("type");
+		double price = Double.parseDouble(request.getParameter("price"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		dao.getTicketDao();
-		EventsDao ed = dao.getEventsDao();
-		List<Ticket> cart = new ArrayList<>();
-		if (request.getSession().getAttribute("carrello") != null)
-			cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
-		List<String> list = new CopyOnWriteArrayList<>();
-		for (Ticket t : cart)
-			list.add(t.getTicketCode() + " " + t.getType() + " " + t.getPrice() + " " + ed.getName(t.getCodeEvent()));
-		String gson = new Gson().toJson(list);
+		TicketDao td = dao.getTicketDao();
+		Ticket t = td.searchTicket(type, eventCode, price);
+		List<Ticket> cart = new CopyOnWriteArrayList<>();
+		String gson = new Gson().toJson("FAIL");
+		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
+		for (int i = 0; i < cart.size(); i++)
+			if (cart.get(i).getTicketCode() == t.getTicketCode()) {
+				cart.remove(i);
+				gson = new Gson().toJson("DONE");
+			}
+		request.getSession().setAttribute("carrello", cart);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}
-
 }

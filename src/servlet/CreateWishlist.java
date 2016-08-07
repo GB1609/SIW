@@ -28,7 +28,7 @@ public class CreateWishlist extends HttpServlet {
 		String owner = request.getParameter("owner");
 		String name = request.getParameter("name");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		WishListDao wld = dao.getListaDesideriDao();
+		WishListDao wld = dao.getWishListDao();
 		wld.save(new WishList(owner, name));
 	}
 }

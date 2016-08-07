@@ -1,9 +1,10 @@
 package core;
+
 import dao.UserDao;
-public class UserDaoJDBC implements UserDao
-{
-	public UserDaoJDBC(DataSource dataSource)
-	{}
+
+public class UserDaoJDBC implements UserDao {
+	public UserDaoJDBC(DataSource dataSource) {
+	}
 	// @Override
 	// public void create(User i) {
 	// Connection connection = this.dataSource.getConnection();

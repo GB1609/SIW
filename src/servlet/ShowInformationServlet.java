@@ -32,7 +32,7 @@ public class ShowInformationServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		String value = request.getParameter("nominativo");
-		EventsDao ed = this.daoFactory.getEventoDao();
+		EventsDao ed = this.daoFactory.getEventsDao();
 		int eventCode = ed.getCode(value);
 		Information information = ed.getInformation(eventCode);
 		List<String> informations = new ArrayList<>();

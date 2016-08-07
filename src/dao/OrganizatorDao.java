@@ -1,9 +1,15 @@
 package dao;
+
 import tables.Organizator;
-public interface OrganizatorDao
-{
-	public void delete(int o);
+
+public interface OrganizatorDao {
+	public void delete(String organizator);
+
+	public void deleteAll();
+
 	public void save(Organizator o);
+
 	public void update(Organizator o);
-public boolean verifyOrganizator(String userName,String password);
+
+	public boolean verifyOrganizator(String userName, String password);
 }

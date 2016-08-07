@@ -30,7 +30,7 @@ public class ShowWishlist extends HttpServlet {
 		response.getWriter();
 		String owner = request.getParameter("owner");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		WishListDao wld = dao.getListaDesideriDao();
+		WishListDao wld = dao.getWishListDao();
 		List<String> list = new ArrayList<>();
 		list = wld.searchByOwner(owner);
 		String gson;

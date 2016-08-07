@@ -5,7 +5,7 @@ public class SubCategory {
 	int code;
 	String name;
 	int father;
-	
+
 	public SubCategory(int code, String name, int father) {
 		this.code = code;
 		this.name = name;
@@ -35,7 +35,5 @@ public class SubCategory {
 	public void setFather(int father) {
 		this.father = father;
 	}
-	
-	
-	
+
 }

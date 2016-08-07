@@ -18,20 +18,17 @@ public class SubCategoryDaoJDBC implements SubCategoryDao {
 	}
 
 	@Override
-	public void save(SubCategory c) {
-
-		Connection connection = dataSource.getConnection();
+	public void delete(String name) {
+		Connection connection = this.dataSource.getConnection();
 		try {
-			String name = c.getName();
-			int father = c.getFather();
-			String insert = "insert into subcategory (name, father) values (?,?)";
-			PreparedStatement statement = connection.prepareStatement(insert);
+			String delete = "delete FROM subcategory WHERE subcategory.name=?";
+			PreparedStatement statement = connection.prepareStatement(delete);
 			statement.setString(1, name);
-			statement.setInt(2, father);
 			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
 			connection.commit();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -41,17 +38,14 @@ public class SubCategoryDaoJDBC implements SubCategoryDao {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	@Override
-	public void delete(String name) {
-
-		Connection connection = dataSource.getConnection();
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
 		try {
-			String delete = "delete FROM subcategory WHERE subcategory.name=?";
+			String delete = "delete FROM subcategory";
 			PreparedStatement statement = connection.prepareStatement(delete);
-			statement.setString(1, name);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
 			statement.executeUpdate();
@@ -79,10 +73,8 @@ public class SubCategoryDaoJDBC implements SubCategoryDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-			{
-				if(!cat.contains(result.getString(1)))
-				cat.add(result.getString(1));
-			}
+				if (!cat.contains(result.getString(1)))
+					cat.add(result.getString(1));
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -98,21 +90,19 @@ public class SubCategoryDaoJDBC implements SubCategoryDao {
 
 	@Override
 	public int returnCode(String name) {
-	Connection connection = this.dataSource.getConnection();
-		
+		Connection connection = this.dataSource.getConnection();
+
 		int value = -1;
-		
+
 		try {
 			String returnAll = "SELECT subcategory.subcategorycode FROM subcategory WHERE subcategory.name=? GROUP BY subcategory.subcategorycode  ";
 			PreparedStatement statement = connection.prepareStatement(returnAll);
-			statement.setString(1,name);
+			statement.setString(1, name);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-			{
 				value = result.getInt(1);
-			}
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,8 +113,35 @@ public class SubCategoryDaoJDBC implements SubCategoryDao {
 				e.printStackTrace();
 			}
 		}
-		return value;	
-		
+		return value;
+
+	}
+
+	@Override
+	public void save(SubCategory c) {
+
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String name = c.getName();
+			int father = c.getFather();
+			String insert = "insert into subcategory (name, father) values (?,?)";
+			PreparedStatement statement = connection.prepareStatement(insert);
+			statement.setString(1, name);
+			statement.setInt(2, father);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 }

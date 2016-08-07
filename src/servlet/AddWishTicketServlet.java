@@ -35,9 +35,9 @@ public class AddWishTicketServlet extends HttpServlet {
 		String owner = request.getParameter("owner");
 		int listCode = Integer.parseInt(request.getParameter("listcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		TicketDao td = dao.getBigliettoDao();
+		TicketDao td = dao.getTicketDao();
 		Ticket ticket = td.searchTicket(type, eventCode, price);
-		WishTicketDao wtd = dao.getBigliettiDesideratiDao();
+		WishTicketDao wtd = dao.getWishTicketDao();
 		WishTicket t = new WishTicket(listCode, ticket.getTicketCode());
 		String gson;
 		gson = new Gson().toJson(wtd.save(t, owner));

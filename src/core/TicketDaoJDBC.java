@@ -42,6 +42,27 @@ public class TicketDaoJDBC implements TicketDao {
 	}
 
 	@Override
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM ticket";
+			PreparedStatement statement = connection.prepareStatement(delete);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
 	public boolean getState(int code) {
 		boolean state = false;
 		Connection connection = this.dataSource.getConnection();
@@ -86,6 +107,33 @@ public class TicketDaoJDBC implements TicketDao {
 			}
 		}
 		return ticket;
+	}
+
+	@Override
+	public List<String> getTipology() {
+		Connection connection = this.dataSource.getConnection();
+		List<String> typ = new ArrayList<String>();
+		try {
+			String query = "SELECT ticket.type FROM ticket ORDER BY ticket.type";
+			PreparedStatement statement = connection.prepareStatement(query);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				if (!typ.contains(result.getString(1)))
+					typ.add(result.getString(1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		return typ;
+
 	}
 
 	@Override
@@ -296,34 +344,5 @@ public class TicketDaoJDBC implements TicketDao {
 			} catch (Exception e) {
 			}
 		}
-	}
-
-	@Override
-	public List<String> getTipology() {
-		Connection connection = dataSource.getConnection();
-		List<String> typ = new ArrayList<String>();
-		try {
-			String query = "SELECT ticket.type FROM ticket ORDER BY ticket.type";
-			PreparedStatement statement = connection.prepareStatement(query);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			ResultSet result = statement.executeQuery();
-			while (result.next())
-			{
-				if (!typ.contains(result.getString(1)))
-				typ.add(result.getString(1));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return typ;
-
 	}
 }

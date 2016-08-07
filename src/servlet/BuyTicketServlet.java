@@ -37,8 +37,8 @@ public class BuyTicketServlet extends HttpServlet {
 		boolean success = true;
 		String owner = request.getParameter("owner");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		TicketDao td = dao.getBigliettoDao();
-		OrdersDao od = dao.getOrdineDao();
+		TicketDao td = dao.getTicketDao();
+		OrdersDao od = dao.getOrdersDao();
 		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
 		for (int i = 0; i < cart.size(); i++)
@@ -55,9 +55,9 @@ public class BuyTicketServlet extends HttpServlet {
 				od.save(new Order(cart.get(i).getTicketCode(), owner));
 				cart.remove(cart.get(i));
 			}
-		if (success && request.getSession().getAttribute("tipe")=="client")
+		if (success && request.getSession().getAttribute("tipe") == "client")
 			gson = new Gson().toJson("DONE");
-		else if (request.getSession().getAttribute("tipe")!="client")
+		else if (request.getSession().getAttribute("tipe") != "client")
 			gson = new Gson().toJson("DEVI LOGGARTI PER POTER COMPLETARE L'ACQUISTO");
 		else
 			gson = new Gson().toJson("FAIL");

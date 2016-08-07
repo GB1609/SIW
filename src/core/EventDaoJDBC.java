@@ -43,6 +43,27 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM event";
+			PreparedStatement statement = connection.prepareStatement(delete);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
 	public int getCode(String name) {
 		Connection connection = this.dataSource.getConnection();
 		int code = -1;
@@ -55,8 +76,7 @@ public class EventDaoJDBC implements EventsDao {
 			ResultSet result = statement.executeQuery();
 			while (result.next())
 				code = result.getInt(1);
-			
-			
+
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -177,20 +197,74 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
+	public void insertPartecipant(int partecipant, int eventCode) {
+
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String insert = "insert into eventpartecipant(event, partecipant) values (?,?)";
+			PreparedStatement statement = connection.prepareStatement(insert);
+			statement.setInt(1, eventCode);
+			statement.setInt(2, partecipant);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@Override
+	public List<Events> organizedEvents(String user) {
+		List<Events> result = new ArrayList<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event WHERE event.organizator=?";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setString(1, user);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet results = statement.executeQuery();
+			while (results.next())
+				result.add(new Events(results.getInt(1), results.getString(2), results.getString(3), results.getInt(4),
+						results.getInt(5)));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+
+	}
+
+	@Override
 	public List<Events> returnAllEvents() {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
 
 			String returnAll = "SELECT event.eventcode,event.feedback, event.organizator, event.category,"
-					+ "event.information," + " FROM event, information "
+					+ "event.information " + " FROM event, information "
 					+ "WHERE event.information = information.informationid " + "ORDER BY information.date DESC";
 			PreparedStatement statement = connection.prepareStatement(returnAll);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-			set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 
 		} catch (Exception e) {
@@ -231,34 +305,6 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public List<Events> searchBySubCategory(String category) {
-		List<Events> set = new ArrayList<Events>();
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,subcategory WHERE event.category = subcategory.subcategorycode AND subcategory.name=?";
-			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setString(1, category);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			ResultSet result = statement.executeQuery();
-			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
-			connection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println(set.size());
-		return set;
-	}
-
-	
-	@Override
 	public List<Events> searchByCategory(String category) {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
@@ -270,7 +316,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -297,7 +344,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -327,7 +375,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 
 		} catch (Exception e) {
@@ -354,7 +403,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -368,7 +418,6 @@ public class EventDaoJDBC implements EventsDao {
 		return set;
 	}
 
-	
 	@Override
 	public List<Events> searchByPartecipants(String partecipant) {
 		List<Events> set = new ArrayList<Events>();
@@ -383,7 +432,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -409,7 +459,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -443,7 +494,8 @@ public class EventDaoJDBC implements EventsDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
 			while (result.next())
-				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4), result.getInt(5)));
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -454,6 +506,34 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
+		return set;
+	}
+
+	@Override
+	public List<Events> searchBySubCategory(String category) {
+		List<Events> set = new ArrayList<Events>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event,subcategory WHERE event.category = subcategory.subcategorycode AND subcategory.name=?";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setString(1, category);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
+						result.getInt(5)));
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println(set.size());
 		return set;
 	}
 
@@ -493,57 +573,4 @@ public class EventDaoJDBC implements EventsDao {
 		}
 	}
 
-	@Override
-	public List<Events> organizedEvents(String user) {
-		List<Events> result = new ArrayList<Events>();
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event WHERE event.organizator=?";
-			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setString(1, user);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			ResultSet results = statement.executeQuery();
-			while (results.next())
-				result.add(new Events(results.getInt(1), results.getString(2), results.getString(3), results.getInt(4), results.getInt(5)));
-			connection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	
-}
-
-	@Override
-	public void insertPartecipant(int partecipant, int eventCode) {
-		
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String insert = "insert into eventpartecipant(event, partecipant) values (?,?)";
-			PreparedStatement statement = connection.prepareStatement(insert);
-			statement.setInt(1, eventCode);
-			statement.setInt(2, partecipant);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement.executeUpdate();
-			connection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-	}
-	
 }
