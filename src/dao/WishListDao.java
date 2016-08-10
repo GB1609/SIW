@@ -9,7 +9,7 @@ public interface WishListDao {
 
 	public void deleteAll();
 
-	public void save(WishList l);
+	public boolean save(WishList l);
 
 	public List<String> searchByOwner(String owner);
 

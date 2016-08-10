@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 
 import core.DaoFactory;
 import core.DataSource;
-import dao.CategoryDao;
 import dao.EventsDao;
 import dao.InformationDao;
 import dao.PartecipantsDao;
@@ -31,11 +30,13 @@ public class CreateAnEventServlet extends HttpServlet {
 	protected DataSource datSource;
 	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -53,12 +54,13 @@ public class CreateAnEventServlet extends HttpServlet {
 		String url = request.getParameter("immagine");
 		String messaggio = "";
 		try {
-			PartecipantsDao pd = daoFactory.getPartecipantsDao();
-			EventsDao ed = daoFactory.getEventsDao();
-			TicketDao td = daoFactory.getTicketDao();
-			CategoryDao cd = daoFactory.getCategoryDao();
-			InformationDao id = daoFactory.getInformationDao();
-			SubCategoryDao scd = daoFactory.getSubCategoryDao();
+			System.out.println("CIAO");
+			PartecipantsDao pd = this.daoFactory.getPartecipantsDao();
+			EventsDao ed = this.daoFactory.getEventsDao();
+			TicketDao td = this.daoFactory.getTicketDao();
+			this.daoFactory.getCategoryDao();
+			InformationDao id = this.daoFactory.getInformationDao();
+			SubCategoryDao scd = this.daoFactory.getSubCategoryDao();
 			int categoryCode = scd.returnCode(categoria);
 			Information i = new Information(LocalDate.parse(date), luogo, descrizione, citta, nome, url);
 			id.save(i);
@@ -67,17 +69,12 @@ public class CreateAnEventServlet extends HttpServlet {
 			Events e = new Events(-1, "", "vic", categoryCode, infId);
 			ed.save(e);
 			List<Events> uffa = ed.searchByName(nome);
-			for (int j = 0; j < tipoBiglietti.length; j++) {
-				for (int index = 0; index < Integer.parseInt(numeroBiglietti[j]); index++) {
+			for (int j = 0; j < tipoBiglietti.length; j++)
+				td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoBiglietti[j]),
+						tipoBiglietti[j], true), Integer.parseInt(numeroBiglietti[j]));
 
-					td.save(new Ticket(-1, uffa.get(0).getEventcode(), Integer.parseInt(costoBiglietti[j]),
-							tipoBiglietti[j], false));
-				}
-			}
-
-			for (int indice = 0; indice < partecipanti.length; indice++) {
-				ed.insertPartecipant(pd.getPartecipantCode(partecipanti[indice]), uffa.get(0).getEventcode());
-			}
+			for (String element : partecipanti)
+				ed.insertPartecipant(pd.getPartecipantCode(element), uffa.get(0).getEventcode());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,6 +85,7 @@ public class CreateAnEventServlet extends HttpServlet {
 			messaggio = "Creazione evento completata";
 
 		String s = new Gson().toJson(messaggio);
+		System.out.println("CIAO2");
 		response.setContentType("application/json");
 		response.getWriter().write(s);
 

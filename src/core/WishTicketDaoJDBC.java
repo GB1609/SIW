@@ -3,7 +3,9 @@ package core;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import dao.WishTicketDao;
@@ -23,7 +25,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		boolean exist = false;
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String query = "select * from wishticket where listcode=? AND ticketcode=?";
+			String query = "select * from wishtickets where listcode=? AND ticketcode=?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, wt.getListCode());
 			statement.setInt(2, wt.getTicketCode());
@@ -48,7 +50,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		int listCode = bd.getListCode();
 		int ticketCode = bd.getTicketCode();
 		try {
-			String delete = "delete FROM wishticket WHERE listcode=? AND ticketcode=?";
+			String delete = "delete FROM wishtickets WHERE listcode=? AND ticketcode=?";
 			PreparedStatement statement = connection.prepareStatement(delete);
 			statement.setInt(1, listCode);
 			statement.setInt(2, ticketCode);
@@ -71,7 +73,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 	public void deleteAll() {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String delete = "delete FROM wishticket";
+			String delete = "delete FROM wishtickets";
 			PreparedStatement statement = connection.prepareStatement(delete);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
@@ -119,7 +121,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		if (getListOwner(bd).equals(owner))
 			if (!this.alreadyExist(bd))
 				try {
-					String insert = "insert into wishticket(listcode,ticketcode) values (?,?)";
+					String insert = "insert into wishtickets(listcode,ticketcode) values (?,?)";
 					PreparedStatement statement = connection.prepareStatement(insert);
 					statement.setInt(1, listCode);
 					statement.setInt(2, ticketCode);
@@ -144,6 +146,29 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 	}
 
 	@Override
+	public List<String> searchByWishList(int listCode) {
+		List<String> myResult = new ArrayList<>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String query = "SELECT ticketcode FROM wishtickets WHERE listcode = ?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, listCode);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				myResult.add(result.getString("ticketcode"));
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return myResult;
+	}
+
+	@Override
 	public Set<Clients> searchInterested(Ticket b) {
 		Set<Clients> myResult = new HashSet<Clients>();
 		int cod = b.getTicketCode();
@@ -151,8 +176,8 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		try {
 			String query = "SELECT client.username, client.password, client.lastname, "
 					+ "client.firstname, client.birthdate, client.address, client.credit "
-					+ "FROM client,wishticket,wishlist " + "WHERE wishticket.ticketcode=? AND "
-					+ "wishlist.owner=client.username AND " + "wishticket.listcode=wishlist.listcode ";
+					+ "FROM client,wishtickets,wishlist " + "WHERE wishtickets.ticketcode=? AND "
+					+ "wishlist.owner=client.username AND " + "wishtickets.listcode=wishlist.listcode ";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, cod);
 			ResultSet result = statement.executeQuery();
@@ -182,8 +207,8 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String query = "SELECT ticket.price, ticket.type, ticket.event, ticket.ticketcode "
-					+ "FROM ticket,wishticket,wishlist " + "WHERE ticket.ticketcode=wishticket.ticketcode AND "
-					+ "wishlist.owner=? AND " + "wishticket.listcode=wishlist.listcode ";
+					+ "FROM ticket,wishtickets,wishlist " + "WHERE ticket.ticketcode=wishtickets.ticketcode AND "
+					+ "wishlist.owner=? AND " + "wishtickets.listcode=wishlist.listcode ";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, cod);
 			ResultSet result = statement.executeQuery();

@@ -162,6 +162,33 @@ public class TicketDaoJDBC implements TicketDao {
 	}
 
 	@Override
+	public void save(Ticket bd, int ticketNumber) {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			for (int i = 0; i < ticketNumber; i++) {
+				String insert = "insert into ticket(price,type,event,sell) values (?,?,?,?)";
+				PreparedStatement statement = connection.prepareStatement(insert);
+				statement.setDouble(1, bd.getPrice());
+				statement.setString(2, bd.getType());
+				statement.setInt(3, bd.getCodeEvent());
+				statement.setBoolean(4, bd.isSeller());
+				connection.setAutoCommit(false);
+				connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+				statement.executeUpdate();
+				connection.commit();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
 	public List<String> searchByEvents(int e) {
 		List<String> myResult = new ArrayList<>();
 		Connection connection = this.dataSource.getConnection();
@@ -170,10 +197,8 @@ public class TicketDaoJDBC implements TicketDao {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, e);
 			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				myResult.add(result.getString("type"));
-				myResult.add(result.getString("price"));
-			}
+			while (result.next())
+				myResult.add(result.getString("type") + "_" + result.getString("price"));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} finally {

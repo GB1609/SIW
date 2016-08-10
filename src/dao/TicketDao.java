@@ -19,6 +19,8 @@ public interface TicketDao {
 
 	public void save(Ticket bd);
 
+	public void save(Ticket bd, int ticketNumber);
+
 	public List<String> searchByEvents(int e);
 
 	public Set<Ticket> searchByLocality(Place l);

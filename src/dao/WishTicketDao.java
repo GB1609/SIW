@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.List;
 import java.util.Set;
 
 import tables.Clients;
@@ -16,6 +17,8 @@ public interface WishTicketDao {
 	public String getListOwner(WishTicket bd);
 
 	public int save(WishTicket bd, String owner);
+
+	public List<String> searchByWishList(int listCode);
 
 	public Set<Clients> searchInterested(Ticket b); // cerca le persone che
 	// hanno

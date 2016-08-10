@@ -61,7 +61,7 @@ public class WishListDaoJDBC implements WishListDao {
 	}
 
 	@Override
-	public void save(WishList l) {
+	public boolean save(WishList l) {
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String insert = "insert into wishlist (owner, name) values (?,?) ";
@@ -74,13 +74,16 @@ public class WishListDaoJDBC implements WishListDao {
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			try {
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return false;
 			}
 		}
+		return true;
 	}
 
 	@Override

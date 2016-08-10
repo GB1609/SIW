@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import core.DaoFactory;
 import dao.WishListDao;
 import tables.WishList;
@@ -29,6 +31,12 @@ public class CreateWishlist extends HttpServlet {
 		String name = request.getParameter("name");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		WishListDao wld = dao.getWishListDao();
-		wld.save(new WishList(owner, name));
+		String gson;
+		if (wld.save(new WishList(owner, name)))
+			gson = new Gson().toJson("DONE");
+		else
+			gson = new Gson().toJson("FAIL");
+		response.setContentType("application/json");
+		response.getWriter().write(gson);
 	}
 }

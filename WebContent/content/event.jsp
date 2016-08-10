@@ -81,18 +81,6 @@
 										</div>
 									</div>
 
-									<div class="modal fade" id="wishlists" tabindex="-1" role="dialog" aria - labelledby="" aria - hidden="true">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<button type="button" class="close" data-dismiss="modal" aria-hi dden="true">&times;</button>
-													<h4 class="modal-title" id="">Select Wishlist</h4>
-												</div>
-												<div class="modal-body" id="wish_list"></div>
-											</div>
-										</div>
-									</div>
-
 									<div id="informationDiv">
 										<ul id="infoul">
 											<c:forEach items="${list}" var="it">
@@ -121,26 +109,41 @@
 												$("#resultTicket").empty();
 												var $ul = $('<ul>').appendTo($("#resultTicket"));
 												$.each(responseJson, function (index, item) {
-													$('<li id ="resultTickets">').text(item).appendTo($ul);
+													var myspl = item.split("_");
+													$('<tr id = "r' + index + '">').appendTo("#ticketBody");
+													$('<td id = "d' + index + '">').text(myspl[0]).appendTo('#r' + index);
+													$('<td id = "money' + index + '">').text(myspl[1] + '.00 ').appendTo('#r' + (index));
+													$('<span class="glyphicon glyphicon-euro"></span>').appendTo('#money' + (index));
+													$('<td> <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishlists" id ="wishlist">ADD TO WISHLIST <span class="glyphicon glyphicon-star"></span></button> <button class="btn btn-default" id = "buy">BUY <span class="glyphic' +
+															'on glyphicon-shopping-cart"></span></button>').appendTo('#r' + (index));
 												});
 
-												$("li").each(function (index, item) {
-													if ($(item).is("#resultTickets")) {
-														if (index % 2 != 0) {
-															$('<tr id = "r' + index + '">').appendTo("#ticketBody");
-															$('<td id = "d' + index + '">').text($(item).text()).appendTo('#r' + index);
-														} else {
-															$('<td id = "d' + index + '">').text($(item).text() + '.00 ').appendTo('#r' + (index - 1));
-															$(' <span class="glyphicon glyphicon-euro"></span>').appendTo('#d' + index);
-															$('<td> <button type="button" class="btn btn-default" data-toggle="modal" data-target="#wishlists" id ="wishlist">ADD TO WISHLIST <span class="glyphicon glyphicon-star"></span></button> <button class="btn btn-default" id = "buy">BUY <span class="glyphic' +
-																	'on glyphicon-shopping-cart"></span></button>').appendTo('#r' + (index - 1));
-														}
-													}
-												});
+											})
 
-												$("#resultTicket").replaceWith('<div id="resultTicket"></div>');
-												$("#informationDiv").replaceWith('<div id="informationDiv" value =' + $($('#li').closest('ul').find('li:eq(4)')).text() + '></div>');
-											});
+											$("#informationDiv").replaceWith('<div id="informationDiv" value =' + $($('#li').closest('ul').find('li:eq(4)')).text() + '></div>');
+										});
+
+										$(document).on("click", "#descriptionButton", function (event) {
+
+											$.ajax({
+												url: "<%=request.getContextPath()%>/descriptionButtonServlet",
+
+												//JSON
+												data: {
+													eventcode: value
+												},
+												type: "GET",
+
+												dataType: "json"
+											}).done(function (responseJson) {
+												$("#result").empty();
+												var $ul = $('<ul id = "resultList">').appendTo($("#result"));
+												$.each(responseJson, function (index, item) {
+													$('<li id ="result' + index + '">').text(item).appendTo($ul);
+												});
+												$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() + '</div></div>');
+												$("#result").replaceWith('<div id="result"></div>');
+											})
 										});
 
 										$(document).on("click", "#reviewButton", function () {
@@ -165,6 +168,9 @@
 												$("#description").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default "><div class="panel-title panel-heading"><h3 class="col-md-3 ">User</h3><h3 class="col-md-6">Comment</h3><h3 class="col-md-3">Reviews</h3></div><div class="panel-body pre-scrollable" i' +
 														'd = "reviewBody"></div></div></div>');
 
+												$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default "><div class="panel-title panel-heading"><h3 class="col-md-3 ">User</h3><h3 class="col-md-6">Comment</h3><h3 class="col-md-3">Reviews</h3></div><div class="panel-body pre-scrollable" i' +
+														'd = "reviewBody"></div></div></div>');
+
 												var $table = $('<table class = "table">').appendTo($("#reviewBody"));
 												$("li").each(function (index, item) {
 													if ($(item).is("#resultReviews")) {
@@ -178,29 +184,6 @@
 												});
 												$('<tr><td><button class = "btn btn-secondary" id ="addrevButton">').appendTo($table);
 
-												$("#result").replaceWith('<div id="result"></div>');
-											});
-										});
-										$(document).on("click", "#descriptionButton", function (event) {
-
-											$.ajax({
-												url: "<%=request.getContextPath()%>/ShowInformationServlet",
-
-												//JSON
-												data: {
-													eventcode: value
-												},
-												type: "GET",
-
-												dataType: "json"
-											}).done(function (responseJson) {
-												$("#result").empty();
-												var $ul = $('<ul id = "resultList">').appendTo($("#result"));
-												$.each(responseJson, function (index, item) {
-													$('<li id ="result' + index + '">').text(item).appendTo($ul);
-												});
-
-												$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() + '</div></div>');
 												$("#result").replaceWith('<div id="result"></div>');
 											});
 										});
@@ -232,10 +215,8 @@
 											});
 										});
 
-										$(document).ready(function() {
-											$.ajax({
-												url: "<%=request.getContextPath()%>/ShowCartServlet",
-											}).done(function (responseJson) {
+										$(document).ready(function () {
+											$.ajax({url: "<%=request.getContextPath()%>/ShowCartServlet"}).done(function (responseJson) {
 												$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
 												$.each(responseJson, function (index, item) {
 													var myspl = item.split(" ");
@@ -246,7 +227,6 @@
 												$('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
 											});
 										});
-
 
 										$(document).on("click", "#cartBuy", function (event) {
 											$.ajax({
@@ -260,68 +240,41 @@
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												if (responseJson === "DONE"){
+												if (responseJson === "DONE") {
 													alert("ACQUISTO EFFETTUATO CORRETTAMENTE");
 													$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
-												}
-												else
+												} else
 													alert(responseJson);
 												}
 											);
 										});
 
-										$(document).on("click", "#ticketTable tbody #wishlist", function (event) {
-											$("#wish_list").replaceWith('<div class="modal-body" id="wish_list"></div>');
+										$(document).on("click", "#wishlists #wish_list #sw", function (event) {
+											var lcode = $("#sw").val();
+											var t = $($("#wishlist").closest('tr').find('td:eq(0)')).text();
+											var p = $($("#wishlist").closest('tr').find('td:eq(1)')).text();
 											$.ajax({
-												url: "<%=request.getContextPath()%>/ShowWishlistServlet",
+												url: "<%=request.getContextPath()%>/AddWishTicketServlet",
 
 												//JSON
 												data: {
-													owner: "gio"
+													listcode: lcode,
+													owner: "gio",
+													eventcode: value,
+													type: t,
+													price: p
 												},
-												type: "POST",
+												type: "GET",
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												if (responseJson === "EMPTY") {
-													alert("EMPTY");
-													//PANNELLO DI SCELTA SE CREARE NUOVA WISHLIST.
-												} else {
-													var $ul = $('<ul class="list-group">').appendTo($("#wish_list"));
-													$.each(responseJson, function (index, item) {
-														var mysplit = item.split(" ");
-														$('<button type ="button" data-dismiss="modal" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id ="sw">').text(mysplit[1]).appendTo($ul);
-													});
+												if (responseJson === 1) {
+													alert("Cannot add selected Ticket at your Wishlist! it's already In.");
+												} else if (responseJson === -1) {
+													alert("Cannot add selected Ticket at your Wishlist! You aren't the Owner!!");
+												} else if (responseJson === 0) {
+													alert("Added!!");
 												}
-											});
-
-											$(document).on("click", "#wishlists #wish_list #sw", function (event) {
-												var lcode = $("#sw").val();
-												var t = $($(this).closest('tr').find('td:eq(0)')).text();
-												var p = $($(this).closest('tr').find('td:eq(1)')).text();
-												$.ajax({
-													url: "<%=request.getContextPath()%>/AddWishTicketServlet",
-
-													//JSON
-													data: {
-														listcode: lcode,
-														owner: "gio",
-														eventcode: value,
-														type: t,
-														price: p
-													},
-													type: "GET",
-
-													dataType: "json"
-												}).done(function (responseJson) {
-													if (responseJson === 1) {
-														alert("Cannot add selected Ticket at your Wishlist! it's already In.");
-													} else if (responseJson === -1) {
-														alert("Cannot add selected Ticket at your Wishlist! You aren't the Owner!!");
-													} else if (responseJson === 0) {
-														alert("Added!!");
-													}
-												});
 											});
 										});
 
@@ -343,7 +296,7 @@
 												if (responseJson === "DONE")
 													$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
 												}
-											);
+											)
 										});
 									</script>
 									<div id="result"></div>
