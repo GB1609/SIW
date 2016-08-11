@@ -45,7 +45,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 	}
 
 	@Override
-	public void delete(WishTicket bd) {
+	public boolean delete(WishTicket bd) {
 		Connection connection = this.dataSource.getConnection();
 		int listCode = bd.getListCode();
 		int ticketCode = bd.getTicketCode();
@@ -60,6 +60,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 			connection.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			try {
 				connection.close();
@@ -67,6 +68,7 @@ public class WishTicketDaoJDBC implements WishTicketDao {
 				e.printStackTrace();
 			}
 		}
+		return true;
 	}
 
 	@Override

@@ -41,7 +41,6 @@ public class AddWishTicketServlet extends HttpServlet {
 		WishTicket t = new WishTicket(listCode, ticket.getTicketCode());
 		String gson;
 		gson = new Gson().toJson(wtd.save(t, owner));
-		System.out.println(gson);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}

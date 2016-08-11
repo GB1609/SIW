@@ -250,19 +250,17 @@
 										});
 
 										$(document).on("click", "#wishlists #wish_list #sw", function (event) {
-											var lcode = $("#sw").val();
-											var t = $($("#wishlist").closest('tr').find('td:eq(0)')).text();
-											var p = $($("#wishlist").closest('tr').find('td:eq(1)')).text();
+											var valueSplit = $("#sw").val().split("_");
 											$.ajax({
 												url: "<%=request.getContextPath()%>/AddWishTicketServlet",
 
 												//JSON
 												data: {
-													listcode: lcode,
+													listcode: valueSplit[0],
 													owner: "gio",
 													eventcode: value,
-													type: t,
-													price: p
+													type: valueSplit[1],
+													price: valueSplit[2]
 												},
 												type: "GET",
 

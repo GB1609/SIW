@@ -153,6 +153,8 @@
                 <script>
                     $(document).on("click", "#ticketTable tbody #wishlist", function (event) {
                         $("#wish_list").replaceWith('<div class="modal-body" id="wish_list"></div>');
+                        var t = $($(this).closest('tr').find('td:eq(0)')).text();
+                        var p = $($(this).closest('tr').find('td:eq(1)')).text();
                         $.ajax({
                             url: "<%=request.getContextPath()%>/ShowWishlistServlet",
 
@@ -170,7 +172,7 @@
                                 var $ul = $('<ul class="list-group">').appendTo($("#wish_list"));
                                 $.each(responseJson, function (index, item) {
                                     var mysplit = item.split(" ");
-                                    $('<button type ="button" data-dismiss="modal" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id ="sw">').text(mysplit[1]).appendTo($ul);
+                                    $('<button type ="button" data-dismiss="modal" value="' + mysplit[0] + "_" + t + "_" + p +'" class="btn btn-default list-group-item" id ="sw">').text(mysplit[1]).appendTo($ul);
                                 });
                             }
                         });
@@ -221,15 +223,63 @@
                             $('<button type="button" class="btn btn-default dropdown-toggle list-group-item" data-toggle="dropdown" value="' + lcode + ' id = "showWT""><div class="col-md-11">' + ltext + '</div><div class="col-md-1"><span class="caret"></span></div></button>').appendTo($ul);
                             var $dropmenu = $('<ul class ="dropdown-menu">').appendTo($ul);
                             if (responseJson === "EMPTY") {
-                                $('<li><a class = "dropdown-toggle" data-toggle="dropdown">Empty</a></li>').appendTo($dropmenu);
+                                $('<li><div class = "dropdown-toggle list-group-item" data-toggle="dropdown">Empty</div></li>').appendTo($dropmenu);
                             } else {
                                 $.each(responseJson, function (index, item) {
                                     var mysplit = item.split("_");
-                                    $('<li><a class = "list-group-item">Evento:' + mysplit[2] + ', Tipo: ' + mysplit[0] + ', prezzo:' + mysplit[1] + ' <button class="btn btn-danger" id="removeWT">-</button> <button class="btn btn-success" id ="buyWT">BUY<span class="glyphic' +
-          															'on glyphicon-shopping-cart"></span></button></a></li>').appendTo($dropmenu);
+                                    $('<li><div class = "list-group-item" id="valueWT">Evento:' + mysplit[2] + '; Tipo: ' + mysplit[0] + ';prezzo: ' + mysplit[1] + ';<button class="btn btn-danger" id="removeWT" value=' + lcode + "_" + mysplit[4] + '>-</button> <button class="btn btn-success" id ="buyWT" value=' + lcode + "_" + mysplit[4] +'>BUY<span class="glyphicon glyphicon-shopping-cart"></span></button></div></li>').appendTo($dropmenu);
                                 });
                             }
                         })
+                    });
+
+                    $(document).on("click", "#removeWT", function (event) {
+                        var ticketSplit = $(this).val().split("_");
+                        $.ajax({
+                            url: "<%=request.getContextPath()%>/RemoveWishTicket",
+
+                            //JSON
+                            data: {
+                                listcode: ticketSplit[0],
+                                ticketcode: ticketSplit[1]
+                            },
+                            type: "POST",
+
+                            dataType: "json"
+                        }).done(function (responseJson) {
+                            if (responseJson === "DONE") {
+                                alert("Cancellazione riuscita con successo");
+                            } else {
+                                alert("Errore!");
+                            }
+                        });
+
+                    });
+
+                    $(document).on("click", "#buyWT", function (event) {
+                        var ticketSplit = $(this).val().split("_");
+                        $.ajax({
+                            url: "<%=request.getContextPath()%>/BuyFromWishList",
+
+                            //JSON
+                            data: {
+                                listcode: ticketSplit[0],
+                                ticketcode: ticketSplit[1]
+                            },
+                            type: "POST",
+
+                            dataType: "json"
+                        }).done(function (responseJson) {
+                          $('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
+                          $.each(responseJson, function (index, item) {
+                            var myspl = item.split(" ");
+                            var $tr = $('<tr id = "cartRow">').appendTo('#cartTable');
+                            $('<td id = "cartData" value="' + myspl[0] + '">').text('Event: ' + myspl[3] + ' Type: ' + myspl[1] + ' Price: ' + myspl[2]).appendTo($tr);
+                            $('<button class ="btn btn-danger" id = "removeBuy">').text("-").appendTo($tr);
+                          });
+                          $('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
+
+                        });
                     });
 
                     $(document).on("click", "#createWishList", function (event) {

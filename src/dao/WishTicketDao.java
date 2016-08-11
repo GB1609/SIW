@@ -10,7 +10,7 @@ import tables.WishTicket;
 public interface WishTicketDao {
 	public boolean alreadyExist(WishTicket wt);
 
-	public void delete(WishTicket bd);
+	public boolean delete(WishTicket bd);
 
 	public void deleteAll();
 

@@ -1,8 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,21 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
-import dao.EventsDao;
-import dao.TicketDao;
 import dao.WishTicketDao;
-import tables.Ticket;
+import tables.WishTicket;
 
 /**
- * Servlet implementation class showWishTicket
+ * Servlet implementation class RemoveWishTicket
  */
-@WebServlet("/showWishTicket")
-public class showWishTicket extends HttpServlet {
+@WebServlet("/RemoveWishTicket")
+public class RemoveWishTicket extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	public showWishTicket() {
-		super();
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,26 +30,17 @@ public class showWishTicket extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		response.getWriter();
+		int ticketCode = Integer.parseInt(request.getParameter("ticketcode"));
 		int listCode = Integer.parseInt(request.getParameter("listcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		WishTicketDao wtd = dao.getWishTicketDao();
-		TicketDao td = dao.getTicketDao();
-		EventsDao ed = dao.getEventsDao();
-		List<String> list = new ArrayList<>();
-		list = wtd.searchByWishList(listCode);
-		List<String> wishTicket = new ArrayList<>();
+		WishTicket t = new WishTicket(listCode, ticketCode);
 		String gson;
-		for (String ticketCode : list) {
-			Ticket t = td.getTicket(Integer.parseInt(ticketCode));
-			wishTicket.add(t.getType() + "_" + t.getPrice() + "_" + ed.getName(t.getCodeEvent()) + "_"
-					+ t.getCodeEvent() + "_" + t.getTicketCode());
-		}
-		if (!wishTicket.isEmpty())
-			gson = new Gson().toJson(wishTicket);
+		if (wtd.delete(t))
+			gson = new Gson().toJson("DONE");
 		else
-			gson = new Gson().toJson("EMPTY");
+			gson = new Gson().toJson("FAIL");
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}
-
 }

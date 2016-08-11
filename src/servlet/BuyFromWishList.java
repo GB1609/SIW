@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,47 +18,46 @@ import dao.EventsDao;
 import dao.TicketDao;
 import dao.WishTicketDao;
 import tables.Ticket;
+import tables.WishTicket;
 
 /**
- * Servlet implementation class showWishTicket
+ * Servlet implementation class BuyFromWishList
  */
-@WebServlet("/showWishTicket")
-public class showWishTicket extends HttpServlet {
+@WebServlet("/BuyFromWishList")
+public class BuyFromWishList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	public showWishTicket() {
-		super();
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doPost(req, resp);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		response.getWriter();
+		int ticketcode = Integer.parseInt(request.getParameter("ticketcode"));
 		int listCode = Integer.parseInt(request.getParameter("listcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		WishTicketDao wtd = dao.getWishTicketDao();
+		WishTicket t = new WishTicket(listCode, ticketcode);
 		TicketDao td = dao.getTicketDao();
 		EventsDao ed = dao.getEventsDao();
-		List<String> list = new ArrayList<>();
-		list = wtd.searchByWishList(listCode);
-		List<String> wishTicket = new ArrayList<>();
-		String gson;
-		for (String ticketCode : list) {
-			Ticket t = td.getTicket(Integer.parseInt(ticketCode));
-			wishTicket.add(t.getType() + "_" + t.getPrice() + "_" + ed.getName(t.getCodeEvent()) + "_"
-					+ t.getCodeEvent() + "_" + t.getTicketCode());
+		List<Ticket> cart = new ArrayList<>();
+		if ((Collection<? extends Ticket>) request.getSession().getAttribute("carrello") != null) {
+			cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
 		}
-		if (!wishTicket.isEmpty())
-			gson = new Gson().toJson(wishTicket);
-		else
-			gson = new Gson().toJson("EMPTY");
+		cart.add(td.getTicket(ticketcode));
+		wtd.delete(t);
+		List<String> list = new ArrayList<>();
+		for (Ticket tick : cart) {
+			list.add(t.getTicketCode() + " " + tick.getType() + " " + tick.getPrice() + " "
+					+ ed.getName(tick.getCodeEvent()));
+		}
+		String gson = new Gson().toJson(list);
+		request.getSession().setAttribute("carrello", cart);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}
-
 }
