@@ -117,6 +117,32 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
+	public String getImg(int eventCode) {
+		String img = "";
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select information.img from event, information WHERE event.eventcode = ? AND information.informationid = information";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				img = result.getString("img");
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return img;
+	}
+
+	@Override
 	public Information getInfoByName(String value) {
 		Information information = null;
 		Connection connection = this.dataSource.getConnection();

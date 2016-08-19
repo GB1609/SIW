@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import core.DaoFactory;
-import dao.TicketDao;
 import tables.Ticket;
 
 /**
@@ -52,18 +50,13 @@ public class RemoveFromCart extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		response.getWriter();
-		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
-		String type = request.getParameter("type");
-		double price = Double.parseDouble(request.getParameter("price"));
-		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		TicketDao td = dao.getTicketDao();
-		Ticket t = td.searchTicket(type, eventCode, price);
+		int ticketCode = Integer.parseInt(request.getParameter("ticketcode"));
 		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		String gson = new Gson().toJson("FAIL");
 		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
-		for (int i = 0; i < cart.size(); i++)
-			if (cart.get(i).getTicketCode() == t.getTicketCode()) {
-				cart.remove(i);
+		for (Ticket ticket : cart)
+			if (ticket.getTicketCode() == ticketCode) {
+				cart.remove(ticket);
 				gson = new Gson().toJson("DONE");
 			}
 		request.getSession().setAttribute("carrello", cart);

@@ -15,6 +15,8 @@ public interface EventsDao {
 
 	public String getFeedback(int eventCode);
 
+	public String getImg(int eventCode);
+
 	public Information getInfoByName(String value);
 
 	public Information getInformation(int eventCode);

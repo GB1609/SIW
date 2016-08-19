@@ -1,8 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
-import dao.EventsDao;
 import dao.TicketDao;
 import tables.Ticket;
 
@@ -30,7 +29,7 @@ public class ShoppingCartServlet extends HttpServlet {
 	 */
 	public ShoppingCartServlet() {
 		super();
-		this.cart = new ArrayList<>();
+		this.cart = new CopyOnWriteArrayList<>();
 	}
 
 	/**
@@ -57,13 +56,19 @@ public class ShoppingCartServlet extends HttpServlet {
 		double price = Double.parseDouble(request.getParameter("price"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		TicketDao td = dao.getTicketDao();
-		EventsDao ed = dao.getEventsDao();
-		this.cart.add(td.searchTicket(type, eventCode, price));
-		request.getSession().setAttribute("carrello", this.cart);
-		List<String> list = new ArrayList<>();
-		for (Ticket t : this.cart)
-			list.add(t.getTicketCode() + " " + t.getType() + " " + t.getPrice() + " " + ed.getName(t.getCodeEvent()));
-		String gson = new Gson().toJson(list);
+		String gson;
+		boolean find = false;
+		Ticket t = td.searchTicket(type, eventCode, price);
+		for (Ticket ticket : this.cart)
+			if ((ticket.getCodeEvent() == t.getCodeEvent()) && (ticket.getType().equals(t.getType()))
+					&& (ticket.getPrice() == t.getPrice()))
+				find = true;
+		if (!find) {
+			this.cart.add(td.searchTicket(type, eventCode, price));
+			gson = new Gson().toJson("Biglietto Aggiunto al carrello");
+			request.getSession().setAttribute("carrello", this.cart);
+		} else
+			gson = new Gson().toJson("Errore, biglietto già nel carrello!");
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}

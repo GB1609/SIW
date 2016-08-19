@@ -204,27 +204,7 @@
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
-												$.each(responseJson, function (index, item) {
-													var myspl = item.split(" ");
-													var $tr = $('<tr id = "cartRow">').appendTo('#cartTable');
-													$('<td id = "cartData" value="' + myspl[0] + '">').text('Event: ' + myspl[3] + ' Type: ' + myspl[1] + ' Price: ' + myspl[2]).appendTo($tr);
-													$('<button class ="btn btn-danger" id = "removeBuy">').text("-").appendTo($tr);
-												});
-												$('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
-											});
-										});
-
-										$(document).ready(function () {
-											$.ajax({url: "<%=request.getContextPath()%>/ShowCartServlet"}).done(function (responseJson) {
-												$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
-												$.each(responseJson, function (index, item) {
-													var myspl = item.split(" ");
-													var $tr = $('<tr id = "cartRow">').appendTo('#cartTable');
-													$('<td id = "cartData" value="' + myspl[0] + '">').text('Event: ' + myspl[3] + ' Type: ' + myspl[1] + ' Price: ' + myspl[2]).appendTo($tr);
-													$('<button class ="btn btn-danger" id = "removeBuy">').text("-").appendTo($tr);
-												});
-												$('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
+												alert(responseJson);
 											});
 										});
 
@@ -277,25 +257,6 @@
 										});
 
 										//LOOK IT
-										$(document).on("click", "#removeBuy", function (event) {
-											var t = $($(this).closest('tr').find('td')).text();
-											var mysplit = t.split(" ");
-											$.ajax({
-												url: "<%=request.getContextPath()%>/removeFromCart",
-												data: {
-													eventcode: value,
-													type: mysplit[3],
-													price: mysplit[5]
-												},
-												type: "GET",
-
-												dataType: "json"
-											}).done(function (responseJson) {
-												if (responseJson === "DONE")
-													$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
-												}
-											)
-										});
 									</script>
 									<div id="result"></div>
 									<div id="resultTicket"></div>

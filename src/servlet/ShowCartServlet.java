@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -54,15 +53,19 @@ public class ShowCartServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.getWriter();
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		dao.getTicketDao();
 		EventsDao ed = dao.getEventsDao();
-		List<Ticket> cart = new ArrayList<>();
+		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		if (request.getSession().getAttribute("carrello") != null)
 			cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
-		List<String> list = new CopyOnWriteArrayList<>();
-		for (Ticket t : cart)
-			list.add(t.getTicketCode() + " " + t.getType() + " " + t.getPrice() + " " + ed.getName(t.getCodeEvent()));
-		String gson = new Gson().toJson(list);
+		String gson;
+		if (!cart.isEmpty()) {
+			List<String> list = new CopyOnWriteArrayList<>();
+			for (Ticket t : cart)
+				list.add(t.getTicketCode() + "_" + t.getType() + "_" + t.getPrice() + "_" + ed.getName(t.getCodeEvent())
+				+ "_" + ed.getImg(t.getCodeEvent()));
+			gson = new Gson().toJson(list);
+		} else
+			gson = new Gson().toJson("EMPTY");
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}
