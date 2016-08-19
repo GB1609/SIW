@@ -43,7 +43,6 @@ public class ParameterSearchEvents extends HttpServlet {
 
 		String value = request.getParameter("value");
 		String typeOfRequest = request.getParameter("selezione");
-		System.out.println(value);
 		List<String> hy = new ArrayList<String>();
 		List<Information> hy2 = new ArrayList<Information>();
 		switch (typeOfRequest) {
@@ -94,11 +93,21 @@ public class ParameterSearchEvents extends HttpServlet {
 		Information myInfo = null;
 		InformationDao id = this.daoFactory.getInformationDao();
 		List<Events> events = ed.searchByCategory(value);
+		List<Events> events2 = ed.searchBySubCategory(value);
 		List<Information> result = new ArrayList<Information>();
 		for (int i = 0; i < events.size(); i++) {
 			Set<Information> informations = id.getAllInfo(events.get(i).getInformation());
 			for (Information info : informations) {
 				myInfo = info;
+				result.add(myInfo);
+				break;
+			}
+		}
+		for (int i = 0; i < events2.size(); i++) {
+			Set<Information> informations = id.getAllInfo(events2.get(i).getInformation());
+			for (Information info : informations) {
+				myInfo = info;
+				if (!result.contains(myInfo))
 				result.add(myInfo);
 				break;
 			}

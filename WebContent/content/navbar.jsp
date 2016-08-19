@@ -26,7 +26,7 @@
 
                 if (split[0] === "true" && split[1] === "organizator")
                     //ci va Events Management Servlet come url
-                    $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=myPage.jsp">');
+            				$('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=../EventsManagementServlet">');
                 else if (split[0] === "true")
                     $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                 else

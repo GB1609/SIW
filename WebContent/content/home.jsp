@@ -43,9 +43,9 @@
                                                             } else {
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> UserName gia utilizzato!</h1> <br><br> Cambia username e riprovare</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                                                             }
-                                                         
-                                                 
-                                                        
+
+
+
                                                         })
                                                     });
                                                 </script>

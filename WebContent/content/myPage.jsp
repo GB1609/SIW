@@ -52,45 +52,26 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Gp di laguna seca</td>
-							<td>USA</td>
-							<td>200</td>
-							<td>110</td>
-							<td>
-								<form action="" method="post">
-									<button type="submit" class="btn btn-block btn-primary">Gestisci
-										evento</button>
-								</form>
-							</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Finale di champions</td>
-							<td>Roma</td>
-							<td>62000</td>
-							<td>1000</td>
-							<td>
-								<form action="" method="post">
-									<button type="submit" class="btn btn-block btn-primary">Gestisci
-										evento</button>
-								</form>
-							</td>
 
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Roland Garos : quarti di finale</td>
-							<td>Parigi</td>
-							<td>1200</td>
-							<td>1110</td>
-							<td>
-								<form action="" method="post">
-									<button type="submit" class="btn btn-block btn-primary">Gestisci evento</button>
-								</form>
-							</td>
-						</tr>
+						<c:forEach items="${eventi}" var="value">
+
+<tr>
+		<td>${value.code}</td>
+	<td>${value.name}</td>
+		<td>${value.city}</td>
+<td>${value.bigl} <td/>
+<td>${value.rim}<td/>
+<td>
+<form action="<%=request.getContextPath()%>/OneEventManagementServlet?nome=${value.name}" method="post">
+	<button type="submit" class="btn btn-block btn-primary">Gestisci
+		evento</button>
+</form>
+</td>
+</tr>
+	 </c:forEach>
+
+
+
 					</tbody>
 				</table>
 			</div>

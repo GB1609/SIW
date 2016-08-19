@@ -59,10 +59,10 @@
            </div>
            <div class="jumbotron">
           <dl>
-          <dd>${bu.name}</dd>
-          <dd>${bu.date}</dd>
-          <dd>${bu.locality}</dd>
-          <dd>${bu.city}</dd>
+          <dd>Ev:${bu.name}</dd>
+          <dd>Date:${bu.date}</dd>
+          <dd>Loc:${bu.locality}</dd>
+          <dd>City:${bu.city}</dd>
           </dl>
            </div>
         </div>

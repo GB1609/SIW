@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.EventPartecipantDao;
 import dao.EventsDao;
 import tables.Events;
 import tables.Information;
@@ -19,6 +20,33 @@ public class EventDaoJDBC implements EventsDao {
 	public EventDaoJDBC(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+
+	@Override
+	public String getImg(int eventCode) {
+		String img = "";
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select information.img from event, information WHERE event.eventcode = ? AND information.informationid = information";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				img = result.getString("img");
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return img;
+	}
+
 
 	@Override
 	public void delete(int eventCode) {
@@ -42,16 +70,71 @@ public class EventDaoJDBC implements EventsDao {
 		}
 	}
 
+
+	@Override
+	public void deleteAllForOne(int eventCode, String name) {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM ticket WHERE event=?";
+			PreparedStatement statement = connection.prepareStatement(delete);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+			delete = "delete FROM eventpartecipant WHERE event=?";
+			PreparedStatement statement2 = connection.prepareStatement(delete);
+			statement2.setInt(1, eventCode);
+			statement2.executeUpdate();
+			connection.commit();
+			delete="delete FROM event WHERE eventcode=?";
+			PreparedStatement statement3 = connection.prepareStatement(delete);
+			statement3.setInt(1, eventCode);
+			statement3.executeUpdate();
+			connection.commit();
+			delete = "delete FROM information WHERE name=? ";
+			PreparedStatement statement4 = connection.prepareStatement(delete);
+			statement4.setString(1, name);
+			statement4.executeUpdate();
+			connection.commit();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+
 	@Override
 	public void deleteAll() {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String delete = "delete FROM event";
+			String delete = "delete FROM ticket";
 			PreparedStatement statement = connection.prepareStatement(delete);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
 			connection.commit();
+			delete = "delete FROM eventpartecipant";
+			statement = connection.prepareStatement(delete);
+			statement.executeUpdate();
+			connection.commit();
+			delete="delete FROM event";
+			statement = connection.prepareStatement(delete);
+			statement.executeUpdate();
+			connection.commit();
+			delete = "delete FROM information";
+			statement = connection.prepareStatement(delete);
+			statement.executeUpdate();
+			connection.commit();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -114,32 +197,6 @@ public class EventDaoJDBC implements EventsDao {
 			}
 		}
 		return feedback;
-	}
-
-	@Override
-	public String getImg(int eventCode) {
-		String img = "";
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String search = "select information.img from event, information WHERE event.eventcode = ? AND information.informationid = information";
-			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setInt(1, eventCode);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			ResultSet result = statement.executeQuery();
-			if (result.next())
-				img = result.getString("img");
-			connection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return img;
 	}
 
 	@Override
@@ -252,7 +309,7 @@ public class EventDaoJDBC implements EventsDao {
 		List<Events> result = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information FROM event WHERE event.organizator=?";
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.totticket, event.remainticket FROM event WHERE event.organizator=?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, user);
 			connection.setAutoCommit(false);
@@ -260,7 +317,7 @@ public class EventDaoJDBC implements EventsDao {
 			ResultSet results = statement.executeQuery();
 			while (results.next())
 				result.add(new Events(results.getInt(1), results.getString(2), results.getString(3), results.getInt(4),
-						results.getInt(5)));
+						results.getInt(5), results.getInt(6), results.getInt(7)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -309,12 +366,14 @@ public class EventDaoJDBC implements EventsDao {
 	public void save(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into event(feedback, organizator, category, information) values (?,?,?,?)";
+			String insert = "insert into event(feedback, organizator, category, information, totticket, remainticket) values (?,?,?,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
 			statement.setString(1, ev.getFeedback());
 			statement.setString(2, ev.getOrganizator());
 			statement.setInt(3, ev.getCategory());
 			statement.setInt(4, ev.getInformation());
+			statement.setInt(5, ev.getNumBigl());
+			statement.setInt(6, ev.getRemBigl());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -354,7 +413,6 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(set.size());
 		return set;
 	}
 
@@ -430,7 +488,7 @@ public class EventDaoJDBC implements EventsDao {
 			ResultSet result = statement.executeQuery();
 			while (result.next())
 				set.add(new Events(result.getInt(1), result.getString(2), result.getString(3), result.getInt(4),
-						result.getInt(5)));
+						result.getInt(5), result.getInt(6), result.getInt(7)));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -449,9 +507,9 @@ public class EventDaoJDBC implements EventsDao {
 		List<Events> set = new ArrayList<Events>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information, event.partecipant "
+			String search = "SELECT event.eventcode,event.feedback, event.organizator, event.category,event.information "
 					+ " FROM event, information, partecipant, eventpartecipant"
-					+ " WHERE partecipant.name = ? AND event.eventcode = eventpartecipant.event AND partecipant.partecipaintid=eventpartecipant.partecipant AND event.information=information.informationid ORDER BY information.date DESC ";
+					+ " WHERE partecipant.name = ? AND event.eventcode = eventpartecipant.event AND partecipant.partecipantid=eventpartecipant.partecipant AND event.information=information.informationid ORDER BY information.date DESC ";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setString(1, partecipant);
 			connection.setAutoCommit(false);

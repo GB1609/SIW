@@ -14,7 +14,7 @@ public interface EventsDao {
 	public int getCode(String name);
 
 	public String getFeedback(int eventCode);
-
+	public void deleteAllForOne(int eventCode, String name);
 	public String getImg(int eventCode);
 
 	public Information getInfoByName(String value);
