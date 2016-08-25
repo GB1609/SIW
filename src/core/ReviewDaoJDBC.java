@@ -61,7 +61,7 @@ public class ReviewDaoJDBC implements ReviewDao {
 	}
 
 	@Override
-	public void save(Review r) {
+	public boolean save(Review r) {
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String insert = "insert into review(vote, users, event, description) values (?,?,?,?)";
@@ -74,8 +74,10 @@ public class ReviewDaoJDBC implements ReviewDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
 			connection.commit();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			try {
 				connection.close();
@@ -90,16 +92,15 @@ public class ReviewDaoJDBC implements ReviewDao {
 		List<String> reviews = new ArrayList<>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String search = "select users, description from review WHERE review.event = ?";
+			String search = "select users, description, vote from review WHERE review.event = ?";
 			PreparedStatement statement = connection.prepareStatement(search);
 			statement.setInt(1, eventCode);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			ResultSet result = statement.executeQuery();
-			while (result.next()) {
-				reviews.add(result.getString("users"));
-				reviews.add(result.getString("description"));
-			}
+			while (result.next())
+				reviews.add(result.getString("users") + "_" + result.getString("description") + "_"
+						+ result.getString("vote"));
 			connection.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -141,6 +141,7 @@
 												$.each(responseJson, function (index, item) {
 													$('<li id ="result' + index + '">').text(item).appendTo($ul);
 												});
+												$("#addReviewButton").replaceWith("");
 												$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() + '</div></div>');
 												$("#result").replaceWith('<div id="result"></div>');
 											})
@@ -159,33 +160,44 @@
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												$("#result").empty();
-												var $ul = $("<ul>").appendTo($("#result"));
-												$.each(responseJson, function (index, item) {
-													$('<li id ="resultReviews">').text(item).appendTo($ul);
-												});
-
-												$("#description").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default "><div class="panel-title panel-heading"><h3 class="col-md-3 ">User</h3><h3 class="col-md-6">Comment</h3><h3 class="col-md-3">Reviews</h3></div><div class="panel-body pre-scrollable" i' +
-														'd = "reviewBody"></div></div></div>');
-
-												$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default "><div class="panel-title panel-heading"><h3 class="col-md-3 ">User</h3><h3 class="col-md-6">Comment</h3><h3 class="col-md-3">Reviews</h3></div><div class="panel-body pre-scrollable" i' +
-														'd = "reviewBody"></div></div></div>');
-
+												$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+														'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
+												$("#description").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+														'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
 												var $table = $('<table class = "table">').appendTo($("#reviewBody"));
-												$("li").each(function (index, item) {
-													if ($(item).is("#resultReviews")) {
-														if (index % 2 == 0) {
-															$('<tr id = "row' + index + '">').appendTo($table);
-															$('<td id = "data' + index + '">').text($(item).text()).appendTo('#row' + index);
-														} else {
-															$('<td id = "data' + index + '">').text($(item).text()).appendTo('#row' + (index - 1));
-														}
-													}
+												$.each(responseJson, function (index, item) {
+													mysplit = item.split("_");
+													alert(mysplit[0] + " " + mysplit[1] + " " + mysplit[2]);
+													$('<tr id = "row' + index + '">').appendTo($table);
+													$('<td id = "data' + index + '">').appendTo('#row' + index);
+													$('<div class="col-md-4">' + mysplit[0] + '</div><div class="col-md-4">' + mysplit[1] + '</div><div class="col-md-4">' + mysplit[2] + '</div>').appendTo('#data' + index);
 												});
-												$('<tr><td><button class = "btn btn-secondary" id ="addrevButton">').appendTo($table);
-
-												$("#result").replaceWith('<div id="result"></div>');
 											});
+										});
+
+										$(document).on("click", "#addReviewButton", function (event) {
+											$("#review").replaceWith('<div class="col-md-9" id="review"><input type="number" name="vote" id="vote" min="1" max="10" class="form-control input-sm" cols="5"></input></input><textarea type="text" name="reviewForm" id="reviewForm" class="form-control input-sm" placeholder="Sc' +
+													'rivi Qui.." cols="30" rows="10"></textarea><button class="btn btn-success" id="saveReview">Add</button></div>');
+										});
+
+										$(document).on("click", "#saveReview", function (event) {
+											$.ajax({
+												url: "<%=request.getContextPath()%>/AddReview",
+
+												//JSON
+												data: {
+													eventcode: value,
+													user: "gio",
+													vote: $("#vote").val(),
+													description: $("#reviewForm").val()
+												},
+												type: "POST",
+
+												dataType: "json"
+											})
+
+											$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+													'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
 										});
 
 										$(document).on("click", "#ticketTable tbody #buy", function (event) {
@@ -206,27 +218,6 @@
 											}).done(function (responseJson) {
 												alert(responseJson);
 											});
-										});
-
-										$(document).on("click", "#cartBuy", function (event) {
-											$.ajax({
-												url: "<%=request.getContextPath()%>/BuyTicketServlet",
-
-												//JSON
-												data: {
-													owner: "gio"
-												},
-												type: "POST",
-
-												dataType: "json"
-											}).done(function (responseJson) {
-												if (responseJson === "DONE") {
-													alert("ACQUISTO EFFETTUATO CORRETTAMENTE");
-													$('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
-												} else
-													alert(responseJson);
-												}
-											);
 										});
 
 										$(document).on("click", "#wishlists #wish_list #sw", function (event) {

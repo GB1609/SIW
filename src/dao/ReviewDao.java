@@ -9,7 +9,7 @@ public interface ReviewDao {
 
 	public void deleteAll();
 
-	public void save(Review r);
+	public boolean save(Review r);
 
 	public List<String> searchByEvents(int eventCode);
 

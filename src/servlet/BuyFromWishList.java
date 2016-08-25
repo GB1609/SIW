@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
-import dao.EventsDao;
 import dao.TicketDao;
 import dao.WishTicketDao;
 import tables.Ticket;
@@ -43,19 +42,15 @@ public class BuyFromWishList extends HttpServlet {
 		WishTicketDao wtd = dao.getWishTicketDao();
 		WishTicket t = new WishTicket(listCode, ticketcode);
 		TicketDao td = dao.getTicketDao();
-		EventsDao ed = dao.getEventsDao();
 		List<Ticket> cart = new ArrayList<>();
-		if ((Collection<? extends Ticket>) request.getSession().getAttribute("carrello") != null) {
+		if ((Collection<? extends Ticket>) request.getSession().getAttribute("carrello") != null)
 			cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
-		}
-		cart.add(td.getTicket(ticketcode));
-		wtd.delete(t);
-		List<String> list = new ArrayList<>();
-		for (Ticket tick : cart) {
-			list.add(t.getTicketCode() + " " + tick.getType() + " " + tick.getPrice() + " "
-					+ ed.getName(tick.getCodeEvent()));
-		}
-		String gson = new Gson().toJson(list);
+		String gson;
+		if (cart.add(td.getTicket(ticketcode))) {
+			wtd.delete(t);
+			gson = new Gson().toJson("DONE");
+		} else
+			gson = new Gson().toJson("FAIL");
 		request.getSession().setAttribute("carrello", cart);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);

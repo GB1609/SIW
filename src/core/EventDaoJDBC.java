@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.EventPartecipantDao;
 import dao.EventsDao;
 import tables.Events;
 import tables.Information;
@@ -20,33 +19,6 @@ public class EventDaoJDBC implements EventsDao {
 	public EventDaoJDBC(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
-	@Override
-	public String getImg(int eventCode) {
-		String img = "";
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String search = "select information.img from event, information WHERE event.eventcode = ? AND information.informationid = information";
-			PreparedStatement statement = connection.prepareStatement(search);
-			statement.setInt(1, eventCode);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			ResultSet result = statement.executeQuery();
-			if (result.next())
-				img = result.getString("img");
-			connection.commit();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return img;
-	}
-
 
 	@Override
 	public void delete(int eventCode) {
@@ -70,6 +42,39 @@ public class EventDaoJDBC implements EventsDao {
 		}
 	}
 
+	@Override
+	public void deleteAll() {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String delete = "delete FROM ticket";
+			PreparedStatement statement = connection.prepareStatement(delete);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+			delete = "delete FROM eventpartecipant";
+			statement = connection.prepareStatement(delete);
+			statement.executeUpdate();
+			connection.commit();
+			delete = "delete FROM event";
+			statement = connection.prepareStatement(delete);
+			statement.executeUpdate();
+			connection.commit();
+			delete = "delete FROM information";
+			statement = connection.prepareStatement(delete);
+			statement.executeUpdate();
+			connection.commit();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@Override
 	public void deleteAllForOne(int eventCode, String name) {
@@ -87,7 +92,7 @@ public class EventDaoJDBC implements EventsDao {
 			statement2.setInt(1, eventCode);
 			statement2.executeUpdate();
 			connection.commit();
-			delete="delete FROM event WHERE eventcode=?";
+			delete = "delete FROM event WHERE eventcode=?";
 			PreparedStatement statement3 = connection.prepareStatement(delete);
 			statement3.setInt(1, eventCode);
 			statement3.executeUpdate();
@@ -96,43 +101,6 @@ public class EventDaoJDBC implements EventsDao {
 			PreparedStatement statement4 = connection.prepareStatement(delete);
 			statement4.setString(1, name);
 			statement4.executeUpdate();
-			connection.commit();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-
-
-
-	@Override
-	public void deleteAll() {
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String delete = "delete FROM ticket";
-			PreparedStatement statement = connection.prepareStatement(delete);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement.executeUpdate();
-			connection.commit();
-			delete = "delete FROM eventpartecipant";
-			statement = connection.prepareStatement(delete);
-			statement.executeUpdate();
-			connection.commit();
-			delete="delete FROM event";
-			statement = connection.prepareStatement(delete);
-			statement.executeUpdate();
-			connection.commit();
-			delete = "delete FROM information";
-			statement = connection.prepareStatement(delete);
-			statement.executeUpdate();
 			connection.commit();
 
 		} catch (SQLException e) {
@@ -197,6 +165,32 @@ public class EventDaoJDBC implements EventsDao {
 			}
 		}
 		return feedback;
+	}
+
+	@Override
+	public String getImg(int eventCode) {
+		String img = "";
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String search = "select information.img from event, information WHERE event.eventcode = ? AND information.informationid = information";
+			PreparedStatement statement = connection.prepareStatement(search);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			if (result.next())
+				img = result.getString("img");
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return img;
 	}
 
 	@Override

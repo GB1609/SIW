@@ -24,7 +24,6 @@ public class AddReview extends HttpServlet {
 	 */
 	public AddReview() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -34,7 +33,6 @@ public class AddReview extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -45,17 +43,15 @@ public class AddReview extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 		response.setContentType("text/html");
 		response.getWriter();
 		int vote = Integer.parseInt(request.getParameter("vote"));
 		String user = request.getParameter("user");
-		int event = Integer.parseInt(request.getParameter("event"));
+		int event = Integer.parseInt(request.getParameter("eventcode"));
 		String description = request.getParameter("description");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		ReviewDao rd = dao.getReviewDao();
 		rd.save(new Review(vote, user, event, description));
 	}
-
 }

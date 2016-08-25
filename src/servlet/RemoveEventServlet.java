@@ -16,7 +16,6 @@ import core.DaoFactory;
 import core.DataSource;
 import dao.EventsDao;
 import dao.InformationDao;
-import dao.TicketDao;
 import tables.EventInfo;
 import tables.Events;
 import tables.Information;
@@ -30,31 +29,34 @@ public class RemoveEventServlet extends HttpServlet {
 	protected DataSource datSource;
 	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 
-    public RemoveEventServlet() {
-        super();
-    }
+	public RemoveEventServlet() {
+		super();
+	}
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String delete = request.getParameter("event");
-		
+
 		EventsDao ed = this.daoFactory.getEventsDao();
 		ed.deleteAllForOne(ed.getCode(delete), delete);
 		String nm = request.getSession().getAttribute("name").toString();
-		
+
 		List<Events> lista = ed.organizedEvents(nm);
 		InformationDao ids = this.daoFactory.getInformationDao();
 		List<EventInfo> eifs = new ArrayList<EventInfo>();
 		for (int i = 0; i < lista.size(); i++) {
 			Set<Information> informations = ids.getAllInfo(lista.get(i).getInformation());
 			for (Information info : informations) {
-				eifs.add(new EventInfo(lista.get(i).getEventcode(), info.getName(),info.getCity(),lista.get(i).getNumBigl(),lista.get(i).getRemBigl()));
+				eifs.add(new EventInfo(lista.get(i).getEventcode(), info.getName(), info.getCity(),
+						lista.get(i).getNumBigl(), lista.get(i).getRemBigl()));
 				break;
 			}
 

@@ -26,7 +26,7 @@
 
                 if (split[0] === "true" && split[1] === "organizator")
                     //ci va Events Management Servlet come url
-            				$('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=../EventsManagementServlet">');
+                    $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=../EventsManagementServlet">');
                 else if (split[0] === "true")
                     $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                 else
@@ -190,6 +190,7 @@
                                     var mysplit = item.split(" ");
                                     $('<button type="button" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id="showWT"><div class="col-md-11" id="wishName"> ' + mysplit[1] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>').appendTo($ul);
                                 });
+                                $('<button type ="button" class="btn btn-default list-group-item" id ="createWishList">').text("add").appendTo($ul);
                             }
                         });
                     });
@@ -208,16 +209,16 @@
 
                             dataType: "json"
                         }).done(function (responseJson) {
-                            $('#showWT').replaceWith('');
+                            $('#wishList_ul').replaceWith('<ul class="list-group" id = "wishList_ul">');
                             var $ul = $('<li class="dropdown list-group-item" id="dropWTItem"></li>').appendTo($("#wishList_ul"));
-                            $('<button type="button" class="btn btn-default dropdown-toggle list-group-item" data-toggle="dropdown" value="' + lcode + ' id = "showWT""><div class="col-md-11" id ="wishName">' + ltext + '</div><div class="col-md-1"><span class="caret"></span></div></button>').appendTo($ul);
+                            $('<button type="button" class="btn btn-default dropdown-toggle list-group-item" data-toggle="dropdown" value="' + lcode + '" id = "showWT""><div class="col-md-11" id ="wishName">' + ltext + '</div><div class="col-md-1"><span class="caret"></span></div></button>').appendTo($ul);
                             var $dropmenu = $('<ul class ="dropdown-menu">').appendTo($ul);
                             if (responseJson === "EMPTY") {
                                 $('<li><div class = "dropdown-toggle list-group-item" data-toggle="dropdown">Empty</div></li>').appendTo($dropmenu);
                             } else {
                                 $.each(responseJson, function (index, item) {
                                     var mysplit = item.split("_");
-                                    $('<li><div class = "list-group-item" id="valueWT">Evento:' + mysplit[2] + '; Tipo: ' + mysplit[0] + ';prezzo: ' + mysplit[1] + ';<button class="btn btn-danger" id="removeWT" value="' + lcode + '_' + mysplit[4] + '_' + ltext + '">-</button> <button class="btn btn-success" id ="buyWT" value=' + lcode + "_" + mysplit[4] + '>BUY<span class="glyphicon glyphicon-shopping-cart"></span></button></div></li>').appendTo($dropmenu);
+                                    $('<li><div class = "list-group-item" id="valueWT">Evento:' + mysplit[2] + '; Tipo: ' + mysplit[0] + ';prezzo: ' + mysplit[1] + ';<button class="btn btn-danger" id="removeWT" value="' + lcode + '_' + mysplit[4] + '_' + ltext + '">-</button> <button class="btn btn-success" id ="buyWT" value="' + lcode + "_" + mysplit[4] + "_" + ltext + '">BUY<span class="glyphicon glyphicon-shopping-cart"></span></button></div></li>').appendTo($dropmenu);
                                 });
                             }
                         })
@@ -238,7 +239,7 @@
                             dataType: "json"
                         }).done(function (responseJson) {
                             if (responseJson === "DONE") {
-                                $("#dropWTItem").replaceWith('<button type="button" value=' + ticketSplit[0] + ' class="btn btn-default list-group-item" id="showWT"><div class="col-md-11">' + ticketSplit[2] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>');
+                                $("#dropWTItem").replaceWith('<button type="button" value="' + ticketSplit[0] + '" class="btn btn-default list-group-item" id="showWT"><div class="col-md-11">' + ticketSplit[2] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>');
                                 alert("Cancellazione riuscita con successo");
                             } else {
                                 alert("Errore!");
@@ -261,15 +262,12 @@
 
                             dataType: "json"
                         }).done(function (responseJson) {
-                            $('#cartTable').replaceWith('<table class="table" id="cartTable"></table>');
-                            $.each(responseJson, function (index, item) {
-                                var myspl = item.split(" ");
-                                var $tr = $('<tr id = "cartRow list-group-item">').appendTo('#cartTable');
-                                $('<td id = "cartData" value="' + myspl[0] + '">').text('Event: ' + myspl[3] + ' Type: ' + myspl[1] + ' Price: ' + myspl[2]).appendTo($tr);
-                                $('<button class ="btn btn-danger" id = "removeBuy">').text("-").appendTo($tr);
-                            });
-                            $('<button class ="btn btn-success" id = "cartBuy">').text("BUY").appendTo('#cartTable');
-
+                            if (responseJson === "DONE") {
+                                $("#dropWTItem").replaceWith('<button type="button" value="' + ticketSplit[0] + '" class="btn btn-default list-group-item" id="showWT"><div class="col-md-11">' + ticketSplit[2] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>');
+                                alert("Aggiunto al carrello");
+                            } else {
+                                alert("Errore!");
+                            }
                         });
                     });
 

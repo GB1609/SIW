@@ -77,7 +77,7 @@
                                                     total += parseFloat(myspl[2]);
                                                     $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2"> <h3>' + myspl[1] + '</h> </div></div > <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>  <td><h3>Quantity</h > </td>').appendTo($tr);
                                                 });
-                                                $("#totalShow").replaceWith('<h3>' + total + ',00 EUR</h>');
+                                                $("#totalShow").replaceWith('<h3 id = "totalShow">' + total + ',00 EUR</h>');
                                             }
                                         });
                                     });
@@ -96,7 +96,7 @@
                                             if (responseJson === DONE) {
                                                 $('#' + t).replaceWith("");
                                                 total -= parseFloat($($(this).closest("tr").find("h3")).text());
-                                                $("#totalShow").replaceWith('<h3>' + total + ',00 EUR</h>');
+                                                $("#totalShow").replaceWith('<h3 id = "totalShow">' + total + ',00 EUR</h>');
                                             } else {
                                                 alert("Errore!");
                                             }
@@ -118,7 +118,7 @@
                                             if (responseJson === "DONE") {
                                                 alert("ACQUISTO EFFETTUATO CORRETTAMENTE");
                                                 total = 0;
-                                                $("#totalShow").replaceWith('<h3>' + total + ',00 EUR</h>');
+                                                $("#totalShow").replaceWith('<h3 id = "totalShow">0,00 EUR</h>');
                                                 $('#cartTableBodyHTML').replaceWith('<tbody id="cartTableBodyHTML"></tbody>');
                                             } else
                                                 alert(responseJson);
