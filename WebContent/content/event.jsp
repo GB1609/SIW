@@ -190,7 +190,7 @@
 												//JSON
 												data: {
 													eventcode: value,
-													user: "gio",
+													user: "${name}",
 													vote: $("#vote").val(),
 													description: $("#reviewForm").val()
 												},
@@ -231,7 +231,7 @@
 												//JSON
 												data: {
 													listcode: valueSplit[0],
-													owner: "gio",
+													owner: "${name}",
 													eventcode: value,
 													type: valueSplit[1],
 													price: valueSplit[2]

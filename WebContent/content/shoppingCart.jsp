@@ -109,7 +109,7 @@
 
                                             //JSON
                                             data: {
-                                                owner: "gio"
+                                                owner: "${name}"
                                             },
                                             type: "POST",
 

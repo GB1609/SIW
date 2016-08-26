@@ -150,7 +150,7 @@
 
                             //JSON
                             data: {
-                                owner: "gio"
+                                owner: "${name}"
                             },
                             type: "POST",
 
@@ -175,7 +175,7 @@
 
                             //JSON
                             data: {
-                                owner: "gio"
+                                owner: "${name}"
                             },
                             type: "POST",
 
@@ -284,7 +284,7 @@
 
                             //JSON
                             data: {
-                                owner: "gio",
+                                owner: "${name}",
                                 name: $("#wishListName").val()
                             },
                             type: "POST",
