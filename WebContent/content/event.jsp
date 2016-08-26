@@ -41,10 +41,10 @@
 									</div>
 									<div class="row">
 										<div class="col-md-3"></div>
-										<div class="col-md-6" id="name">
+										<div class="col-md-5" id="name">
 											<h2></h2>
 										</div>
-										<div class="col-md-2">
+										<div class="col-md-3" id="mediaVoti">
 											<h2>Feedback</h2>
 										</div>
 									</div>
@@ -167,10 +167,13 @@
 												var $table = $('<table class = "table">').appendTo($("#reviewBody"));
 												$.each(responseJson, function (index, item) {
 													mysplit = item.split("_");
-													alert(mysplit[0] + " " + mysplit[1] + " " + mysplit[2]);
-													$('<tr id = "row' + index + '">').appendTo($table);
-													$('<td id = "data' + index + '">').appendTo('#row' + index);
-													$('<div class="col-md-4">' + mysplit[0] + '</div><div class="col-md-4">' + mysplit[1] + '</div><div class="col-md-4">' + mysplit[2] + '</div>').appendTo('#data' + index);
+													if (mysplit[0] === "media") {
+														$("#mediaVoti").replaceWith('<div class="col-md-3" id="mediaVoti"> <h2>Voto: ' + mysplit[1] + '/10</h2> </div>');
+													} else {
+														$('<tr id = "row' + index + '">').appendTo($table);
+														$('<td id = "data' + index + '">').appendTo('#row' + index);
+														$('<div class="col-md-4">' + mysplit[0] + '</div><div class="col-md-4">' + mysplit[1] + '</div><div class="col-md-4">' + mysplit[2] + '</div>').appendTo('#data' + index);
+													}
 												});
 											});
 										});
