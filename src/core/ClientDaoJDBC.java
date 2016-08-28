@@ -212,7 +212,7 @@ public class ClientDaoJDBC implements ClientsDao {
 		boolean exsist = false;
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String query = "select * FROM client	where username=? and password=?";
+			String query = "select * FROM client where username=? and password=?";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setString(1, userName);
 			statement.setString(2, password);

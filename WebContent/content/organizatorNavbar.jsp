@@ -23,7 +23,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="mainNavBar">
 			<ul class="nav navbar-nav navbar-left">
-				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Organizator<span class="caret"> </span>
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${name}<span class="caret"> </span>
 				</a>
 					<ul class="dropdown-menu">
 						<li> <a href="<%= request.getContextPath() %>/DataForOrganizatorServlet" id="organizza">Crea un evento</a> </li>

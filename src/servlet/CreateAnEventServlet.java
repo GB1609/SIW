@@ -70,7 +70,7 @@ public class CreateAnEventServlet extends HttpServlet {
 			id.save(i);
 			Information i2 = ed.getInfoByName(nome);
 			int infId = i2.getInformationId();
-			Events e = new Events(-1, "", "vic", categoryCode, infId, tot, tot);
+			Events e = new Events(-1, "", "vic", categoryCode, infId, tot, tot, true);
 			ed.save(e);
 			List<Events> uffa = ed.searchByName(nome);
 			for (int j = 0; j < tipoBiglietti.length; j++)

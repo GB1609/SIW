@@ -31,7 +31,7 @@ public class RegistrationServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.getWriter();
 		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		String password = request.getParameter("passwords");
 		String first_name = request.getParameter("first_name");
 		String last_name = request.getParameter("last_name");
 		String address = request.getParameter("address");

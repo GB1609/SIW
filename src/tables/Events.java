@@ -8,6 +8,7 @@ public class Events {
 	int information;
 	int numBigl;
 	int remBigl;
+	boolean startstorpsell = true;
 
 	public Events(int eventcode, String feedback, String organizator, int category, int information) {
 		this.eventcode = eventcode;
@@ -27,8 +28,25 @@ public class Events {
 		this.remBigl = remBigl;
 	}
 	
+	public Events(int eventcode, String feedback, String organizator, int category, int information,int numBigl, int remBigl, boolean startstop) {
+		this.eventcode = eventcode;
+		this.feedback = feedback;
+		this.organizator = organizator;
+		this.category = category;
+		this.information = information;
+		this.numBigl = numBigl;
+		this.remBigl = remBigl;
+		this.startstorpsell = startstop;
+	}
 	
 	
+	public boolean isStartstorpsell() {
+		return startstorpsell;
+	}
+
+	public void setStartstorpsell(boolean startstorpsell) {
+		this.startstorpsell = startstorpsell;
+	}
 
 	public int getNumBigl() {
 		return numBigl;

@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -10,7 +11,7 @@ public interface TicketDao {
 	public void delete(int code);
 
 	public void deleteAll();
-
+	public HashMap<String,Double>allTypeForOneEvent(int e);
 	public boolean getState(int code);
 
 	public Ticket getTicket(int ticketcode);
@@ -32,6 +33,8 @@ public interface TicketDao {
 	public Ticket searchTicket(String type, int event, double price);
 
 	public void setState(boolean sell, int code);
-
+	
+	public void updatePrice (double price, String type);
+	
 	public void update(Ticket bd);
 }

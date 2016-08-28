@@ -13,8 +13,12 @@ public interface EventsDao {
 
 	public int getCode(String name);
 
+	public boolean getEventState(String name);
+
 	public String getFeedback(int eventCode);
+
 	public void deleteAllForOne(int eventCode, String name);
+
 	public String getImg(int eventCode);
 
 	public Information getInfoByName(String value);
@@ -47,9 +51,9 @@ public interface EventsDao {
 
 	public List<Events> searchBySubCategory(String category);
 
-	public void startSeller(Events e);
+	public void startSeller(int e);
 
-	public void stopSeller(Events e);
+	public void stopSeller(int e);
 
 	public void update(Events e);
 }

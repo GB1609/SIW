@@ -62,7 +62,7 @@
 <td>${value.bigl} <td/>
 <td>${value.rim}<td/>
 <td>
-<form action="<%=request.getContextPath()%>/OneEventManagementServlet?nome=${value.name}" method="post">
+<form action="<%=request.getContextPath()%>/OneEventManagementServlet?nome=${value.name}&&update=no" method="post">
 	<button type="submit" class="btn btn-block btn-primary">Gestisci
 		evento</button>
 </form>

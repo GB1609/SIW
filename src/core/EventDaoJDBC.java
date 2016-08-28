@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.tree.ExpandVetoException;
+
 import dao.EventsDao;
 import tables.Events;
 import tables.Information;
@@ -360,7 +362,7 @@ public class EventDaoJDBC implements EventsDao {
 	public void save(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String insert = "insert into event(feedback, organizator, category, information, totticket, remainticket) values (?,?,?,?,?,?)";
+			String insert = "insert into event(feedback, organizator, category, information, totticket, remainticket, startstop) values (?,?,?,?,?,?,?)";
 			PreparedStatement statement = connection.prepareStatement(insert);
 			statement.setString(1, ev.getFeedback());
 			statement.setString(2, ev.getOrganizator());
@@ -368,6 +370,7 @@ public class EventDaoJDBC implements EventsDao {
 			statement.setInt(4, ev.getInformation());
 			statement.setInt(5, ev.getNumBigl());
 			statement.setInt(6, ev.getRemBigl());
+			statement.setBoolean(7, ev.isStartstorpsell());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -611,31 +614,67 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(set.size());
 		return set;
 	}
 
 	@Override
-	public void startSeller(Events e) {
-		// TODO Auto-generated method stub
+	public void startSeller(int e) {
+		Connection connection = dataSource.getConnection();
+		try {
+			String query = "update event SET startstop = ? WHERE event.eventcode=? ";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setBoolean(1, true);
+			statement.setInt(2, e);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
-	public void stopSeller(Events e) {
-		// TODO Auto-generated method stub
+	public void stopSeller(int e) {
+		Connection connection = dataSource.getConnection();
+		try {
+			String query = "update event SET startstop = ? WHERE event.eventcode=? ";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setBoolean(1, false);
+			statement.setInt(2, e);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 
 	@Override
 	public void update(Events ev) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String update = "update event SET feedback = ?, organizator = ?, category = ?, information = ? WHERE eventcode =?";
+			String update = "update event SET feedback = ?, organizator = ?, category = ?, information = ?, startstop = ? WHERE eventcode =?";
 			PreparedStatement statement = connection.prepareStatement(update);
 			statement.setString(1, ev.getFeedback());
 			statement.setString(2, ev.getOrganizator());
 			statement.setInt(3, ev.getCategory());
 			statement.setInt(4, ev.getInformation());
 			statement.setInt(6, ev.getEventcode());
+			statement.setBoolean(7, ev.isStartstorpsell());
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
@@ -649,6 +688,31 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public boolean getEventState(String name) {
+		boolean res = true;
+		Connection connection = dataSource.getConnection();
+		try {
+			String query = "SELECT startstop FROM event,information WHERE event.information=information.informationid AND information.name=?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next())
+			{
+				res = rs.getBoolean(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return res;
 	}
 
 }
