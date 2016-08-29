@@ -35,7 +35,6 @@
                                                 </th>
                                                 <th></th>
                                                 <th>Prezzo</th>
-                                                <th>Quantita</th>
                                             </tr>
                                         </thead>
                                         <tbody id="cartTableBodyHTML"></tbody>
@@ -74,8 +73,8 @@
                                                 $.each(responseJson, function (index, item) {
                                                     var myspl = item.split("_");
                                                     var $tr = $('<tr id = "' + myspl[0] + '">').appendTo('#cartTableBodyHTML');
+                                                    $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2"> <h3>' + myspl[1] + '</h> </div></div> <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>').appendTo($tr);
                                                     total += parseFloat(myspl[2]);
-                                                    $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2"> <h3>' + myspl[1] + '</h> </div></div > <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>  <td><h3>Quantity</h > </td>').appendTo($tr);
                                                 });
                                                 $("#totalShow").replaceWith('<h3 id = "totalShow">' + total + ',00 EUR</h>');
                                             }

@@ -35,7 +35,6 @@ public class LogInServlet extends HttpServlet {
 		OrganizatorDao organizator = dao.getOrganizatorDao();
 		trouve = client.verifyClients(n, p);
 		if (trouve) {
-
 			request.getSession().setAttribute("name", n);
 			request.getSession().setAttribute("tipe", "client");
 		} else {

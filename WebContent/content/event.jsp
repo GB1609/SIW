@@ -184,23 +184,24 @@
 										});
 
 										$(document).on("click", "#saveReview", function (event) {
-											$.ajax({
-												url: "<%=request.getContextPath()%>/AddReview",
-
-												//JSON
-												data: {
-													eventcode: value,
-													user: "${name}",
-													vote: $("#vote").val(),
-													description: $("#reviewForm").val()
-												},
-												type: "POST",
-
-												dataType: "json"
-											})
-
-											$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
-													'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
+											alert($("#vote").val());
+											// $.ajax({
+											// 	url: "<%=request.getContextPath()%>/AddReview",
+											//
+											// 	//JSON
+											// 	data: {
+											// 		eventcode: value,
+											// 		user: "${name}",
+											// 		vote: $("#vote").val(),
+											// 		description: $("#reviewForm").val()
+											// 	},
+											// 	type: "POST",
+											//
+											// 	dataType: "json"
+											// })
+											//
+											// $("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+											// 		'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
 										});
 
 										$(document).on("click", "#ticketTable tbody #buy", function (event) {

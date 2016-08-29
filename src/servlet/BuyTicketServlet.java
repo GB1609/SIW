@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
-import dao.OrdersDao;
 import dao.TicketDao;
-import tables.Order;
 import tables.Ticket;
 
 @WebServlet("/BuyTicketServlet")
@@ -35,10 +33,8 @@ public class BuyTicketServlet extends HttpServlet {
 		response.getWriter();
 		String gson;
 		boolean success = true;
-		String owner = request.getParameter("owner");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		TicketDao td = dao.getTicketDao();
-		OrdersDao od = dao.getOrdersDao();
 		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
 		for (int i = 0; i < cart.size(); i++)
@@ -46,16 +42,14 @@ public class BuyTicketServlet extends HttpServlet {
 				Ticket tmp = td.searchTicket(cart.get(i).getType(), cart.get(i).getCodeEvent(), cart.get(i).getPrice());
 				if (tmp != null) {
 					td.setState(false, tmp.getTicketCode());
-					od.save(new Order(cart.get(i).getTicketCode(), owner));
 					cart.remove(cart.get(i));
 				} else
 					success = false;
 			} else {
 				td.setState(false, cart.get(i).getTicketCode());
-				od.save(new Order(cart.get(i).getTicketCode(), owner));
 				cart.remove(cart.get(i));
 			}
-		if (success && request.getSession().getAttribute("tipe") == "client")
+		if (success && (request.getSession().getAttribute("tipe") == "client"))
 			gson = new Gson().toJson("DONE");
 		else if (request.getSession().getAttribute("tipe") != "client")
 			gson = new Gson().toJson("DEVI LOGGARTI PER POTER COMPLETARE L'ACQUISTO");

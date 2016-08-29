@@ -22,6 +22,31 @@ public class TicketDaoJDBC implements TicketDao {
 	}
 
 	@Override
+	public HashMap<String, Double> allTypeForOneEvent(int e) {
+		HashMap<String, Double> tipi = new HashMap<String, Double>();
+		Connection connection = this.dataSource.getConnection();
+		try {
+			// String query = "select type from ticket WHERE ticket.event=?
+			// GROUP BY ticket.type";
+			String query = "select ticket.type, ticket.price from ticket WHERE ticket.event=? GROUP BY ticket.TYPE, ticket.price";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, e);
+			ResultSet set = statement.executeQuery();
+			while (set.next())
+				tipi.put(set.getString("type"), set.getDouble("price"));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		return tipi;
+	}
+
+	@Override
 	public void delete(int code) {
 		Connection connection = this.dataSource.getConnection();
 		try {
@@ -190,35 +215,6 @@ public class TicketDaoJDBC implements TicketDao {
 		}
 	}
 
-	
-	public HashMap<String,Double>allTypeForOneEvent(int e)
-	{
-		HashMap<String,Double> tipi = new HashMap<String,Double>();
-		Connection connection = dataSource.getConnection();
-		try{
-			//String query = "select type from ticket WHERE ticket.event=? GROUP BY ticket.type";
-			String query = "select ticket.type, ticket.price from ticket WHERE ticket.event=? GROUP BY ticket.TYPE, ticket.price";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setInt(1, e);
-			ResultSet set = statement.executeQuery();
-			while (set.next())
-			{
-				tipi.put(set.getString("type"), set.getDouble("price"));
-			}
-		}catch(Exception e2 ){
-			e2.printStackTrace();
-		}
-		finally{
-			try {
-				connection.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		}
-		return tipi;
-	}
-	
-	
 	@Override
 	public List<String> searchByEvents(int e) {
 		List<String> myResult = new ArrayList<>();
@@ -377,27 +373,6 @@ public class TicketDaoJDBC implements TicketDao {
 		}
 	}
 
-	public void updatePrice (double price, String type)
-	{
-		Connection connection = this.dataSource.getConnection();
-		try {
-			String update = "update ticket SET price =? WHERE type=?";
-			PreparedStatement statement = connection.prepareStatement(update);
-			statement.setDouble(1, price);
-			statement.setString(2, type);
-			connection.setAutoCommit(false);
-			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-			statement.executeUpdate();
-			connection.commit();
-		} catch (Exception e) {
-		} finally {
-			try {
-				connection.close();
-			} catch (Exception e) {
-			}
-		}
-	}
-	
 	@Override
 	public void update(Ticket bd) {
 		Connection connection = this.dataSource.getConnection();
@@ -410,6 +385,27 @@ public class TicketDaoJDBC implements TicketDao {
 			statement.setInt(4, bd.getTicketCode());
 			statement.setBoolean(5, bd.isSeller());
 			statement.setInt(6, bd.getTicketCode());
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (Exception e) {
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+
+	@Override
+	public void updatePrice(double price, String type) {
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String update = "update ticket SET price =? WHERE type=?";
+			PreparedStatement statement = connection.prepareStatement(update);
+			statement.setDouble(1, price);
+			statement.setString(2, type);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
+import dao.EventsDao;
 import dao.TicketDao;
 
 @WebServlet("/ShowTicketServlet")
@@ -30,10 +31,15 @@ public class ShowTicketServlet extends HttpServlet {
 		response.getWriter();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
+		EventsDao ed = dao.getEventsDao();
 		TicketDao td = dao.getTicketDao();
-		List<String> list = new CopyOnWriteArrayList<>();
-		list = td.searchByEvents(eventCode);
-		String gson = new Gson().toJson(list);
+		String gson;
+		if (ed.getEventState(ed.getName(eventCode))) {
+			List<String> list = new CopyOnWriteArrayList<>();
+			list = td.searchByEvents(eventCode);
+			gson = new Gson().toJson(list);
+		} else
+			gson = new Gson().toJson("");
 		response.setContentType("application/json");
 		response.getWriter().write(gson);
 	}

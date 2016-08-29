@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.tree.ExpandVetoException;
-
 import dao.EventsDao;
 import tables.Events;
 import tables.Information;
@@ -141,6 +139,29 @@ public class EventDaoJDBC implements EventsDao {
 			}
 		}
 		return code;
+	}
+
+	@Override
+	public boolean getEventState(String name) {
+		boolean res = true;
+		Connection connection = this.dataSource.getConnection();
+		try {
+			String query = "SELECT startstop FROM event,information WHERE event.information=information.informationid AND information.name=?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			ResultSet rs = statement.executeQuery();
+			while (rs.next())
+				res = rs.getBoolean(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return res;
 	}
 
 	@Override
@@ -619,7 +640,7 @@ public class EventDaoJDBC implements EventsDao {
 
 	@Override
 	public void startSeller(int e) {
-		Connection connection = dataSource.getConnection();
+		Connection connection = this.dataSource.getConnection();
 		try {
 			String query = "update event SET startstop = ? WHERE event.eventcode=? ";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -642,7 +663,7 @@ public class EventDaoJDBC implements EventsDao {
 
 	@Override
 	public void stopSeller(int e) {
-		Connection connection = dataSource.getConnection();
+		Connection connection = this.dataSource.getConnection();
 		try {
 			String query = "update event SET startstop = ? WHERE event.eventcode=? ";
 			PreparedStatement statement = connection.prepareStatement(query);
@@ -688,31 +709,6 @@ public class EventDaoJDBC implements EventsDao {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	@Override
-	public boolean getEventState(String name) {
-		boolean res = true;
-		Connection connection = dataSource.getConnection();
-		try {
-			String query = "SELECT startstop FROM event,information WHERE event.information=information.informationid AND information.name=?";
-			PreparedStatement statement = connection.prepareStatement(query);
-			statement.setString(1, name);
-			ResultSet rs = statement.executeQuery();
-			while (rs.next())
-			{
-				res = rs.getBoolean(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return res;
 	}
 
 }
