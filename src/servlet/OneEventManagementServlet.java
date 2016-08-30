@@ -1,8 +1,7 @@
 package servlet;
 
-import java.util.HashMap;
-import java.util.List;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,42 +20,42 @@ import tables.Information;
 public class OneEventManagementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected DataSource datSource;
-	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);   
-	
-    public OneEventManagementServlet() {
-        super();
-    }
+	protected DaoFactory daoFactory = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doPost(request,response);
+	public OneEventManagementServlet() {
+		super();
 	}
 
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
+	}
+
+	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		TicketDao td = daoFactory.getTicketDao();
-		if (request.getParameter("update").equals("yes"))
-		{
-			
-			String tipo= request.getParameter("tipB");
-			try{
-			Double price = Double.parseDouble(request.getParameter("price"));
-			td.updatePrice(price, tipo);
-			}catch(NumberFormatException | IllegalStateException e){
-				
+
+		TicketDao td = this.daoFactory.getTicketDao();
+		if (request.getParameter("update").equals("yes")) {
+
+			String tipo = request.getParameter("tipB");
+			try {
+				Double price = Double.parseDouble(request.getParameter("price"));
+				td.updatePrice(price, tipo);
+			} catch (NumberFormatException | IllegalStateException e) {
+
 			}
 		}
-		
-				
+
 		String value = request.getParameter("nome");
-		EventsDao ed = daoFactory.getEventsDao();
-		
-		HashMap<String,Double> tipi = td.allTypeForOneEvent(ed.getCode(value));
+		EventsDao ed = this.daoFactory.getEventsDao();
+
+		HashMap<String, Double> tipi = td.allTypeForOneEvent(ed.getCode(value));
 		request.setAttribute("tipiBigl", tipi);
-		Information i =ed.getInfoByName(value);
+		Information i = ed.getInfoByName(value);
 		boolean state = ed.getEventState(value);
 		request.setAttribute("stato", state);
 		request.setAttribute("info", i);
-		
+
 		RequestDispatcher id = request.getServletContext().getRequestDispatcher("/content/oneEventManagement.jsp");
 		id.forward(request, response);
 	}

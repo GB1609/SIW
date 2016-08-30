@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -32,7 +33,17 @@ public class ShowReviewsServlet extends HttpServlet {
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		ReviewDao rd = dao.getReviewDao();
 		List<String> list = new CopyOnWriteArrayList<>();
+		double media = 0;
 		list = rd.searchByEvents(eventCode);
+		if (!list.isEmpty()) {
+			for (String str : list) {
+				String[] spl = str.split("_");
+				media += Double.parseDouble(spl[2]);
+			}
+			media /= list.size();
+			media = new BigDecimal(media).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+		}
+		list.add("media_" + media);
 		String gson = new Gson().toJson(list);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);

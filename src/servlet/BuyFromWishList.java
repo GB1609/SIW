@@ -46,7 +46,9 @@ public class BuyFromWishList extends HttpServlet {
 		if ((Collection<? extends Ticket>) request.getSession().getAttribute("carrello") != null)
 			cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
 		String gson;
-		if (cart.add(td.getTicket(ticketcode))) {
+		Ticket tk = td.getTicket(ticketcode);
+		tk.setQuantity(1);
+		if (cart.add(tk)) {
 			wtd.delete(t);
 			gson = new Gson().toJson("DONE");
 		} else

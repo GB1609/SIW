@@ -5,20 +5,31 @@ public class Ticket {
 	int eventCode;
 	double price;
 	String type;
-	boolean venduto;
+	boolean sell;
+	int quantity;
 
 	public Ticket() {
+		this.quantity = 1;
 	}
 
 	public Ticket(int eventCode, double price, String type, boolean sell) {
-		this.venduto = sell;
+		this.sell = sell;
 		this.eventCode = eventCode;
 		this.price = price;
 		this.type = type;
+		this.quantity = 1;
+	}
+
+	public Ticket(int eventCode, double price, String type, boolean sell, int quantity) {
+		this.sell = sell;
+		this.eventCode = eventCode;
+		this.price = price;
+		this.type = type;
+		this.quantity = quantity;
 	}
 
 	public Ticket(int ticketCode, int eventCode, double price, String type, boolean sell) {
-		this.venduto = sell;
+		this.sell = sell;
 		this.ticketCode = ticketCode;
 		this.eventCode = eventCode;
 		this.price = price;
@@ -33,6 +44,10 @@ public class Ticket {
 		return this.price;
 	}
 
+	public int getQuantity() {
+		return this.quantity;
+	}
+
 	public int getTicketCode() {
 		return this.ticketCode;
 	}
@@ -42,7 +57,7 @@ public class Ticket {
 	}
 
 	public boolean isSeller() {
-		return this.venduto;
+		return this.sell;
 	}
 
 	public void setCodeEvent(int codiceEvento) {
@@ -57,8 +72,12 @@ public class Ticket {
 		this.price = prezzo;
 	}
 
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 	public void setSeller(boolean venduto) {
-		this.venduto = venduto;
+		this.sell = venduto;
 	}
 
 	public void setType(String tipo) {

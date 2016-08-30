@@ -35,6 +35,7 @@
                                                 </th>
                                                 <th></th>
                                                 <th>Prezzo</th>
+                                                <th>Quantita</th>
                                             </tr>
                                         </thead>
                                         <tbody id="cartTableBodyHTML"></tbody>
@@ -73,10 +74,37 @@
                                                 $.each(responseJson, function (index, item) {
                                                     var myspl = item.split("_");
                                                     var $tr = $('<tr id = "' + myspl[0] + '">').appendTo('#cartTableBodyHTML');
-                                                    $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2"> <h3>' + myspl[1] + '</h> </div></div> <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>').appendTo($tr);
-                                                    total += parseFloat(myspl[2]);
+                                                    $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2"> <h3>' + myspl[1] + '</h> </div></div> <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>  <td><h3><input type="number" name="quant" id="quant" min="1" max="3" class="form-control input-sm" value="1"></input></h3></input></td><td><h3><button class="btn btn-success" id="quantityButt' +
+                                                            'on" value="' + parseFloat(myspl[2]) + "_" + 1 + "_" + myspl[0] + '">SAVE</button></h3></td>').appendTo($tr);
+                                                    total += (parseFloat(myspl[2]) * 1);
                                                 });
                                                 $("#totalShow").replaceWith('<h3 id = "totalShow">' + total + ',00 EUR</h>');
+                                            }
+                                        });
+                                    });
+
+                                    $(document).on("click", "#quantityButton", function (event) {
+                                        var spl = $(this).val().split("_");
+                                        var price = parseFloat(spl[0]);
+                                        var quant = spl[1];
+                                        var code = spl[2];
+                                        total -= (price * quant);
+                                        total += (price * $("#quant").val());
+                                        $.ajax({
+                                            url: "<%=request.getContextPath()%>/ChangeTicketQuantity",
+                                            data: {
+                                                ticketcode: code,
+                                                quantity: $("#quant").val()
+                                            },
+                                            type: "GET",
+
+                                            dataType: "json"
+                                        }).done(function (responseJson) {
+                                            if (responseJson === "SUCCESS") {
+                                                $(this).val(price + "_" + $("#quant").val());
+                                                $("#totalShow").replaceWith('<h3 id = "totalShow">' + total + ',00 EUR</h>');
+                                            } else {
+                                                alert(responseJson);
                                             }
                                         });
                                     });

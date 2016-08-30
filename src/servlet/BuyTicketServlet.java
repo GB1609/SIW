@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -32,29 +33,36 @@ public class BuyTicketServlet extends HttpServlet {
 		response.setContentType("text/html");
 		response.getWriter();
 		String gson;
+		String errorMessage = "";
 		boolean success = true;
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		TicketDao td = dao.getTicketDao();
 		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
-		for (int i = 0; i < cart.size(); i++)
-			if (!td.getState(cart.get(i).getTicketCode())) {
+		List<Ticket> removeTicket = new ArrayList<>();
+		for (int i = 0; i < cart.size(); i++) {
+			for (int quant = 0; quant < cart.get(i).getQuantity(); quant++) {
 				Ticket tmp = td.searchTicket(cart.get(i).getType(), cart.get(i).getCodeEvent(), cart.get(i).getPrice());
 				if (tmp != null) {
+					removeTicket.add(tmp);
 					td.setState(false, tmp.getTicketCode());
-					cart.remove(cart.get(i));
 				} else
 					success = false;
-			} else {
-				td.setState(false, cart.get(i).getTicketCode());
-				cart.remove(cart.get(i));
 			}
+			if (success)
+				cart.remove(cart.get(i));
+			else {
+				errorMessage = "Non ci sono abbastanza biglietti selezionati";
+				for (Ticket ticket : removeTicket)
+					td.setState(true, ticket.getTicketCode());
+			}
+		}
 		if (success && (request.getSession().getAttribute("tipe") == "client"))
 			gson = new Gson().toJson("DONE");
 		else if (request.getSession().getAttribute("tipe") != "client")
 			gson = new Gson().toJson("DEVI LOGGARTI PER POTER COMPLETARE L'ACQUISTO");
 		else
-			gson = new Gson().toJson("FAIL");
+			gson = new Gson().toJson(errorMessage);
 		request.getSession().setAttribute("carrello", cart);
 		response.setContentType("application/json");
 		response.getWriter().write(gson);

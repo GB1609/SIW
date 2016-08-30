@@ -59,12 +59,13 @@ public class ShoppingCartServlet extends HttpServlet {
 		String gson;
 		boolean find = false;
 		Ticket t = td.searchTicket(type, eventCode, price);
+		t.setQuantity(1);
 		for (Ticket ticket : this.cart)
 			if ((ticket.getCodeEvent() == t.getCodeEvent()) && (ticket.getType().equals(t.getType()))
 					&& (ticket.getPrice() == t.getPrice()))
 				find = true;
 		if (!find) {
-			this.cart.add(td.searchTicket(type, eventCode, price));
+			this.cart.add(t);
 			gson = new Gson().toJson("Biglietto Aggiunto al carrello");
 			request.getSession().setAttribute("carrello", this.cart);
 		} else

@@ -52,6 +52,7 @@ public class AddReview extends HttpServlet {
 		String description = request.getParameter("description");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		ReviewDao rd = dao.getReviewDao();
-		rd.save(new Review(vote, user, event, description));
+		if (user.equals(request.getSession().getAttribute("name")))
+			rd.save(new Review(vote, user, event, description));
 	}
 }
