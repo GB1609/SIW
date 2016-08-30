@@ -20,8 +20,6 @@ public class EventDaoJDBC implements EventsDao {
 		this.dataSource = dataSource;
 	}
 
-
-
 	@Override
 	public void delete(int eventCode) {
 		Connection connection = this.dataSource.getConnection();
@@ -299,8 +297,33 @@ public class EventDaoJDBC implements EventsDao {
 	}
 
 	@Override
-	public void insertPartecipant(int partecipant, int eventCode) {
+	public int getRemainTicket(int eventCode) {
+		Connection connection = this.dataSource.getConnection();
+		int ticket = -1;
+		try {
+			String query = "SELECT event.remainticket FROM event WHERE eventcode=?";
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				ticket = result.getInt("remainticket");
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return ticket;
+	}
 
+	@Override
+	public void insertPartecipant(int partecipant, int eventCode) {
 		Connection connection = this.dataSource.getConnection();
 		try {
 			String insert = "insert into eventpartecipant(event, partecipant) values (?,?)";
@@ -713,4 +736,29 @@ public class EventDaoJDBC implements EventsDao {
 		}
 	}
 
+	@Override
+	public void updateTicketsNumber(int eventCode, int ticketQuantity) {
+		int ticketNumber;
+		ticketNumber = this.getRemainTicket(eventCode);
+		Connection connection = this.dataSource.getConnection();
+		try {
+			ticketNumber -= ticketQuantity;
+			String update = "update event SET remainticket = ? WHERE eventcode =?";
+			PreparedStatement statement = connection.prepareStatement(update);
+			statement.setInt(1, ticketNumber);
+			statement.setInt(2, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

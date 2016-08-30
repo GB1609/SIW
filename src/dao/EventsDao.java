@@ -11,13 +11,13 @@ public interface EventsDao {
 
 	public void deleteAll();
 
+	public void deleteAllForOne(int eventCode, String name);
+
 	public int getCode(String name);
 
 	public boolean getEventState(String name);
 
 	public String getFeedback(int eventCode);
-
-	public void deleteAllForOne(int eventCode, String name);
 
 	public String getImg(int eventCode);
 
@@ -26,6 +26,8 @@ public interface EventsDao {
 	public Information getInformation(int eventCode);
 
 	public String getName(int eventCode);
+
+	public int getRemainTicket(int eventCode);
 
 	public void insertPartecipant(int partecipant, int eventCode);
 
@@ -56,4 +58,6 @@ public interface EventsDao {
 	public void stopSeller(int e);
 
 	public void update(Events e);
+
+	public void updateTicketsNumber(int eventCode, int ticketQuantity);
 }

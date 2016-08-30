@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import core.DaoFactory;
+import dao.EventsDao;
 import dao.TicketDao;
 import tables.Ticket;
 
@@ -37,21 +38,25 @@ public class BuyTicketServlet extends HttpServlet {
 		boolean success = true;
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
 		TicketDao td = dao.getTicketDao();
+		EventsDao ed = dao.getEventsDao();
 		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
 		List<Ticket> removeTicket = new ArrayList<>();
 		for (int i = 0; i < cart.size(); i++) {
 			for (int quant = 0; quant < cart.get(i).getQuantity(); quant++) {
 				Ticket tmp = td.searchTicket(cart.get(i).getType(), cart.get(i).getCodeEvent(), cart.get(i).getPrice());
-				if (tmp != null) {
+				if ((tmp != null) && (ed.getRemainTicket(cart.get(i).getCodeEvent()) > cart.get(i).getQuantity())) {
 					removeTicket.add(tmp);
 					td.setState(false, tmp.getTicketCode());
 				} else
 					success = false;
 			}
-			if (success)
+			if (success) {
+				int eventCode = cart.get(i).getCodeEvent();
+				int ticketQuantity = cart.get(i).getQuantity();
+				ed.updateTicketsNumber(eventCode, ticketQuantity);
 				cart.remove(cart.get(i));
-			else {
+			} else {
 				errorMessage = "Non ci sono abbastanza biglietti selezionati";
 				for (Ticket ticket : removeTicket)
 					td.setState(true, ticket.getTicketCode());
