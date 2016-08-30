@@ -20,6 +20,8 @@ public class EventDaoJDBC implements EventsDao {
 		this.dataSource = dataSource;
 	}
 
+
+
 	@Override
 	public void delete(int eventCode) {
 		Connection connection = this.dataSource.getConnection();

@@ -26,15 +26,16 @@ public class TicketDaoJDBC implements TicketDao {
 		HashMap<String, Double> tipi = new HashMap<String, Double>();
 		Connection connection = this.dataSource.getConnection();
 		try {
-			// String query = "select type from ticket WHERE ticket.event=?
-			// GROUP BY ticket.type";
 			String query = "select ticket.type, ticket.price from ticket WHERE ticket.event=? GROUP BY ticket.TYPE, ticket.price";
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, e);
 			ResultSet set = statement.executeQuery();
 			while (set.next())
-				tipi.put(set.getString("type"), set.getDouble("price"));
-		} catch (Exception e2) {
+			{
+				String tmp = set.getString("type").replace(" ","_");
+				tipi.put(tmp, set.getDouble("price"));
+			}
+			} catch (Exception e2) {
 			e2.printStackTrace();
 		} finally {
 			try {

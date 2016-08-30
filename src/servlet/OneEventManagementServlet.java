@@ -39,10 +39,10 @@ public class OneEventManagementServlet extends HttpServlet {
 
 			String tipo = request.getParameter("tipB");
 			try {
+				String tmp =tipo.replace("_", " ");
 				Double price = Double.parseDouble(request.getParameter("price"));
-				td.updatePrice(price, tipo);
+				td.updatePrice(price, tmp);
 			} catch (NumberFormatException | IllegalStateException e) {
-
 			}
 		}
 
