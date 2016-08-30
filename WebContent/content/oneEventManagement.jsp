@@ -100,11 +100,12 @@ $(document).on("click","#startstop",function(event){
 <div class="container">
 <div class="row">
 <div class="col-md-3">
-	<label>Tipo</label>
+	<label>Tipologia biglietto</label>
 </div>
 <div class="col-md-2">
 	<label>Costo</label>
 </div>
+<div class ="col-md-1"></div>
 <div class="col-md-2">
 	<label>Salva Modifiche</label>
 </div>
@@ -121,7 +122,11 @@ $(document).on("click","#startstop",function(event){
 
 		<input type="text" id="prezzo${hashMap.key}" class="form-control" value="${hashMap.value}">	
 		
+		
 	</div>
+	<div class ="col-md-1">
+		<span class="glyphicon glyphicon-euro"></span>
+		</div>
 	
 	<div class = "col-md-1">
 	<button type="submit" id="button${hashMap.key}" name="prezzo${hashMap.key}" class="btn btn-block btn-primary">*</button>

@@ -3,6 +3,7 @@ package core;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,6 +112,30 @@ public class CityDaoJDBC implements CityDao {
 			}
 		}
 
+	}
+
+	@Override
+	public boolean containCity(String name) {
+		Connection connection = dataSource.getConnection();
+		try{
+			String query = "SELECT name FROM city WHERE name=?";
+			PreparedStatement state = connection.prepareStatement(query);
+			state.setString(1, name);
+			ResultSet res = state.executeQuery();
+			while(res.next())
+			{
+				return true;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 }

@@ -13,4 +13,7 @@ public interface CityDao {
 	public List<City> getAllCities();
 
 	public void save(City c);
+	
+	public boolean containCity (String name);
+
 }
