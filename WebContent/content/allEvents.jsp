@@ -48,21 +48,21 @@
     <div class="row" id="eTMGH">
 
       <c:forEach items="${eventList}" var="bu">
-        <div class="col-md-3">
+        <div class="col-md-3 col-sm-2">
         <div id="forCss">
-        <a href="<%=request.getContextPath()%>/ShowInformationServlet?nominativo=${bu.name}">  
+        <a href="<%=request.getContextPath()%>/ShowInformationServlet?nominativo=${bu.name}">
         <img src="${bu.img}" width="260" height="350">
         </img>
         </a>
-        <br><br><br> 
+        <br><br><br>
           <br><br><br>
            </div>
            <div class="jumbotron">
           <dl>
-          <dd>Ev:${bu.name}</dd>
-          <dd>Date:${bu.date}</dd>
-          <dd>Loc:${bu.locality}</dd>
-          <dd>City:${bu.city}</dd>
+          <dd>${bu.name}</dd>
+          <dd>${bu.date}</dd>
+          <dd>${bu.locality}</dd>
+          <dd>${bu.city}</dd>
           </dl>
            </div>
         </div>

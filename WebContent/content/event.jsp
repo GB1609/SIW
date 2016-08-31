@@ -31,29 +31,29 @@
 									<!-- NAVBAR -->
 									<!-- Button -->
 									<div class="row">
-										<div class="col-md-10"></div>
-										<div class="col-md-1">
+										<div class="col-md-10 col-sm-9"></div>
+										<div class="col-md-1 col-sm-1">
 											<button class="btn btn-default" id="descriptionButton">Description</button>
 										</div>
-										<div class="col-md-1">
+										<div class="col-md-1 col-sm-1">
 											<button class="btn btn-default" id="reviewButton">Review</button>
 										</div>
 									</div>
 									<div class="row">
-										<div class="col-md-3"></div>
-										<div class="col-md-5" id="name">
+										<div class="col-md-3 col-sm-2"></div>
+										<div class="col-md-5 col-sm-4" id="name">
 											<h2></h2>
 										</div>
-										<div class="col-md-3" id="mediaVoti">
+										<div class="col-md-3 col-sm-2" id="mediaVoti">
 											<h2>Feedback</h2>
 										</div>
 									</div>
 									<div class="row">
 										<!-- Image -->
-										<div class="col-md-3" id="img">
+										<div class="col-md-3 col-sm-2" id="img">
 											<img src=""></div>
 
-											<div class="col-md-9" id="description">
+											<div class="col-md-9 col-sm-8" id="description">
 												<div class="panel panel-default">
 													<!-- Head -->
 													<div class="panel-heading">
@@ -92,9 +92,9 @@
 									<script>
 										var value = $($('#li').closest('ul').find('li:eq(4)')).text();
 										$(document).ready(function () {
-											$("#name").replaceWith('<div class="col-md-6" id="name"> <h2>' + $($('#li').closest('ul').find('li:eq(0)')).text() + '</h2> </div>');
+											$("#name").replaceWith('<div class="col-md-6 col-sm-6" id="name"> <h2>' + $($('#li').closest('ul').find('li:eq(0)')).text() + '</h2> </div>');
 											$("#descriptionBody").replaceWith('<div class="panel-body" id "descriptionBody">' + $($('#li').closest('ul').find('li:eq(1)')).text() + '</div>');
-											$("#img").replaceWith('<div class="col-md-3" id="img" >	<img src=" ' + $($('#li').closest('ul').find('li:eq(2)')).text() + ' " width="237" height="400"> </div>');
+											$("#img").replaceWith('<div class="col-md-3 col-sm-2" id="img" >	<img src=" ' + $($('#li').closest('ul').find('li:eq(2)')).text() + ' " width="237" height="400"> </div>');
 
 											$.ajax({
 												url: "<%=request.getContextPath()%>/ShowTicketServlet",
@@ -142,7 +142,7 @@
 													$('<li id ="result' + index + '">').text(item).appendTo($ul);
 												});
 												$("#addReviewButton").replaceWith("");
-												$("#review").replaceWith('<div class="col-md-9" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() + '</div></div>');
+												$("#review").replaceWith('<div class="col-md-9 col-sm-8" id="description"><div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">Description</h3></div><div class="panel-body" id "descriptionBody">' + $("#result1").text() + '</div></div>');
 												$("#result").replaceWith('<div id="result"></div>');
 											})
 										});
@@ -160,26 +160,26 @@
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+												$("#review").replaceWith('<div class="col-md-9 col-sm-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3">Comment</div><div class="panel-title panel-heading col-md-4 col-sm-3">Reviews</div><di' +
 														'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
-												$("#description").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+												$("#description").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3">Comment</div><div class="panel-title panel-heading col-md-4 col-sm-3">Reviews</div><di' +
 														'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
 												var $table = $('<table class = "table">').appendTo($("#reviewBody"));
 												$.each(responseJson, function (index, item) {
 													mysplit = item.split("_");
 													if (mysplit[0] === "media") {
-														$("#mediaVoti").replaceWith('<div class="col-md-3" id="mediaVoti"> <h2>Voto: ' + mysplit[1] + '/10</h2> </div>');
+														$("#mediaVoti").replaceWith('<div class="col-md-3 col-sm-2" id="mediaVoti"> <h2>Voto: ' + mysplit[1] + '/10</h2> </div>');
 													} else {
 														$('<tr id = "row' + index + '">').appendTo($table);
 														$('<td id = "data' + index + '">').appendTo('#row' + index);
-														$('<div class="col-md-4">' + mysplit[0] + '</div><div class="col-md-4">' + mysplit[1] + '</div><div class="col-md-4">' + mysplit[2] + '</div>').appendTo('#data' + index);
+														$('<div class="col-md-4 col-sm-3">' + mysplit[0] + '</div><div class="col-md-4 col-sm-3">' + mysplit[1] + '</div><div class="col-md-4 col-sm-3">' + mysplit[2] + '</div>').appendTo('#data' + index);
 													}
 												});
 											});
 										});
 
 										$(document).on("click", "#addReviewButton", function (event) {
-											$("#review").replaceWith('<div class="col-md-9" id="review"><input type="number" name="vote" id="vote" min="1" max="10" class="form-control input-sm" cols="5"></input></input><textarea type="text" name="reviewForm" id="reviewForm" class="form-control input-sm" placeholder="Sc' +
+											$("#review").replaceWith('<div class="col-md-9 col-sm-8" id="review"><input type="number" name="vote" id="vote" min="1" max="10" class="form-control input-sm" cols="5"></input></input><textarea type="text" name="reviewForm" id="reviewForm" class="form-control input-sm" placeholder="Sc' +
 													'rivi Qui.." cols="30" rows="10"></textarea><button class="btn btn-success" id="saveReview">Add</button></div>');
 										});
 
@@ -199,7 +199,7 @@
 												dataType: "json"
 											})
 
-											$("#review").replaceWith('<div class="col-md-9" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4">User</div><div class="panel-title panel-heading col-md-4">Comment</div><div class="panel-title panel-heading col-md-4">Reviews</div><di' +
+											$("#review").replaceWith('<div class="col-md-9 col-sm-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3">Comment</div><div class="panel-title panel-heading col-md-4 col-sm-3">Reviews</div><di' +
 													'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
 										});
 

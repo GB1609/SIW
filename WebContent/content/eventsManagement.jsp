@@ -22,20 +22,20 @@
 
                                         </head>
                                         <body>
-										
+
                                           <jsp:include page="organizatorNavbar.jsp"/>
 
                                           <br>
-                                             
+
 
                                             <div class="container">
                                             <h1>Eventi organizzati</h1>
                                             <br>
                                               <c:forEach items="${eventi}" var="value">
-                                               <h3>Codice evento: ${value.eventcode}</h3> <br> <div class="row"> 
-                                  
-                                                    <div class="col-md-3">codice categoria: ${value.category} </div>
-                                                    <div class="col-md-3">codice informazione : ${value.information}</div>
+                                               <h3>Codice evento: ${value.eventcode}</h3> <br> <div class="row">
+
+                                                    <div class="col-md-3 col-sm-2">codice categoria: ${value.category} </div>
+                                                    <div class="col-md-3 col-sm-2">codice informazione : ${value.information}</div>
                                                 </div>
                                                 <br>
                                                 <hr>

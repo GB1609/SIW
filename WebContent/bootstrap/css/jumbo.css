@@ -4,7 +4,7 @@
 }
 
 
-#forCss a:hover{
+#forCss hover{
   -webkit-transform: scale(1,0.85);
 	transform:scale(1,0.85);
 }

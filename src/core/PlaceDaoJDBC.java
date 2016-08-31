@@ -100,13 +100,10 @@ public class PlaceDaoJDBC implements PlaceDao {
 			statement.executeUpdate();
 			connection.commit();
 		} catch (SQLException e) {
-			e.printStackTrace();
 		} finally {
 			try {
 				connection.close();
 			} catch (Exception e1) {
-				System.out.println("ciao1");
-				e1.printStackTrace();
 			}
 		}
 	}

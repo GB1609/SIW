@@ -77,10 +77,12 @@ public class AddObjectServlet extends HttpServlet {
 			int capacity = Integer.parseInt(request.getParameter("placeCapacity"));
 			PlaceDao pd = daoFactory.getPlaceDao();
 			pd.save(new Place(capacity, name, city, tipe));
+			
 			}catch(Exception e)
 			{
 				//doNothing
 			}
+			
 			
 			
 		}

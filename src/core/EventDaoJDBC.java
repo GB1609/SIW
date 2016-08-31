@@ -80,18 +80,41 @@ public class EventDaoJDBC implements EventsDao {
 	public void deleteAllForOne(int eventCode, String name) {
 		Connection connection = this.dataSource.getConnection();
 		try {
-			String delete = "delete FROM ticket WHERE event=?";
+			
+			String delete = "delete FROM orders WHERE orders.ticket IN (SELECT ticket.ticketcode FROM ticket WHERE event=?)";
+			PreparedStatement statementdd = connection.prepareStatement(delete);
+			statementdd.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statementdd.executeUpdate();
+			connection.commit();
+			delete = "delete FROM wishtickets WHERE ticketcode IN (SELECT ticketcode FROM ticket WHERE event=?)";
 			PreparedStatement statement = connection.prepareStatement(delete);
 			statement.setInt(1, eventCode);
 			connection.setAutoCommit(false);
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
 			connection.commit();
+			delete = "delete FROM ticket WHERE event=?";
+			PreparedStatement statementX = connection.prepareStatement(delete);
+			statementX.setInt(1, eventCode);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			statementX.executeUpdate();
+			connection.commit();
 			delete = "delete FROM eventpartecipant WHERE event=?";
 			PreparedStatement statement2 = connection.prepareStatement(delete);
 			statement2.setInt(1, eventCode);
 			statement2.executeUpdate();
 			connection.commit();
+			
+			delete = "delete FROM review WHERE event=?";
+			PreparedStatement statement12 = connection.prepareStatement(delete);
+			statement12.setInt(1, eventCode);
+			statement12.executeUpdate();
+			connection.commit();
+			
+			
 			delete = "delete FROM event WHERE eventcode=?";
 			PreparedStatement statement3 = connection.prepareStatement(delete);
 			statement3.setInt(1, eventCode);

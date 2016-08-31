@@ -1,14 +1,16 @@
 package core;
 
-import dao.ReviewDao;
-import tables.Review;
+import java.time.LocalDate;
+import java.time.Month;
+
+import dao.ClientsDao;
+import tables.Clients;
 
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("main start");
 		DaoFactory dao = DaoFactory.getDAOFactory(DaoFactory.POSTGRESQL);
-		ReviewDao rd = dao.getReviewDao();
-		rd.save(new Review(5, "vic07", 64, "bello"));
-		rd.save(new Review(5, "gio", 64, "bellissimo"));
+		ClientsDao cd = dao.getClientsDao();
+		cd.save(new Clients("gio", "prova", "b", "gio", LocalDate.of(1994, Month.JANUARY, 8), "unical", 0));
 	}
 }
