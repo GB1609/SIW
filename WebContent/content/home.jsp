@@ -55,10 +55,10 @@
                                                     <%@include file="organizatorNavbar.jsp"%>
                                                 <%} %>
                                                 <div class="container">
-                                                    <div class="row" id="firstRow">
-                                                        <div class="col-md-8 col-sm-8 col-xs-8">
+                                                    <div class="row" id="firstRow" align="center">
+                                                        <div class="col-md-8 col-sm-12 col-xs-16">
                                                             <img class="img-responsive img-rounded" src="<%=request.getContextPath()%>/assets/locandina.png" alt="No possible load Image sorry!"></div>
-                                                            <div class="col-md-3 col-sm-2 col-xs-2">
+                                                            <div class="col-md-3 col-sm-12 col-xs-16">
                                                                 <h1 class="text-center">Registrati subito!</h1>
                                                                 <p>Se vuoi essere sempre informato o comprare biglietti per gli eventi riguardanti le tue passioni registrati sul nostro sito, non te ne pentirai!</p>
                                                                 <a class="btn btn-primary" id="buttonRegister">Registrati!</a>
@@ -78,17 +78,17 @@
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-md-4 col-sm-3 col-xs-3">
+                                                                <div class="col-md-4 col-sm-6 col-xs-8">
                                                                     <h2>Sport</h2>
                                                                     <p>Sei appassionato di calcio, formula uno o di Tennis? Guarda i prezzi dei biglietti degli eventi sportivi</p>
                                                                     <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Sport">Guarda ora</a>
                                                                 </div>
-                                                                <div class="col-md-4 col-sm-3 col-xs-3">
+                                                                <div class="col-md-4 col-sm-6 col-xs-8">
                                                                     <h2>Musica</h2>
                                                                     <p>Scopri gli eventi musicali vicino a te!!!</p>
                                                                     <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Musica">Guarda ora</a>
                                                                 </div>
-                                                                <div class="col-md-4 col-sm-3 col-xs-3">
+                                                                <div class="col-md-4 col-sm-6 col-xs-8">
                                                                     <h2>Cinema</h2>
                                                                     <p>Voglia di rilassarti, di vedere un bel film? Guarda i prezzi dei cinema intorno a te!</p>
                                                                     <a class="btn btn-primary" href="<%=request.getContextPath()%>/ParameterSearchEvents?selezione=Category&&value=Cinema">Guarda Ora</a>
