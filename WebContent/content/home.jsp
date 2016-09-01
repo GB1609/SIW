@@ -44,28 +44,33 @@
                                                                 $('#firstRow').replaceWith('<div align="center"> <h1> UserName gia utilizzato!</h1> <br><br> Cambia username e riprovare</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
                                                             }
 
-
-
                                                         })
                                                     });
                                                 </script>
                                             </head>
                                             <body>
-                                           	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
-                                             	<%@include file="navbar.jsp"%>
-                                             	<% }else{ %>
-                                             	<%@include file="organizatorNavbar.jsp"%>
-                                             	<%} %>
+                                                <%  if(! (session.getAttribute("tipe")=="organizator")){%>
+                                                    <%@include file="navbar.jsp"%>
+                                                <% }else{ %>
+                                                    <%@include file="organizatorNavbar.jsp"%>
+                                                <%} %>
                                                 <div class="container">
                                                     <div class="row" id="firstRow">
                                                         <div class="col-md-8 col-sm-8 col-xs-8">
                                                             <img class="img-responsive img-rounded" src="<%=request.getContextPath()%>/assets/locandina.png" alt="No possible load Image sorry!"></div>
                                                             <div class="col-md-3 col-sm-2 col-xs-2">
                                                                 <h1 class="text-center">Registrati subito!</h1>
-                                                                <p>Se vuoi essere sempre comprare biglietti per gli eventi riguardanti le tue passioni registrati sul nostro sito, non te ne pentirai!</p>
+                                                                <p>Se vuoi essere sempre informato o comprare biglietti per gli eventi riguardanti le tue passioni registrati sul nostro sito, non te ne pentirai!</p>
                                                                 <a class="btn btn-primary" id="buttonRegister">Registrati!</a>
                                                             </div>
                                                         </div>
+                                                        <hr>
+                                                          <div class="row" align="center">
+                                                              <h2>Dove puoi trovare la nostra sede</h>
+                                                              <br>
+                                                              <br>
+                                                              <div id="apiMAP"></div>
+                                                          </div>
                                                         <hr>
                                                             <div class="row">
                                                                 <div class="col-lg-12 col-md-11 col-sm-11 col-xs-11">
@@ -92,5 +97,7 @@
                                                         </div>
                                                         <jsp:include page="footer.html"></jsp:include>
                                                         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+                                                        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCx9TL6fDN_8sc6Ee3pPBjpDN6GYIpbE2I"></script>
+    													<script type="text/javascript" src="ticketSellerLocation.js"></script>
                                                     </body>
                                                 </html>
