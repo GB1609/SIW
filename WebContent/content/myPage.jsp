@@ -78,7 +78,7 @@
 		</div>
 		<br> <br>
 		<div class="row">
-			<div class="col-md-offset-10 col-md-2 col-sm-offset-8 col-xs-offset-8">
+			<div class="col-md-offset-10 col-md-2 col-sm-10 col-xs-13">
 				<form method="post"
 					action="<%=request.getContextPath()%>/DataForOrganizatorServlet">
 					<button type="submit" class="btn btn-primary btn-block">Crea

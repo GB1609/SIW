@@ -98,6 +98,6 @@
                                                         <jsp:include page="footer.html"></jsp:include>
                                                         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                                                         <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCx9TL6fDN_8sc6Ee3pPBjpDN6GYIpbE2I"></script>
-    													<script type="text/javascript" src="ticketSellerLocation.js"></script>
+    													<script type="text/javascript" src="<%=request.getContextPath()%>/content/ticketSellerLocation.js"></script>
                                                     </body>
                                                 </html>

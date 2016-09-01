@@ -63,9 +63,6 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">Profilo</a>
-                            </li>
                             <button class="btn btn-default list-group-item" data-toggle="modal" data-target="#wishlists" id="wishlistsUser">wishlist</button>
                         </ul>
                     </li>

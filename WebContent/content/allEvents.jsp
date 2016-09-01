@@ -48,7 +48,7 @@
     <div class="row" id="eTMGH">
 
       <c:forEach items="${eventList}" var="bu">
-        <div class="col-md-3 col-sm-2 col-xs-2">
+        <div class="col-md-3 col-sm-5 col-xs-7">
         <div id="forCss">
         <a href="<%=request.getContextPath()%>/ShowInformationServlet?nominativo=${bu.name}">
         <img src="${bu.img}" width="260" height="350">

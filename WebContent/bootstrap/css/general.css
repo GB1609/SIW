@@ -1,7 +1,8 @@
 #apiMAP {
-	width:800px;
-	height:260px;
+	width: 800px;
+	height: 260px;
 }
+
 .navbar-fixed-top .nav {
 	padding: 17px 0;
 }
@@ -55,6 +56,11 @@ footer {
 .centered-form .panel {
 	background: rgba(255, 255, 255, 0.8);
 	box-shadow: rgba(0, 0, 0, 0.3) 20px 20px 20px;
+}
+
+#apiMAP {
+	width: 800px;
+	height: 260px;
 }
 
 @media ( min-width :768px) {

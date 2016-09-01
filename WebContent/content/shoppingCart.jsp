@@ -26,7 +26,7 @@
                                 <jsp:include page="navbar.jsp"/>
                             </head>
                             <body>
-                                <div class="col-md-10 col-sm-10 col-xs-10" id="cartList">
+                                <div class="col-md-10 col-sm-14 col-xs-16" id="cartList">
                                     <table class="table" id="cartTableHTML">
                                         <thead>
                                             <tr>
@@ -41,10 +41,10 @@
                                         <tbody id="cartTableBodyHTML"></tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                <div class="col-md-2 col-sm-7 col-xs-9">
                                     <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            <h5>TOTALE</h>
+                                            <h5>TOTALE</h5>
                                         </div>
                                         <div class="panel-body">
                                             <tr>
@@ -74,7 +74,7 @@
                                                 $.each(responseJson, function (index, item) {
                                                     var myspl = item.split("_");
                                                     var $tr = $('<tr id = "' + myspl[0] + '">').appendTo('#cartTableBodyHTML');
-                                                    $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8 col-md-7 col-sm-7 col-xs-7">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2 col-sm-2 col-xs-2"> <h3>' + myspl[1] + '</h> </div></div> <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>  <td><h3><input type="number" name="quant" id="quant" min="1" max="3" class="form-control input-sm" value="1"></input></h3></input></td><td><h3><button class="btn btn-success" id="quantityButt' +
+                                                    $('<td> <img src="' + myspl[4] + '" width="150" height="150"></img> </td> <td> <div class="row"><div class="col-lg-8 col-md-8 col-sm-11 col-xs-13">  <h3>' + myspl[3] + ' </h> </div> <div class = "col-md-2 col-sm-5 col-xs-7"> <h3>' + myspl[1] + '</h> </div></div> <div class="row"><button class="btn btn-danger" value="' + myspl[0] + '" id="removeTicket"><span class="glyphicon glyphicon-trash"></span></button></div> </td><td><h3>' + myspl[2] + '<span class="glyphicon glyphicon-euro"></span > </h></td>  <td><h3><input type="number" name="quant" id="quant" min="1" max="3" class="form-control input-sm" value="1"></input></h3></input></td><td><h3><button class="btn btn-success" id="quantityButt' +
                                                             'on" value="' + parseFloat(myspl[2]) + "_" + 1 + "_" + myspl[0] + '">SAVE</button></h3></td>').appendTo($tr);
                                                     total += (parseFloat(myspl[2]) * 1);
                                                 });
