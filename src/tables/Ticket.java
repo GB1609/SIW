@@ -1,5 +1,7 @@
 package tables;
 
+import java.math.BigDecimal;
+
 public class Ticket {
 	int ticketCode;
 	int eventCode;
@@ -41,7 +43,9 @@ public class Ticket {
 	}
 
 	public double getPrice() {
-		return this.price;
+		double dbl = this.price;
+		dbl = new BigDecimal(dbl).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+		return dbl;
 	}
 
 	public int getQuantity() {

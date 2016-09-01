@@ -1,5 +1,6 @@
 package core;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,12 +31,11 @@ public class TicketDaoJDBC implements TicketDao {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, e);
 			ResultSet set = statement.executeQuery();
-			while (set.next())
-			{
-				String tmp = set.getString("type").replace(" ","_");
+			while (set.next()) {
+				String tmp = set.getString("type").replace(" ", "_");
 				tipi.put(tmp, set.getDouble("price"));
 			}
-			} catch (Exception e2) {
+		} catch (Exception e2) {
 			e2.printStackTrace();
 		} finally {
 			try {
@@ -225,8 +225,11 @@ public class TicketDaoJDBC implements TicketDao {
 			PreparedStatement statement = connection.prepareStatement(query);
 			statement.setInt(1, e);
 			ResultSet result = statement.executeQuery();
-			while (result.next())
-				myResult.add(result.getString("type") + "_" + result.getString("price"));
+			while (result.next()) {
+				double dbl = Double.parseDouble(result.getString("price"));
+				dbl = new BigDecimal(dbl).setScale(2, BigDecimal.ROUND_UP).doubleValue();
+				myResult.add(result.getString("type") + "_" + dbl);
+			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} finally {

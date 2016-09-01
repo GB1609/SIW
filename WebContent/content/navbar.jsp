@@ -63,9 +63,6 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">Profilo</a>
-                            </li>
                             <button class="btn btn-default list-group-item" data-toggle="modal" data-target="#wishlists" id="wishlistsUser">wishlist</button>
                         </ul>
                     </li>
@@ -155,9 +152,9 @@
 
                             dataType: "json"
                         }).done(function (responseJson) {
-                            if (responseJson === "EMPTY") {
-                                var $ul = $('<ul class="list-group">').appendTo($("#wish_list"));
-                                $('<button type ="button" class="btn btn-default list-group-item" id ="createWishList">').text("Vuoi crearne una?").appendTo($ul);
+                            if (responseJson === "EMPTY") { 
+								var $ul = $('<ul class="list-group">').appendTo($("#wish_list"));
+                                $('<button type ="button" class="btn btn-default list-group-item" id ="createWishList">').text("Vuoi crearne una?").appendTo($ul);                            
                             } else {
                                 var $ul = $('<ul class="list-group">').appendTo($("#wish_list"));
                                 $.each(responseJson, function (index, item) {
@@ -190,7 +187,7 @@
                                     var mysplit = item.split(" ");
                                     $('<button type="button" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id="showWT"><div class="col-md-11 col-sm-11 col-xs-11" id="wishName"> ' + mysplit[1] + '</div> <div class="col-md-1 col-sm-1 col-xs-1"> <span class="caret"></span></div></button>').appendTo($ul);
                                 });
-                                $('<button type ="button" class="btn btn-success list-group-item" id ="createWishList">').text("Creane una nuova!").appendTo($ul);
+                                $('<button type ="button" class="btn btn-default list-group-item" id ="createWishList">').text("add").appendTo($ul);
                             }
                         });
                     });
