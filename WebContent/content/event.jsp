@@ -34,10 +34,10 @@
 									<!-- Button -->
 									<div class="row">
 										<div class="col-md-10 col-sm-12 col-xs-14"></div>
-										<div class="col-md-1 col-sm-4 col-xs-5">
+										<div class="col-md-1 col-sm-5 col-xs-7">
 											<button class="btn btn-default" id="descriptionButton">Description</button>
 										</div>
-										<div class="col-md-1 col-sm-4 col-xs-5">
+										<div class="col-md-1 col-sm-5 col-xs-7">
 											<button class="btn btn-default" id="reviewButton">Review</button>
 										</div>
 									</div>

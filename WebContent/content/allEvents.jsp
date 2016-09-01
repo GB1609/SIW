@@ -31,6 +31,7 @@
 
   </head>
   <body>
+  
 
 	    	<%  if(! (session.getAttribute("tipe")=="organizator")){%>
                                              	<%@include file="navbar.jsp"%>
@@ -44,18 +45,16 @@
  <br>
 
   <div class="container" >
-
+ <div id="firstRow"></div>
     <div class="row" id="eTMGH">
 
       <c:forEach items="${eventList}" var="bu">
-        <div class="col-md-3 col-sm-5 col-xs-7">
+        <div class="col-md-4 col-sm-6 col-xs-7">
         <div id="forCss">
         <a href="<%=request.getContextPath()%>/ShowInformationServlet?nominativo=${bu.name}">
-        <img src="${bu.img}" width="260" height="350">
+        <img src="${bu.img}" width="360" height="380" id="forCss">
         </img>
         </a>
-        <br><br><br>
-          <br><br><br>
            </div>
            <div class="jumbotron">
           <dl>
@@ -75,6 +74,7 @@
           </c:forEach>
 
     </div>
+    <br><br><br>
   </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

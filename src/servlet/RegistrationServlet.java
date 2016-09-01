@@ -41,8 +41,12 @@ public class RegistrationServlet extends HttpServlet {
 		ClientsDao clientsDao = daoFactory.getClientsDao();
 		if (!clientsDao.existUser(username)) {
 			result = "notExist";
-			clientsDao.save(
-					new Clients(username, password, last_name, first_name, LocalDate.parse(birthdate), address, 0));
+			try {
+				clientsDao.save(
+						new Clients(username, password, last_name, first_name, LocalDate.parse(birthdate), address, 0));
+			} catch (Exception e) {
+				result = "parametri";
+			}
 		}
 		String json = new Gson().toJson(result);
 		response.setContentType("application/json");
