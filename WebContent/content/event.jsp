@@ -160,10 +160,12 @@
 
 												dataType: "json"
 											}).done(function (responseJson) {
-												$("#review").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Comment</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Reviews</div><di' +
-														'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
-												$("#description").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Comment</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Reviews</div><di' +
-														'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
+												$("#review").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Comment</div><div class' +
+														'="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Reviews</div><div class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></' +
+														'button></div>');
+												$("#description").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Comment</div><div class' +
+														'="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Reviews</div><div class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></' +
+														'button></div>');
 												var $table = $('<table class = "table">').appendTo($("#reviewBody"));
 												$.each(responseJson, function (index, item) {
 													mysplit = item.split("_");
@@ -179,8 +181,8 @@
 										});
 
 										$(document).on("click", "#addReviewButton", function (event) {
-											$("#review").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><input type="number" name="vote" id="vote" min="1" max="10" class="form-control input-sm" cols="5"></input></input><textarea type="text" name="reviewForm" id="reviewForm" class="form-control input-sm" placeholder="Sc' +
-													'rivi Qui.." cols="30" rows="10"></textarea><button class="btn btn-success" id="saveReview">Add</button></div>');
+											$("#review").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><input type="number" name="vote" id="vote" min="1" max="10" class="form-control input-sm" cols="5"></input></input><textarea type="text" name="reviewForm" id="reviewForm" class="form-control input-s' +
+													'm" placeholder="Scrivi Qui.." cols="30" rows="10"></textarea><button class="btn btn-success" id="saveReview">Add</button></div>');
 										});
 
 										$(document).on("click", "#saveReview", function (event) {
@@ -199,8 +201,9 @@
 												dataType: "json"
 											})
 
-											$("#review").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Comment</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Reviews</div><di' +
-													'v class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></button></div>');
+											$("#review").replaceWith('<div class="col-md-9 col-sm-8 col-xs-8" id="review"><div class="panel panel-default"><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">User</div><div class="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Comment</div><div class' +
+													'="panel-title panel-heading col-md-4 col-sm-3 col-xs-3">Reviews</div><div class="panel-body pre-scrollable" id = "reviewBody"></div></div><button class ="btn btn-default" id ="addReviewButton">Aggiungi <span class="glyphicon glyphicon-plus"></span></' +
+													'button></div>');
 										});
 
 										$(document).on("click", "#ticketTable tbody #buy", function (event) {
