@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -22,35 +23,20 @@ import tables.Ticket;
 @WebServlet("/ShoppingCartServlet")
 public class ShoppingCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	List<Ticket> cart;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public ShoppingCartServlet() {
-		super();
-		this.cart = new CopyOnWriteArrayList<>();
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		response.getWriter();
+		List<Ticket> cart = new CopyOnWriteArrayList<>();
 		int eventCode = Integer.parseInt(request.getParameter("eventcode"));
 		String type = request.getParameter("type");
 		double price = Double.parseDouble(request.getParameter("price"));
@@ -58,16 +44,18 @@ public class ShoppingCartServlet extends HttpServlet {
 		TicketDao td = dao.getTicketDao();
 		String gson;
 		boolean find = false;
+		if (request.getSession().getAttribute("carrello") != null)
+			cart.addAll((Collection<? extends Ticket>) request.getSession().getAttribute("carrello"));
 		Ticket t = td.searchTicket(type, eventCode, price);
 		t.setQuantity(1);
-		for (Ticket ticket : this.cart)
+		for (Ticket ticket : cart)
 			if ((ticket.getCodeEvent() == t.getCodeEvent()) && (ticket.getType().equals(t.getType()))
 					&& (ticket.getPrice() == t.getPrice()))
 				find = true;
 		if (!find) {
-			this.cart.add(t);
+			cart.add(t);
 			gson = new Gson().toJson("Biglietto Aggiunto al carrello");
-			request.getSession().setAttribute("carrello", this.cart);
+			request.getSession().setAttribute("carrello", cart);
 		} else
 			gson = new Gson().toJson("Errore, biglietto già nel carrello!");
 		response.setContentType("application/json");

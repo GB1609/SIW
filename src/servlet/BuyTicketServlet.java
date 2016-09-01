@@ -55,16 +55,16 @@ public class BuyTicketServlet extends HttpServlet {
 				int eventCode = cart.get(i).getCodeEvent();
 				int ticketQuantity = cart.get(i).getQuantity();
 				ed.updateTicketsNumber(eventCode, ticketQuantity);
-				cart.remove(cart.get(i));
 			} else {
 				errorMessage = "Non ci sono abbastanza biglietti selezionati";
 				for (Ticket ticket : removeTicket)
 					td.setState(true, ticket.getTicketCode());
 			}
 		}
-		if (success && (request.getSession().getAttribute("tipe") == "client"))
+		if (success && (request.getSession().getAttribute("tipe") == "client")) {
+			cart.clear();
 			gson = new Gson().toJson("DONE");
-		else if (request.getSession().getAttribute("tipe") != "client")
+		} else if (request.getSession().getAttribute("tipe") != "client")
 			gson = new Gson().toJson("DEVI LOGGARTI PER POTER COMPLETARE L'ACQUISTO");
 		else
 			gson = new Gson().toJson(errorMessage);
