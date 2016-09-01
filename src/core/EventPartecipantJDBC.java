@@ -70,14 +70,12 @@ public class EventPartecipantJDBC implements EventPartecipantDao {
 			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
 			statement.executeUpdate();
 			connection.commit();
-			System.out.println("information insert");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
 				connection.close();
 			} catch (Exception e1) {
-				System.out.println("ciao1");
 				e1.printStackTrace();
 			}
 		}

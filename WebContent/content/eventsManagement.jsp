@@ -34,8 +34,8 @@
                                               <c:forEach items="${eventi}" var="value">
                                                <h3>Codice evento: ${value.eventcode}</h3> <br> <div class="row">
 
-                                                    <div class="col-md-3 col-sm-2">codice categoria: ${value.category} </div>
-                                                    <div class="col-md-3 col-sm-2">codice informazione : ${value.information}</div>
+                                                    <div class="col-md-3 col-sm-2 col-xs-2">codice categoria: ${value.category} </div>
+                                                    <div class="col-md-3 col-sm-2 col-xs-2">codice informazione : ${value.information}</div>
                                                 </div>
                                                 <br>
                                                 <hr>

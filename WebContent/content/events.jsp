@@ -22,7 +22,7 @@
 <link href="<%= request.getContextPath() %>/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="<%= request.getContextPath() %>/bootstrap/css/jumbo.css" rel="stylesheet">
 <link href="<%= request.getContextPath() %>/bootstrap/css/general.css" rel="stylesheet">
-	
+
 	<style>
 		body {
 			background-color: #F0FFFF;
@@ -47,12 +47,12 @@
 
     <div class="container">
 			<div class="row">
-				<div class=col-md-3>
+				<div class="col-md-3 col-sm-3 col-xs-3">
 						<br><br><br>
 				<div class=jumbotron>
 				</div>
 				</div>
-				
+
 </div>
 </div>
 <br><br><br>

@@ -27,9 +27,9 @@
                 if (split[0] === "true" && split[1] === "organizator")
                     $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=<%=request.getContextPath()%>/EventsManagementServlet">');
                 else if (split[0] === "true")
-                    $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=home.jsp">');
+                    $('#firstRow').replaceWith('<div align="center"> <h1> Complimenti!</h1> <br><br> Bentornato ' + split[2] + '</div><meta http-equiv="refresh" content="3;URL=<%=request.getContextPath()%>/content/home.jsp">');
                 else
-                    $('#firstRow').replaceWith('<div align="center"> <h1> Attenzione!</h1> <br><br> Username o password errati </div><meta http-equiv="refresh" content="3;URL=home.jsp">');
+                    $('#firstRow').replaceWith('<div align="center"> <h1> Attenzione!</h1> <br><br> Username o password errati </div><meta http-equiv="refresh" content="3;URL=<%=request.getContextPath()%>/content/home.jsp">');
 
                 }
             )
@@ -187,7 +187,7 @@
                                 var $ul = $('<ul class="list-group" id = "wishList_ul">').appendTo($("#wish_list"));
                                 $.each(responseJson, function (index, item) {
                                     var mysplit = item.split(" ");
-                                    $('<button type="button" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id="showWT"><div class="col-md-11" id="wishName"> ' + mysplit[1] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>').appendTo($ul);
+                                    $('<button type="button" value=' + mysplit[0] + ' class="btn btn-default list-group-item" id="showWT"><div class="col-md-11 col-sm-11 col-xs-11" id="wishName"> ' + mysplit[1] + '</div> <div class="col-md-1 col-sm-1 col-xs-1"> <span class="caret"></span></div></button>').appendTo($ul);
                                 });
                                 $('<button type ="button" class="btn btn-default list-group-item" id ="createWishList">').text("add").appendTo($ul);
                             }
@@ -210,7 +210,7 @@
                         }).done(function (responseJson) {
                             $('#wishList_ul').replaceWith('<ul class="list-group" id = "wishList_ul">');
                             var $ul = $('<li class="dropdown list-group-item" id="dropWTItem"></li>').appendTo($("#wishList_ul"));
-                            $('<button type="button" class="btn btn-default dropdown-toggle list-group-item" data-toggle="dropdown" value="' + lcode + '" id = "showWT""><div class="col-md-11" id ="wishName">' + ltext + '</div><div class="col-md-1"><span class="caret"></span></div></button>').appendTo($ul);
+                            $('<button type="button" class="btn btn-default dropdown-toggle list-group-item" data-toggle="dropdown" value="' + lcode + '" id = "showWT""><div class="col-md-11 col-sm-11 col-xs-11" id ="wishName">' + ltext + '</div><div class="col-md-1 col-sm-1 col-xs-1"><span class="caret"></span></div></button>').appendTo($ul);
                             var $dropmenu = $('<ul class ="dropdown-menu">').appendTo($ul);
                             if (responseJson === "EMPTY") {
                                 $('<li><div class = "dropdown-toggle list-group-item" data-toggle="dropdown">Empty</div></li>').appendTo($dropmenu);
@@ -238,7 +238,7 @@
                             dataType: "json"
                         }).done(function (responseJson) {
                             if (responseJson === "DONE") {
-                                $("#dropWTItem").replaceWith('<button type="button" value="' + ticketSplit[0] + '" class="btn btn-default list-group-item" id="showWT"><div class="col-md-11">' + ticketSplit[2] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>');
+                                $("#dropWTItem").replaceWith('<button type="button" value="' + ticketSplit[0] + '" class="btn btn-default list-group-item" id="showWT"><div class="col-md-11 col-sm-11 col-xs-11">' + ticketSplit[2] + '</div> <div class="col-md-1 col-sm-1 col-xs-1"> <span class="caret"></span></div></button>');
                                 alert("Cancellazione riuscita con successo");
                             } else {
                                 alert("Errore!");
@@ -262,7 +262,7 @@
                             dataType: "json"
                         }).done(function (responseJson) {
                             if (responseJson === "DONE") {
-                                $("#dropWTItem").replaceWith('<button type="button" value="' + ticketSplit[0] + '" class="btn btn-default list-group-item" id="showWT"><div class="col-md-11">' + ticketSplit[2] + '</div> <div class="col-md-1"> <span class="caret"></span></div></button>');
+                                $("#dropWTItem").replaceWith('<button type="button" value="' + ticketSplit[0] + '" class="btn btn-default list-group-item" id="showWT"><div class="col-md-11 col-sm-11 col-xs-11">' + ticketSplit[2] + '</div> <div class="col-md-1 col-sm-1 col-xs-1"> <span class="caret"></span></div></button>');
                                 alert("Aggiunto al carrello");
                             } else {
                                 alert("Errore!");
@@ -273,8 +273,8 @@
                     $(document).on("click", "#createWishList", function (event) {
                         $("#wish_list").replaceWith('<div class="modal-body" id="wish_list"></div>');
                         var $ul = $('<ul class="list-group">').appendTo($("#wish_list"));
-                        $('<div class="col-md-10"><input type="name" name="name" id="wishListName" class="form-control input-sm" placeholder="Name">').appendTo($ul);
-                        $('<div class="col-md-2"><button class="btn btn-success" data-dismiss="modal" id="saveWishList">Add</button>').appendTo($ul);
+                        $('<div class="col-md-10 col-sm-10 col-xs-10"><input type="name" name="name" id="wishListName" class="form-control input-sm" placeholder="Name">').appendTo($ul);
+                        $('<div class="col-md-2 col-sm-2 col-xs-2"><button class="btn btn-success" data-dismiss="modal" id="saveWishList">Add</button>').appendTo($ul);
                     });
 
                     $(document).on("click", "#saveWishList", function (event) {

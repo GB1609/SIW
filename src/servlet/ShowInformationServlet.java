@@ -35,6 +35,8 @@ public class ShowInformationServlet extends HttpServlet {
 		EventsDao ed = this.daoFactory.getEventsDao();
 		int eventCode = ed.getCode(value);
 		Information information = ed.getInformation(eventCode);
+		String city = information.getCity();
+		String place = information.getLocality();
 		List<String> informations = new ArrayList<>();
 		informations.add(information.getName());
 		informations.add(information.getDescription());
@@ -43,6 +45,8 @@ public class ShowInformationServlet extends HttpServlet {
 		informations.add(String.valueOf(eventCode));
 		response.setCharacterEncoding("UTF-8");
 		request.setAttribute("eventcode", eventCode);
+		request.setAttribute("cittaEvento", city);
+		request.setAttribute("luogoEvento", place);
 		request.setAttribute("list", informations);
 		RequestDispatcher id = request.getServletContext().getRequestDispatcher("/content/event.jsp");
 		id.forward(request, response);

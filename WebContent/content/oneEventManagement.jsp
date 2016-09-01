@@ -74,18 +74,18 @@ $(document).on("click","#startstop",function(event){
 <form action="<%=request.getContextPath()%>/RemoveEventServlet?event=${info.name}" method="post">
 <div class="container">
 <div class="row">
-<div class="col-md-3 col-sm-2">
+<div class="col-md-3 col-sm-2 col-xs-2">
 <label>Evento</label>
 </div>
 </div>
 <div class="row">
-<div class = "col-md-3 col-sm-2">
+<div class = "col-md-3 col-sm-2 col-xs-2">
 	<div class="panel panel-default">
 	<div class="panel-body" id="eventName">${info.name}</div>
 	</div>
 
 </div>
-<div class="col-md-2 col-sm-1">
+<div class="col-md-2 col-sm-1 col-xs-1">
 <button type="submit" class="btn btn-danger">Elimina evento</button>
 </div>
 
