@@ -23,6 +23,8 @@
 	rel="stylesheet">
 <link href="<%=request.getContextPath()%>/bootstrap/css/jumbo.css"
 	rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/bootstrap/css/oneEvent.css"
+	rel="stylesheet">
 <script type="text/javascript"
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <link href="<%=request.getContextPath()%>/WEB-INF/lib/jquery.js">
@@ -69,7 +71,7 @@ $(document).on("click","#startstop",function(event){
 
 	<br>
 
-
+<img src="${info.img}" class="img-circle" width="200" height="250">
 
 <form action="<%=request.getContextPath()%>/RemoveEventServlet?event=${info.name}" method="post">
 <div class="container">
@@ -86,7 +88,7 @@ $(document).on("click","#startstop",function(event){
 
 </div>
 <div class="col-md-2 col-sm-3 col-xs-6">
-<button type="submit" class="btn btn-danger">Elimina evento</button>
+<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
 </div>
 
 
@@ -95,7 +97,6 @@ $(document).on("click","#startstop",function(event){
 <br><br>
 </div>
 </form>
-
 
 <div class="container">
 <div class="row">
@@ -128,7 +129,7 @@ $(document).on("click","#startstop",function(event){
 		</div>
 
 	<div class = "col-md-1 col-sm-1 col-xs-1">
-	<button type="submit" id="button${hashMap.key}" name="prezzo${hashMap.key}" class="btn btn-block btn-primary">*</button>
+	<button type="submit" id="button${hashMap.key}" name="prezzo${hashMap.key}" class="btn btn-block btn-primary"><span class="glyphicon glyphicon-floppy-save"></span></button>
 	<!--  form action="<%=request.getContextPath()%>/OneEventManagementServlet?tipB=${hashMap.key}&&nome=${info.name}&&update=yes&&price=" method="post">
 	<button type="submit" class="btn btn-block btn-primary">-</button>
 	</form-->
@@ -141,7 +142,7 @@ $(document).on("click","#startstop",function(event){
 <%if (request.getAttribute("stato").equals(false)){%>
 <button class="btn btn-success" id="startstop">Avvia vendita</button>
 <%}else{ %>
-<button class="btn btn-success" id="startstop">Ferma vendita</button>
+<button class="btn btn-warning" id="startstop">Ferma vendita</button>
 <%} %>
 </div>
 </div>

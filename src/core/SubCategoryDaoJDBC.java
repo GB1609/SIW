@@ -62,6 +62,34 @@ public class SubCategoryDaoJDBC implements SubCategoryDao {
 		}
 	}
 
+	public String getName(int code)
+	{
+		Connection connection = this.dataSource.getConnection();
+
+		String value = "";
+
+		try {
+			String returnAll = "SELECT subcategory.name FROM subcategory WHERE subcategory.subcategorycode=?";
+			PreparedStatement statement = connection.prepareStatement(returnAll);
+			statement.setInt(1, code);
+			connection.setAutoCommit(false);
+			connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+			ResultSet result = statement.executeQuery();
+			while (result.next())
+				value = result.getString(1);
+			connection.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				connection.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return value;
+	}
+	
 	@Override
 	public List<String> getSubCategories() {
 		Connection connection = this.dataSource.getConnection();

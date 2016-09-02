@@ -15,5 +15,7 @@ public interface SubCategoryDao {
 	public int returnCode(String name);
 
 	public void save(SubCategory c);
+	
+	public String getName(int code);
 
 }

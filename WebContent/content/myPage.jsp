@@ -45,6 +45,7 @@
 					<thead>
 						<tr>
 							<th>Codice Evento</th>
+							<th>Categoria</th>
 							<th>Nome Evento</th>
 							<th>Citta</th>
 							<th>Biglietti totali</th>
@@ -55,22 +56,24 @@
 
 						<c:forEach items="${eventi}" var="value">
 
-<tr>
-		<td>${value.code}</td>
-	<td>${value.name}</td>
-		<td>${value.city}</td>
-<td>${value.bigl} <td/>
-<td>${value.rim}<td/>
-<td>
-<form action="<%=request.getContextPath()%>/OneEventManagementServlet?nome=${value.name}&&update=no" method="post">
-	<button type="submit" class="btn btn-block btn-primary">Gestisci
-		evento</button>
-</form>
-</td>
-</tr>
-	 </c:forEach>
-
-
+							<tr>
+								<td>${value.code}</td>
+								<td>${value.category}</td>
+								<td>${value.name}</td>
+								<td>${value.city}</td>
+								<td>${value.bigl}<td/>
+								<td>${value.rim}<td/>
+								<td>
+									<form
+										action="<%=request.getContextPath()%>/OneEventManagementServlet?nome=${value.name}&&update=no"
+										method="post">
+										<button type="submit" class="btn btn-block btn-primary">
+											<span class="glyphicon glyphicon-eye-open"></span>
+										</button>
+									</form>
+								</td>
+							</tr>
+						</c:forEach>
 
 					</tbody>
 				</table>

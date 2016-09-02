@@ -16,6 +16,7 @@ import core.DaoFactory;
 import core.DataSource;
 import dao.EventsDao;
 import dao.InformationDao;
+import dao.SubCategoryDao;
 import tables.EventInfo;
 import tables.Events;
 import tables.Information;
@@ -48,7 +49,7 @@ public class RemoveEventServlet extends HttpServlet {
 		EventsDao ed = this.daoFactory.getEventsDao();
 		ed.deleteAllForOne(ed.getCode(delete), delete);
 		String nm = request.getSession().getAttribute("name").toString();
-
+		SubCategoryDao scd = daoFactory.getSubCategoryDao();
 		List<Events> lista = ed.organizedEvents(nm);
 		InformationDao ids = this.daoFactory.getInformationDao();
 		List<EventInfo> eifs = new ArrayList<EventInfo>();
@@ -56,7 +57,7 @@ public class RemoveEventServlet extends HttpServlet {
 			Set<Information> informations = ids.getAllInfo(lista.get(i).getInformation());
 			for (Information info : informations) {
 				eifs.add(new EventInfo(lista.get(i).getEventcode(), info.getName(), info.getCity(),
-						lista.get(i).getNumBigl(), lista.get(i).getRemBigl()));
+						lista.get(i).getNumBigl(), lista.get(i).getRemBigl(),scd.getName(lista.get(i).getCategory())));
 				break;
 			}
 

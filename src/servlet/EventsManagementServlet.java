@@ -16,9 +16,11 @@ import core.DaoFactory;
 import core.DataSource;
 import dao.EventsDao;
 import dao.InformationDao;
+import dao.SubCategoryDao;
 import tables.EventInfo;
 import tables.Events;
 import tables.Information;
+import tables.SubCategory;
 
 @WebServlet("/EventsManagementServlet")
 public class EventsManagementServlet extends HttpServlet {
@@ -41,6 +43,7 @@ public class EventsManagementServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		SubCategoryDao scd = daoFactory.getSubCategoryDao();
 		String nm = request.getSession().getAttribute("name").toString();
 		EventsDao ed = this.daoFactory.getEventsDao();
 		List<Events> lista = ed.organizedEvents(nm);
@@ -49,7 +52,7 @@ public class EventsManagementServlet extends HttpServlet {
 		for (int i = 0; i < lista.size(); i++) {
 			Set<Information> informations = ids.getAllInfo(lista.get(i).getInformation());
 			for (Information info : informations) {
-				eifs.add(new EventInfo(lista.get(i).getEventcode(), info.getName(),info.getCity(),lista.get(i).getNumBigl(),lista.get(i).getRemBigl()));
+				eifs.add(new EventInfo(lista.get(i).getEventcode(), info.getName(),info.getCity(),lista.get(i).getNumBigl(),lista.get(i).getRemBigl(),scd.getName(lista.get(i).getCategory())));
 				break;
 			}
 

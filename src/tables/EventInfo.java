@@ -1,19 +1,29 @@
 package tables;
 
 public class EventInfo {
-	
+
 	int code;
 	String name;
 	String city;
 	int bigl;
 	int rim;
-	
-	public EventInfo(int eventCode, String name, String city, int bigl , int rim) {
+	String category;
+
+	public EventInfo(int eventCode, String name, String city, int bigl, int rim, String category) {
 		this.code = eventCode;
 		this.name = name;
 		this.city = city;
 		this.bigl = bigl;
 		this.rim = rim;
+		this.category = category;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public int getCode() {
@@ -55,7 +65,5 @@ public class EventInfo {
 	public void setRim(int rim) {
 		this.rim = rim;
 	}
-	
-	
 
 }
